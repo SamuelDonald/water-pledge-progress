@@ -14,13 +14,511 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      campaign_media: {
+        Row: {
+          campaign_id: string
+          caption_en: string
+          caption_es: string
+          created_at: string
+          id: string
+          is_published: boolean
+          media_type: string
+          sort_order: number
+          url: string
+        }
+        Insert: {
+          campaign_id: string
+          caption_en?: string
+          caption_es?: string
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          media_type?: string
+          sort_order?: number
+          url: string
+        }
+        Update: {
+          campaign_id?: string
+          caption_en?: string
+          caption_es?: string
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          media_type?: string
+          sort_order?: number
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_media_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaign_updates: {
+        Row: {
+          body_en: string
+          body_es: string
+          campaign_id: string
+          id: string
+          image_url: string | null
+          is_published: boolean
+          published_at: string
+          title_en: string
+          title_es: string
+        }
+        Insert: {
+          body_en?: string
+          body_es?: string
+          campaign_id: string
+          id?: string
+          image_url?: string | null
+          is_published?: boolean
+          published_at?: string
+          title_en: string
+          title_es: string
+        }
+        Update: {
+          body_en?: string
+          body_es?: string
+          campaign_id?: string
+          id?: string
+          image_url?: string | null
+          is_published?: boolean
+          published_at?: string
+          title_en?: string
+          title_es?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_updates_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaigns: {
+        Row: {
+          beneficiaries: number
+          community_id: string | null
+          created_at: string
+          goal_cents: number
+          hero_image_url: string | null
+          id: string
+          is_featured: boolean
+          is_published: boolean
+          liters_per_usd: number
+          name_en: string
+          name_es: string
+          need_en: string
+          need_es: string
+          seed_raised_cents: number
+          slug: string
+          status: string
+          story_en: string
+          story_es: string
+          summary_en: string
+          summary_es: string
+          urgency: string
+        }
+        Insert: {
+          beneficiaries?: number
+          community_id?: string | null
+          created_at?: string
+          goal_cents?: number
+          hero_image_url?: string | null
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          liters_per_usd?: number
+          name_en: string
+          name_es: string
+          need_en: string
+          need_es: string
+          seed_raised_cents?: number
+          slug: string
+          status?: string
+          story_en?: string
+          story_es?: string
+          summary_en?: string
+          summary_es?: string
+          urgency?: string
+        }
+        Update: {
+          beneficiaries?: number
+          community_id?: string | null
+          created_at?: string
+          goal_cents?: number
+          hero_image_url?: string | null
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          liters_per_usd?: number
+          name_en?: string
+          name_es?: string
+          need_en?: string
+          need_es?: string
+          seed_raised_cents?: number
+          slug?: string
+          status?: string
+          story_en?: string
+          story_es?: string
+          summary_en?: string
+          summary_es?: string
+          urgency?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communities: {
+        Row: {
+          created_at: string
+          drought_level: number
+          families_served: number
+          id: string
+          is_published: boolean
+          latitude: number
+          liters_delivered: number
+          longitude: number
+          name: string
+          population: number
+          region_en: string
+          region_es: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          drought_level?: number
+          families_served?: number
+          id?: string
+          is_published?: boolean
+          latitude: number
+          liters_delivered?: number
+          longitude: number
+          name: string
+          population?: number
+          region_en?: string
+          region_es?: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          drought_level?: number
+          families_served?: number
+          id?: string
+          is_published?: boolean
+          latitude?: number
+          liters_delivered?: number
+          longitude?: number
+          name?: string
+          population?: number
+          region_en?: string
+          region_es?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      deliveries: {
+        Row: {
+          campaign_id: string | null
+          community_id: string | null
+          delivered_at: string
+          families: number
+          id: string
+          is_published: boolean
+          kind: string
+          latitude: number | null
+          liters: number
+          longitude: number | null
+          note_en: string
+          note_es: string
+        }
+        Insert: {
+          campaign_id?: string | null
+          community_id?: string | null
+          delivered_at?: string
+          families?: number
+          id?: string
+          is_published?: boolean
+          kind?: string
+          latitude?: number | null
+          liters?: number
+          longitude?: number | null
+          note_en?: string
+          note_es?: string
+        }
+        Update: {
+          campaign_id?: string | null
+          community_id?: string | null
+          delivered_at?: string
+          families?: number
+          id?: string
+          is_published?: boolean
+          kind?: string
+          latitude?: number | null
+          liters?: number
+          longitude?: number | null
+          note_en?: string
+          note_es?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deliveries_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deliveries_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      donations: {
+        Row: {
+          amount_cents: number
+          campaign_id: string | null
+          created_at: string
+          currency: string
+          dedication: string | null
+          donor_email: string | null
+          donor_name: string | null
+          frequency: string
+          id: string
+          is_anonymous: boolean
+          liters_funded: number
+          provider: string
+          provider_payment_id: string | null
+          provider_session_id: string | null
+          status: string
+        }
+        Insert: {
+          amount_cents: number
+          campaign_id?: string | null
+          created_at?: string
+          currency?: string
+          dedication?: string | null
+          donor_email?: string | null
+          donor_name?: string | null
+          frequency?: string
+          id?: string
+          is_anonymous?: boolean
+          liters_funded?: number
+          provider?: string
+          provider_payment_id?: string | null
+          provider_session_id?: string | null
+          status?: string
+        }
+        Update: {
+          amount_cents?: number
+          campaign_id?: string | null
+          created_at?: string
+          currency?: string
+          dedication?: string | null
+          donor_email?: string | null
+          donor_name?: string | null
+          frequency?: string
+          id?: string
+          is_anonymous?: boolean
+          liters_funded?: number
+          provider?: string
+          provider_payment_id?: string | null
+          provider_session_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "donations_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_reports: {
+        Row: {
+          admin_cents: number
+          created_at: string
+          families_served: number
+          id: string
+          is_published: boolean
+          liters_delivered: number
+          notes_en: string
+          notes_es: string
+          period: string
+          processing_cents: number
+          program_cents: number
+          report_url: string | null
+          total_raised_cents: number
+        }
+        Insert: {
+          admin_cents?: number
+          created_at?: string
+          families_served?: number
+          id?: string
+          is_published?: boolean
+          liters_delivered?: number
+          notes_en?: string
+          notes_es?: string
+          period: string
+          processing_cents?: number
+          program_cents?: number
+          report_url?: string | null
+          total_raised_cents?: number
+        }
+        Update: {
+          admin_cents?: number
+          created_at?: string
+          families_served?: number
+          id?: string
+          is_published?: boolean
+          liters_delivered?: number
+          notes_en?: string
+          notes_es?: string
+          period?: string
+          processing_cents?: number
+          program_cents?: number
+          report_url?: string | null
+          total_raised_cents?: number
+        }
+        Relationships: []
+      }
+      partners: {
+        Row: {
+          id: string
+          is_published: boolean
+          name: string
+          role_en: string
+          role_es: string
+          sort_order: number
+          website: string | null
+        }
+        Insert: {
+          id?: string
+          is_published?: boolean
+          name: string
+          role_en?: string
+          role_es?: string
+          sort_order?: number
+          website?: string | null
+        }
+        Update: {
+          id?: string
+          is_published?: boolean
+          name?: string
+          role_en?: string
+          role_es?: string
+          sort_order?: number
+          website?: string | null
+        }
+        Relationships: []
+      }
+      stories: {
+        Row: {
+          author_name: string
+          author_role_en: string
+          author_role_es: string
+          body_en: string
+          body_es: string
+          campaign_id: string | null
+          community_id: string | null
+          id: string
+          image_url: string | null
+          is_published: boolean
+          published_at: string
+          quote_en: string
+          quote_es: string
+          slug: string
+          title_en: string
+          title_es: string
+          video_url: string | null
+        }
+        Insert: {
+          author_name?: string
+          author_role_en?: string
+          author_role_es?: string
+          body_en?: string
+          body_es?: string
+          campaign_id?: string | null
+          community_id?: string | null
+          id?: string
+          image_url?: string | null
+          is_published?: boolean
+          published_at?: string
+          quote_en?: string
+          quote_es?: string
+          slug: string
+          title_en: string
+          title_es: string
+          video_url?: string | null
+        }
+        Update: {
+          author_name?: string
+          author_role_en?: string
+          author_role_es?: string
+          body_en?: string
+          body_es?: string
+          campaign_id?: string | null
+          community_id?: string | null
+          id?: string
+          image_url?: string | null
+          is_published?: boolean
+          published_at?: string
+          quote_en?: string
+          quote_es?: string
+          slug?: string
+          title_en?: string
+          title_es?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stories_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stories_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_campaign_totals: {
+        Args: never
+        Returns: {
+          campaign_id: string
+          donor_count: number
+          raised_cents: number
+        }[]
+      }
+      get_crisis_stats: { Args: never; Returns: Json }
     }
     Enums: {
       [_ in never]: never
