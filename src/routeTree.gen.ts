@@ -10,33 +10,154 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DonateRouteImport } from './routes/donate'
+import { Route as ImpactRouteImport } from './routes/impact'
+import { Route as MapRouteImport } from './routes/map'
+import { Route as ThankYouRouteImport } from './routes/thank-you'
+import { Route as TransparencyRouteImport } from './routes/transparency'
+import { Route as CampaignsIndexRouteImport } from './routes/campaigns.index'
+import { Route as CampaignsSlugRouteImport } from './routes/campaigns.$slug'
+import { Route as StoriesIndexRouteImport } from './routes/stories.index'
+import { Route as StoriesSlugRouteImport } from './routes/stories.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DonateRoute = DonateRouteImport.update({
+  id: '/donate',
+  path: '/donate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImpactRoute = ImpactRouteImport.update({
+  id: '/impact',
+  path: '/impact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapRoute = MapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThankYouRoute = ThankYouRouteImport.update({
+  id: '/thank-you',
+  path: '/thank-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransparencyRoute = TransparencyRouteImport.update({
+  id: '/transparency',
+  path: '/transparency',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampaignsIndexRoute = CampaignsIndexRouteImport.update({
+  id: '/campaigns/',
+  path: '/campaigns/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampaignsSlugRoute = CampaignsSlugRouteImport.update({
+  id: '/campaigns/$slug',
+  path: '/campaigns/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoriesIndexRoute = StoriesIndexRouteImport.update({
+  id: '/stories/',
+  path: '/stories/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoriesSlugRoute = StoriesSlugRouteImport.update({
+  id: '/stories/$slug',
+  path: '/stories/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/donate': typeof DonateRoute
+  '/impact': typeof ImpactRoute
+  '/map': typeof MapRoute
+  '/thank-you': typeof ThankYouRoute
+  '/transparency': typeof TransparencyRoute
+  '/campaigns/$slug': typeof CampaignsSlugRoute
+  '/stories/$slug': typeof StoriesSlugRoute
+  '/campaigns/': typeof CampaignsIndexRoute
+  '/stories/': typeof StoriesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/donate': typeof DonateRoute
+  '/impact': typeof ImpactRoute
+  '/map': typeof MapRoute
+  '/thank-you': typeof ThankYouRoute
+  '/transparency': typeof TransparencyRoute
+  '/campaigns/$slug': typeof CampaignsSlugRoute
+  '/stories/$slug': typeof StoriesSlugRoute
+  '/campaigns': typeof CampaignsIndexRoute
+  '/stories': typeof StoriesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/donate': typeof DonateRoute
+  '/impact': typeof ImpactRoute
+  '/map': typeof MapRoute
+  '/thank-you': typeof ThankYouRoute
+  '/transparency': typeof TransparencyRoute
+  '/campaigns/$slug': typeof CampaignsSlugRoute
+  '/stories/$slug': typeof StoriesSlugRoute
+  '/campaigns/': typeof CampaignsIndexRoute
+  '/stories/': typeof StoriesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/donate'
+    | '/impact'
+    | '/map'
+    | '/thank-you'
+    | '/transparency'
+    | '/campaigns/$slug'
+    | '/stories/$slug'
+    | '/campaigns/'
+    | '/stories/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/donate'
+    | '/impact'
+    | '/map'
+    | '/thank-you'
+    | '/transparency'
+    | '/campaigns/$slug'
+    | '/stories/$slug'
+    | '/campaigns'
+    | '/stories'
+  id:
+    | '__root__'
+    | '/'
+    | '/donate'
+    | '/impact'
+    | '/map'
+    | '/thank-you'
+    | '/transparency'
+    | '/campaigns/$slug'
+    | '/stories/$slug'
+    | '/campaigns/'
+    | '/stories/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DonateRoute: typeof DonateRoute
+  ImpactRoute: typeof ImpactRoute
+  MapRoute: typeof MapRoute
+  ThankYouRoute: typeof ThankYouRoute
+  TransparencyRoute: typeof TransparencyRoute
+  CampaignsSlugRoute: typeof CampaignsSlugRoute
+  StoriesSlugRoute: typeof StoriesSlugRoute
+  CampaignsIndexRoute: typeof CampaignsIndexRoute
+  StoriesIndexRoute: typeof StoriesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +169,84 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/donate': {
+      id: '/donate'
+      path: '/donate'
+      fullPath: '/donate'
+      preLoaderRoute: typeof DonateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/impact': {
+      id: '/impact'
+      path: '/impact'
+      fullPath: '/impact'
+      preLoaderRoute: typeof ImpactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/thank-you': {
+      id: '/thank-you'
+      path: '/thank-you'
+      fullPath: '/thank-you'
+      preLoaderRoute: typeof ThankYouRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transparency': {
+      id: '/transparency'
+      path: '/transparency'
+      fullPath: '/transparency'
+      preLoaderRoute: typeof TransparencyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/campaigns/': {
+      id: '/campaigns/'
+      path: '/campaigns'
+      fullPath: '/campaigns/'
+      preLoaderRoute: typeof CampaignsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/campaigns/$slug': {
+      id: '/campaigns/$slug'
+      path: '/campaigns/$slug'
+      fullPath: '/campaigns/$slug'
+      preLoaderRoute: typeof CampaignsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stories/': {
+      id: '/stories/'
+      path: '/stories'
+      fullPath: '/stories/'
+      preLoaderRoute: typeof StoriesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stories/$slug': {
+      id: '/stories/$slug'
+      path: '/stories/$slug'
+      fullPath: '/stories/$slug'
+      preLoaderRoute: typeof StoriesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DonateRoute: DonateRoute,
+  ImpactRoute: ImpactRoute,
+  MapRoute: MapRoute,
+  ThankYouRoute: ThankYouRoute,
+  TransparencyRoute: TransparencyRoute,
+  CampaignsSlugRoute: CampaignsSlugRoute,
+  StoriesSlugRoute: StoriesSlugRoute,
+  CampaignsIndexRoute: CampaignsIndexRoute,
+  StoriesIndexRoute: StoriesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
