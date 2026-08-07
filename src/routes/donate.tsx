@@ -11,7 +11,7 @@ const PRESETS = [2500, 5000, 10000, 25000];
 
 export const Route = createFileRoute("/donate")({
   validateSearch: (search: Record<string, unknown>) => ({
-    campaign: typeof search.campaign === "string" ? search.campaign.slice(0, 120) : undefined,
+    campaign: typeof search["campaign"] === "string" ? String(search["campaign"]).slice(0, 120) : undefined,
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(campaignsQuery);
