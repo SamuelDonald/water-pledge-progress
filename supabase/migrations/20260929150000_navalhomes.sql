@@ -20,3 +20,6 @@ create or replace function public.is_navalhomes_admin() returns boolean language
 create policy "admins manage properties" on public.properties for all to authenticated using(public.is_navalhomes_admin()) with check(public.is_navalhomes_admin());
 create policy "admins manage property media" on public.property_media for all to authenticated using(public.is_navalhomes_admin()) with check(public.is_navalhomes_admin());
 create policy "admins read inquiries" on public.inquiries for select to authenticated using(public.is_navalhomes_admin());
+create policy "admins upload property media" on storage.objects for insert to authenticated with check(bucket_id='property-media' and public.is_navalhomes_admin());
+create policy "admins update property media" on storage.objects for update to authenticated using(bucket_id='property-media' and public.is_navalhomes_admin()) with check(bucket_id='property-media' and public.is_navalhomes_admin());
+create policy "admins delete property media" on storage.objects for delete to authenticated using(bucket_id='property-media' and public.is_navalhomes_admin());
