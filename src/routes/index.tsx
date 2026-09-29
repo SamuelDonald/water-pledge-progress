@@ -364,11 +364,13 @@ function Home() {
         </div>
       </section>
 
-      <footer className="flex justify-between border-t border-white/10 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 lg:px-10">
-        <span>© {new Date().getFullYear()} NavalHomes</span><span>Dallas · Houston · Rio Grande Valley</span>
+      <footer className="flex flex-col gap-4 border-t border-white/10 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10">
+        <span>© {new Date().getFullYear()} NavalHomes · Dallas · Houston · Rio Grande Valley</span>
+        <button aria-label="Admin" onClick={() => setAdmin(true)} className="inline-flex w-fit items-center gap-2 border border-white/15 px-3 py-2 text-white/45 transition hover:border-white/30 hover:text-white">
+          <LockKeyhole size={12} /> Admin
+        </button>
       </footer>
 
-      <button aria-label="Admin" onClick={() => setAdmin(true)} className="fixed bottom-4 left-4 z-50 flex size-8 items-center justify-center rounded-full bg-black/80 text-white/60 hover:text-white"><LockKeyhole size={13} /></button>
       {admin ? <Admin close={() => setAdmin(false)} properties={properties} onRefresh={refresh} /> : null}
     </div>
   );
