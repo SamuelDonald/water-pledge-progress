@@ -13,3 +13,10 @@ insert into public.properties(slug,title,location,city,status,property_type,pric
 on conflict(slug) do nothing;
 insert into storage.buckets(id,name,public) values('property-media','property-media',true) on conflict(id) do nothing;
 create policy "public property media read" on storage.objects for select to public using(bucket_id='property-media');
+
+create table if not exists public.admin_users(email text primary key);
+alter table public.admin_users enable row level security;
+create or replace function public.is_navalhomes_admin() returns boolean language sql stable security definer set search_path=public as $$ select exists(select 1 from public.admin_users where lower(email)=lower(coalesce(auth.jwt()->>'email',''))); $$;
+create policy "admins manage properties" on public.properties for all to authenticated using(public.is_navalhomes_admin()) with check(public.is_navalhomes_admin());
+create policy "admins manage property media" on public.property_media for all to authenticated using(public.is_navalhomes_admin()) with check(public.is_navalhomes_admin());
+create policy "admins read inquiries" on public.inquiries for select to authenticated using(public.is_navalhomes_admin());
