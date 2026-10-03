@@ -17,6 +17,7 @@ import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as TransparencyRouteImport } from './routes/transparency'
 import { Route as CampaignsIndexRouteImport } from './routes/campaigns.index'
 import { Route as CampaignsSlugRouteImport } from './routes/campaigns.$slug'
+import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
 import { Route as StoriesIndexRouteImport } from './routes/stories.index'
 import { Route as StoriesSlugRouteImport } from './routes/stories.$slug'
 
@@ -60,6 +61,11 @@ const CampaignsSlugRoute = CampaignsSlugRouteImport.update({
   path: '/campaigns/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PropertiesSlugRoute = PropertiesSlugRouteImport.update({
+  id: '/properties/$slug',
+  path: '/properties/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StoriesIndexRoute = StoriesIndexRouteImport.update({
   id: '/stories/',
   path: '/stories/',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/thank-you': typeof ThankYouRoute
   '/transparency': typeof TransparencyRoute
   '/campaigns/$slug': typeof CampaignsSlugRoute
+  '/properties/$slug': typeof PropertiesSlugRoute
   '/stories/$slug': typeof StoriesSlugRoute
   '/campaigns/': typeof CampaignsIndexRoute
   '/stories/': typeof StoriesIndexRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/thank-you': typeof ThankYouRoute
   '/transparency': typeof TransparencyRoute
   '/campaigns/$slug': typeof CampaignsSlugRoute
+  '/properties/$slug': typeof PropertiesSlugRoute
   '/stories/$slug': typeof StoriesSlugRoute
   '/campaigns': typeof CampaignsIndexRoute
   '/stories': typeof StoriesIndexRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/thank-you': typeof ThankYouRoute
   '/transparency': typeof TransparencyRoute
   '/campaigns/$slug': typeof CampaignsSlugRoute
+  '/properties/$slug': typeof PropertiesSlugRoute
   '/stories/$slug': typeof StoriesSlugRoute
   '/campaigns/': typeof CampaignsIndexRoute
   '/stories/': typeof StoriesIndexRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/transparency'
     | '/campaigns/$slug'
+    | '/properties/$slug'
     | '/stories/$slug'
     | '/campaigns/'
     | '/stories/'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/transparency'
     | '/campaigns/$slug'
+    | '/properties/$slug'
     | '/stories/$slug'
     | '/campaigns'
     | '/stories'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/transparency'
     | '/campaigns/$slug'
+    | '/properties/$slug'
     | '/stories/$slug'
     | '/campaigns/'
     | '/stories/'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   ThankYouRoute: typeof ThankYouRoute
   TransparencyRoute: typeof TransparencyRoute
   CampaignsSlugRoute: typeof CampaignsSlugRoute
+  PropertiesSlugRoute: typeof PropertiesSlugRoute
   StoriesSlugRoute: typeof StoriesSlugRoute
   CampaignsIndexRoute: typeof CampaignsIndexRoute
   StoriesIndexRoute: typeof StoriesIndexRoute
@@ -218,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CampaignsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/properties/$slug': {
+      id: '/properties/$slug'
+      path: '/properties/$slug'
+      fullPath: '/properties/$slug'
+      preLoaderRoute: typeof PropertiesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/stories/': {
       id: '/stories/'
       path: '/stories'
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   ThankYouRoute: ThankYouRoute,
   TransparencyRoute: TransparencyRoute,
   CampaignsSlugRoute: CampaignsSlugRoute,
+  PropertiesSlugRoute: PropertiesSlugRoute,
   StoriesSlugRoute: StoriesSlugRoute,
   CampaignsIndexRoute: CampaignsIndexRoute,
   StoriesIndexRoute: StoriesIndexRoute,
@@ -250,3 +271,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
