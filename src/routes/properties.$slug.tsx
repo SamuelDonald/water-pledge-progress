@@ -34,7 +34,7 @@ function PropertyPage(){
   if(!property) return <div className="min-h-screen bg-[#f5f3ee] p-8"><Link to="/" className="text-sm">← Back to NavalHomes</Link><p className="mt-16 text-black/50">Residence not found.</p></div>;
   const media=property.media??[];
   const opportunityLabel = property.opportunity_type === "contract_assignment" ? "Contract assignment" : property.opportunity_type === "seller_introduction" ? "Seller opportunity" : "Direct purchase";
-  const displayPrice = property.opportunity_type === "contract_assignment" && property.contract_acquisition_price != null ? property.contract_acquisition_price : property.price;
+  const displayPrice = property.price;
   const priceLabel = property.opportunity_type === "contract_assignment" ? "Contract acquisition price" : "Asking price";
   return <div className="min-h-screen bg-[#f5f3ee]">
     <header className="flex items-center justify-between px-6 py-6 lg:px-10"><Link to="/" className="font-serif text-3xl">navalhomes.</Link><Link to="/" className="text-xs uppercase tracking-[.16em]"><ArrowLeft className="mr-2 inline size-4"/>Back</Link></header>
