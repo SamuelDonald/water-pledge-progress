@@ -24,11 +24,7 @@ export const locationImages = {
   "Rio Grande Valley":"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=85",
 } as const;
 
-export const fallbackProperties:Property[] = [
-  {id:"demo-1",slug:"oak-estate",title:"The Oak Estate",location:"Dallas",city:"Dallas",status:"For Sale",property_type:"House",price:1895000,bedrooms:5,bathrooms:5,sqft:4860,lot_size:.42,description:"A refined private residence defined by generous proportions, natural light and quiet architectural detail.",neighborhood:"Preston Hollow",address:null,latitude:null,longitude:null,is_featured:true,is_published:true,media:[{id:"m1",media_type:"image",url:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=85",caption:"Exterior",sort_order:0}]},
-  {id:"demo-2",slug:"memorial-residence",title:"Memorial Residence",location:"Houston",city:"Houston",status:"For Sale",property_type:"House",price:1425000,bedrooms:4,bathrooms:4,sqft:3820,lot_size:.31,description:"Contemporary Houston living with expansive interiors, curated finishes and an effortless indoor-outdoor flow.",neighborhood:"Memorial",address:null,latitude:null,longitude:null,is_featured:true,is_published:true,media:[{id:"m2",media_type:"image",url:"https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1800&q=85",caption:"Residence",sort_order:0}]},
-  {id:"demo-3",slug:"rio-grande-modern",title:"Rio Grande Modern",location:"Rio Grande Valley",city:"McAllen",status:"For Rent",property_type:"Condo",price:4200,bedrooms:3,bathrooms:3,sqft:2140,lot_size:null,description:"A polished modern home in the Rio Grande Valley, designed for relaxed living and entertaining.",neighborhood:"Sharyland",address:null,latitude:null,longitude:null,is_featured:true,is_published:true,media:[{id:"m3",media_type:"image",url:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=85",caption:"Interior",sort_order:0}]},
-];
+export const fallbackProperties:Property[] = [];
 
 export async function getProperties():Promise<Property[]> {
   const {data,error}=await (supabase as any).from("properties").select("*, property_media(*)").eq("is_published",true).order("is_featured",{ascending:false}).order("created_at",{ascending:false});
