@@ -13,6 +13,9 @@ const money = (n: number) =>
 type Location = Property["location"];
 
 function Card({ p }: { p: Property }) {
+  const opportunityLabel = p.opportunity_type === "contract_assignment" ? "Contract assignment" : p.opportunity_type === "seller_introduction" ? "Seller opportunity" : "Direct purchase";
+  const displayPrice = p.opportunity_type === "contract_assignment" && p.contract_acquisition_price != null ? p.contract_acquisition_price : p.price;
+  const priceLabel = p.opportunity_type === "contract_assignment" ? "Contract acquisition price" : "Asking price";
   return (
     <Link to="/properties/$slug" params={{ slug: p.slug }} className="group block text-left">
       <div className="relative aspect-[4/3] overflow-hidden bg-black">
@@ -23,16 +26,17 @@ function Card({ p }: { p: Property }) {
           loading="lazy"
         />
         <div className="absolute inset-x-0 top-0 flex justify-between p-4">
-          <span className="glass-label">{p.status}</span>
+          <span className="glass-label">{opportunityLabel}</span>
           {p.is_featured ? <span className="glass-label">Featured</span> : null}
         </div>
       </div>
       <div className="pt-4">
         <div className="flex justify-between gap-4">
           <h3 className="font-serif text-2xl">{p.title}</h3>
-          <span>{money(p.price)}</span>
+          <span className="shrink-0 text-right"><strong className="block font-medium">{money(displayPrice)}</strong><small className="mt-1 block text-[9px] uppercase tracking-[.12em] text-black/45">{priceLabel}</small></span>
         </div>
-        <p className="mt-1 text-sm text-black/50">{p.neighborhood ?? p.city} · {p.property_type}</p>
+        <p className="mt-1 text-sm text-black/50">{p.neighborhood ?? p.city} · {p.property_type} · {p.status}</p>
+        {p.opportunity_summary ? <p className="mt-3 max-w-xl text-sm leading-6 text-black/60">{p.opportunity_summary}</p> : null}
         <div className="mt-3 flex gap-5 text-xs text-black/55">
           <span><BedDouble className="mr-1 inline size-3.5" />{p.bedrooms} beds</span>
           <span><Bath className="mr-1 inline size-3.5" />{p.bathrooms} baths</span>
@@ -105,6 +109,41 @@ function Inquiry({ property }: { property?: Property }) {
       </button>
     </form>
   );
+}
+
+function SellerSubmission() {
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+  if (sent) return <div className="border border-white/15 p-8"><p className="eyebrow text-white/40">Submission received</p><h3 className="mt-3 font-serif text-4xl">We will follow up.</h3><p className="mt-3 text-sm leading-6 text-white/60">Your opportunity has been sent to NavalHomes for initial review.</p></div>;
+  return <form className="grid gap-4 sm:grid-cols-2" onSubmit={async (e) => {
+    e.preventDefault(); setError(""); const f = new FormData(e.currentTarget);
+    const message = [
+      "SELLER / CONTRACT OPPORTUNITY SUBMISSION",
+      `Opportunity route: ${String(f.get("route") ?? "")}`,
+      `Property location: ${String(f.get("city") ?? "")}`,
+      `Property type: ${String(f.get("assetType") ?? "")}`,
+      `Contract status: ${String(f.get("contractStatus") ?? "")}`,
+      `Estimated price/value: ${String(f.get("value") ?? "") || "Not provided"}`,
+      `Additional details: ${String(f.get("details") ?? "") || "Not provided"}`,
+    ].join("\\n");
+    try {
+      await submitInquiry({ data: { propertyId: null, name: f.get("name"), phone: f.get("phone"), email: f.get("email"), message, allowPhone: f.get("phoneOk") === "on", allowSms: f.get("smsOk") === "on", allowWhatsapp: f.get("waOk") === "on" } });
+      setSent(true);
+    } catch { setError("We could not send your submission. Please try again."); }
+  }}>
+    <input required name="name" placeholder="Your name" className="dark-field" />
+    <input required name="phone" placeholder="Phone number" className="dark-field" />
+    <input required type="email" name="email" placeholder="Email address" className="dark-field" />
+    <input required name="city" placeholder="City / neighborhood" className="dark-field" />
+    <label className="field text-white/55">Submission type<select name="route" required className="mt-1 border-b border-white/20 bg-transparent py-3 text-sm text-white"><option className="text-black" value="Seller property lead">Seller property lead</option><option className="text-black" value="Existing purchase contract for possible assignment">Existing purchase contract for possible assignment</option><option className="text-black" value="Direct property sale opportunity">Direct property sale opportunity</option></select></label>
+    <label className="field text-white/55">Asset type<select name="assetType" required className="mt-1 border-b border-white/20 bg-transparent py-3 text-sm text-white"><option className="text-black">Single-family residential</option><option className="text-black">Multi-family</option><option className="text-black">Land</option><option className="text-black">Commercial</option><option className="text-black">Mixed-use</option><option className="text-black">Other</option></select></label>
+    <label className="field text-white/55">Contract status<select name="contractStatus" required className="mt-1 border-b border-white/20 bg-transparent py-3 text-sm text-white"><option className="text-black" value="No purchase contract">No purchase contract</option><option className="text-black" value="Existing contract held">Existing contract held</option><option className="text-black" value="Contract rights / assignment eligibility unknown">Not sure</option></select></label>
+    <input name="value" placeholder="Expected price / value (optional)" className="dark-field" />
+    <textarea name="details" rows={3} placeholder="Brief property details (do not include confidential documents)" className="dark-field resize-none sm:col-span-2" />
+    <div className="space-y-2 text-xs text-white/55 sm:col-span-2"><label className="block"><input name="phoneOk" type="checkbox" className="mr-2" />You may contact me by phone</label><label className="block"><input name="smsOk" type="checkbox" className="mr-2" />You may contact me by SMS</label><label className="block"><input name="waOk" type="checkbox" className="mr-2" />You may contact me on WhatsApp</label></div>
+    {error ? <p className="text-xs text-red-300 sm:col-span-2">{error}</p> : null}
+    <button className="w-fit bg-white px-7 py-4 text-xs uppercase tracking-[.16em] text-black sm:col-span-2">Submit opportunity <ArrowRight className="ml-2 inline size-4" /></button>
+  </form>;
 }
 
 function Admin({ close, properties, onRefresh }: { close: () => void; properties: Property[]; onRefresh: () => void }) {
@@ -265,7 +304,7 @@ function Home() {
   const [location, setLocation] = useState<Location>("Dallas");
   const [search, setSearch] = useState(false);
   const [admin, setAdmin] = useState(false);
-  const [filters, setFilters] = useState({ location: "", minPrice: "", maxPrice: "", beds: "", type: "", status: "" });
+  const [filters, setFilters] = useState({ location: "", minPrice: "", maxPrice: "", beds: "", type: "", status: "", opportunityType: "" });
   const [sort, setSort] = useState("featured");
   const refresh = () => getProperties().then(setProperties);
 
@@ -278,7 +317,8 @@ function Home() {
       (!filters.maxPrice || p.price <= Number(filters.maxPrice)) &&
       (!filters.beds || p.bedrooms >= Number(filters.beds)) &&
       (!filters.type || p.property_type === filters.type) &&
-      (!filters.status || p.status === filters.status)
+      (!filters.status || p.status === filters.status) &&
+      (!filters.opportunityType || p.opportunity_type === filters.opportunityType)
     );
     return [...list].sort((a, b) => {
       if (sort === "price-low") return a.price - b.price;
@@ -293,7 +333,7 @@ function Home() {
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-6 py-6 text-white lg:px-10">
         <Link to="/" className="font-serif text-3xl">navalhomes.</Link>
         <nav className="hidden gap-9 text-xs uppercase tracking-[.18em] md:flex">
-          <a href="#properties">Properties</a><a href="#locations">Locations</a><a href="#contact">Contact</a>
+          <a href="#properties">Opportunities</a><a href="#how-it-works">How it works</a><a href="#seller-intake">Submit a property</a>
         </nav>
         <Menu className="md:hidden" />
       </header>
@@ -303,10 +343,10 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/15" />
         <div className="relative w-full px-6 pb-12 lg:px-10 lg:pb-16">
           <div className="mx-auto max-w-7xl">
-            <p className="eyebrow text-white/60">Curated residences · Texas</p>
+            <p className="eyebrow text-white/60">Texas real estate opportunities · Dallas · Houston · Rio Grande Valley</p>
             <div className="mt-4 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-              <h1 className="font-serif text-[clamp(4rem,10vw,9rem)] leading-[.8] tracking-[-.04em]">Find your<br /><i>place.</i></h1>
-              <p className="max-w-sm text-sm leading-6 text-white/70">A private collection of homes across Dallas, Houston and the Rio Grande Valley.</p>
+              <h1 className="font-serif text-[clamp(3.8rem,9vw,8.5rem)] leading-[.82] tracking-[-.045em]">Find your next<br /><i>opportunity.</i></h1>
+              <p className="max-w-md text-sm leading-6 text-white/75">Explore property opportunities across Texas. Each listing identifies what is being offered, who is authorized to offer it, and the applicable acquisition price.</p>
             </div>
             <div className="mt-12 flex flex-wrap gap-2">
               {(["Dallas", "Houston", "Rio Grande Valley"] as const).map((l) => (
@@ -317,9 +357,11 @@ function Home() {
         </div>
       </section>
 
+      <section className="border-b border-black/10 bg-[#f5f3ee] px-6 py-7 lg:px-10"><div className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-3"><div><p className="eyebrow">01 / Discover</p><p className="mt-2 font-serif text-2xl">Browse opportunities</p><p className="mt-2 text-sm leading-6 text-black/55">Public summaries across Dallas, Houston, and the Rio Grande Valley.</p></div><div><p className="eyebrow">02 / Verify</p><p className="mt-2 font-serif text-2xl">Know what is offered</p><p className="mt-2 text-sm leading-6 text-black/55">Contract assignments, direct purchases, and seller opportunities are identified separately.</p></div><div><p className="eyebrow">03 / Progress</p><p className="mt-2 font-serif text-2xl">Move with clarity</p><p className="mt-2 text-sm leading-6 text-black/55">Request documents, submit an offer, and follow review milestones.</p></div></div></section>
+
       <section id="properties" className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div><p className="eyebrow">The collection</p><h2 className="section-title">Exceptional homes.</h2></div>
+          <div><p className="eyebrow">The marketplace</p><h2 className="section-title">Property opportunities.</h2><p className="mt-4 max-w-xl text-sm leading-6 text-black/55">Browse available opportunities and review the type of interest being offered before you proceed.</p></div>
           <div className="flex gap-2">
             <button onClick={() => setSearch(!search)} className="flex items-center gap-2 border border-black/15 px-5 py-3 text-xs uppercase tracking-[.14em]"><Search size={15} /> Refine search</button>
             <select value={sort} onChange={(e) => setSort(e.target.value)} className="field-input"><option value="featured">Featured first</option><option value="newest">Newest</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select>
@@ -327,13 +369,14 @@ function Home() {
         </div>
 
         {search ? (
-          <div className="mt-8 grid gap-4 border border-black/10 bg-white p-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          <div className="mt-8 grid gap-4 border border-black/10 bg-white p-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7">
             <label className="field">Location<select value={filters.location} onChange={(e) => setFilters({ ...filters, location: e.target.value })}><option value="">All locations</option><option>Dallas</option><option>Houston</option><option>Rio Grande Valley</option></select></label>
             <label className="field">Min price<input type="number" value={filters.minPrice} onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })} /></label>
             <label className="field">Max price<input type="number" value={filters.maxPrice} onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })} /></label>
             <label className="field">Bedrooms<select value={filters.beds} onChange={(e) => setFilters({ ...filters, beds: e.target.value })}><option value="">Any</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option><option value="5">5+</option></select></label>
             <label className="field">Type<select value={filters.type} onChange={(e) => setFilters({ ...filters, type: e.target.value })}><option value="">Any</option><option>House</option><option>Condo</option><option>Apartment</option></select></label>
             <label className="field">Status<select value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}><option value="">Any</option><option>For Sale</option><option>For Rent</option><option>Sold</option><option>Rented</option></select></label>
+            <label className="field">Opportunity type<select value={filters.opportunityType} onChange={(e) => setFilters({ ...filters, opportunityType: e.target.value })}><option value="">Any</option><option value="contract_assignment">Contract assignment</option><option value="direct_purchase">Direct purchase</option><option value="seller_introduction">Seller opportunity</option></select></label>
           </div>
         ) : null}
 
@@ -357,6 +400,12 @@ function Home() {
         </div>
       </section>
 
+      <section id="how-it-works" className="bg-[#e9e6de] px-6 py-24 lg:px-10"><div className="mx-auto max-w-7xl"><p className="eyebrow">A clear process</p><h2 className="section-title">From interest to<br /><i>next steps.</i></h2><div className="mt-12 grid gap-8 md:grid-cols-3"><div className="border-t border-black/15 pt-5"><p className="eyebrow">01 · Explore</p><h3 className="mt-3 font-serif text-2xl">Review the opportunity</h3><p className="mt-3 text-sm leading-6 text-black/60">Start with the public summary, acquisition price, property details, and clearly stated opportunity type.</p></div><div className="border-t border-black/15 pt-5"><p className="eyebrow">02 · Request</p><h3 className="mt-3 font-serif text-2xl">Verify and review</h3><p className="mt-3 text-sm leading-6 text-black/60">Create an investor account to request restricted documents. Access may require approval and an NDA.</p></div><div className="border-t border-black/15 pt-5"><p className="eyebrow">03 · Propose</p><h3 className="mt-3 font-serif text-2xl">Submit your offer</h3><p className="mt-3 text-sm leading-6 text-black/60">Send a structured proposal. The seller or authorized contract holder makes the decision, with required approvals recorded.</p></div></div></div></section>
+
+      <section id="seller-intake" className="relative overflow-hidden bg-[#171716] px-6 py-24 text-white lg:px-10"><img src={locationImages["Houston"]} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover opacity-20" /><div className="absolute inset-0 bg-gradient-to-r from-[#171716] via-[#171716]/95 to-[#171716]/65" /><div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-end"><div><p className="eyebrow text-white/45">For property owners and contract holders</p><h2 className="section-title text-white">Have an<br /><i>opportunity?</i></h2><p className="mt-6 max-w-lg text-sm leading-7 text-white/65">Submit a property for free. NavalHomes reviews the details and follows up. If you already hold a purchase contract you want to offer for assignment, tell us so it can be reviewed separately from an ordinary seller lead.</p><p className="mt-4 text-xs leading-5 text-white/45">Submitting a property does not guarantee an offer or publication. Do not upload confidential contract documents through this public form.</p></div><SellerSubmission /></div></section>
+
+      <section className="bg-[#f5f3ee] px-6 py-12 lg:px-10"><div className="mx-auto max-w-7xl border-l-2 border-black/25 pl-5"><p className="eyebrow">Contract opportunity standards</p><p className="mt-3 max-w-5xl text-sm leading-6 text-black/60">NavalHomes distinguishes seller leads, direct property opportunities, and contract assignments. An opportunity is not presented as an assignment unless the required contractual rights and written disclosures are in place. Under Texas Property Code § 5.0205 and Texas Occupations Code § 1101.0045, applicable assignment disclosures include the nature of the interest and the fact that the assignor does not hold legal title; written disclosure to the property owner and potential buyer must be handled before entering into the assignment contract. This summary is informational, not legal advice.</p></div></section>
+
       <section id="contact" className="bg-[#171716] px-6 py-24 text-white lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2">
           <div><p className="eyebrow text-white/45">Private inquiries</p><h2 className="section-title text-white">Tell us what<br /><i>you're looking for.</i></h2></div>
@@ -365,7 +414,7 @@ function Home() {
       </section>
 
       <footer className="flex flex-col gap-4 border-t border-white/10 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10">
-        <span>© {new Date().getFullYear()} NavalHomes · Dallas · Houston · Rio Grande Valley</span>
+        <span>© 2026 NavalHomesDallas · Houston · Rio Grande Valley</span>
         <button aria-label="Admin" onClick={() => setAdmin(true)} className="inline-flex w-fit items-center gap-2 border border-white/15 px-3 py-2 text-white/45 transition hover:border-white/30 hover:text-white">
           <LockKeyhole size={12} /> Admin
         </button>
