@@ -383,7 +383,7 @@ function Home() {
         <div className="mt-12 grid gap-x-6 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p) => <Card key={p.id} p={p} />)}
         </div>
-        {filtered.length === 0 ? <p className="mt-12 text-sm text-black/50">No residences match those criteria.</p> : null}
+        {filtered.length === 0 ? <p className="mt-12 text-sm text-black/50">No approved opportunities match those filters yet. Try another market or check back as new opportunities are reviewed.</p> : null}
       </section>
 
       <section id="locations" className="px-6 pb-24 lg:px-10">
