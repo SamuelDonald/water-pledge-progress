@@ -14,7 +14,7 @@ type Location = Property["location"];
 
 function Card({ p }: { p: Property }) {
   const opportunityLabel = p.opportunity_type === "contract_assignment" ? "Contract assignment" : p.opportunity_type === "seller_introduction" ? "Seller opportunity" : "Direct purchase";
-  const displayPrice = p.opportunity_type === "contract_assignment" && p.contract_acquisition_price != null ? p.contract_acquisition_price : p.price;
+  const displayPrice = p.price;
   const priceLabel = p.opportunity_type === "contract_assignment" ? "Contract acquisition price" : "Asking price";
   return (
     <Link to="/properties/$slug" params={{ slug: p.slug }} className="group block text-left">
