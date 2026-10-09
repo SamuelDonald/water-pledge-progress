@@ -125,7 +125,7 @@ function SellerSubmission() {
       `Contract status: ${String(f.get("contractStatus") ?? "")}`,
       `Estimated price/value: ${String(f.get("value") ?? "") || "Not provided"}`,
       `Additional details: ${String(f.get("details") ?? "") || "Not provided"}`,
-    ].join("\\n");
+    ].join("\n");
     try {
       await submitInquiry({ data: { propertyId: null, name: f.get("name"), phone: f.get("phone"), email: f.get("email"), message, allowPhone: f.get("phoneOk") === "on", allowSms: f.get("smsOk") === "on", allowWhatsapp: f.get("waOk") === "on" } });
       setSent(true);
