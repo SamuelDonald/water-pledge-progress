@@ -6,7 +6,6 @@ export type Property = {
   status:"For Sale"|"For Rent"|"Sold"|"Rented";
   property_type:"House"|"Condo"|"Apartment"|"Multi-family"|"Land"|"Commercial"|"Mixed-use"|"Other";
   opportunity_type?:"contract_assignment"|"direct_purchase"|"seller_introduction";
-  contract_acquisition_price?:number|null;
   contract_rights_verified?:boolean;
   written_disclosures_verified?:boolean;
   price:number; bedrooms:number; bathrooms:number; sqft:number; lot_size:number|null;
