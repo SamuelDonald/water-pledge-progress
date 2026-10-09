@@ -4,9 +4,15 @@ export type Property = {
   id:string; slug:string; title:string;
   location:"Dallas"|"Houston"|"Rio Grande Valley"; city:string;
   status:"For Sale"|"For Rent"|"Sold"|"Rented";
-  property_type:"House"|"Condo"|"Apartment";
+  property_type:"House"|"Condo"|"Apartment"|"Multi-family"|"Land"|"Commercial"|"Mixed-use"|"Other";
+  opportunity_type?:"contract_assignment"|"direct_purchase"|"seller_introduction";
+  contract_acquisition_price?:number|null;
+  contract_rights_verified?:boolean;
+  written_disclosures_verified?:boolean;
   price:number; bedrooms:number; bathrooms:number; sqft:number; lot_size:number|null;
   description:string; neighborhood:string|null; address:string|null;
+  seller_or_contract_holder_label?:string|null;
+  opportunity_summary?:string|null;
   latitude:number|null; longitude:number|null; is_featured:boolean; is_published:boolean;
   created_at?:string;
   media?:{id:string;media_type:"image"|"video";url:string;caption:string|null;sort_order:number}[];
