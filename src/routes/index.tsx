@@ -159,7 +159,7 @@ function Admin({ close, properties, onRefresh }: { close: () => void; properties
   const [form, setForm] = useState(empty);
 
   const login = async () => {
-    const email = import.meta.env.VITE_ADMIN_EMAIL;
+    const email = import.meta.env["VITE_ADMIN_EMAIL"];
     if (!email) return setError("Set VITE_ADMIN_EMAIL to the NavalHomes admin account.");
     const result = await supabase.auth.signInWithPassword({ email, password });
     if (result.error) setError("Incorrect password.");
@@ -308,7 +308,7 @@ function Home() {
   const [sort, setSort] = useState("featured");
   const refresh = () => getProperties().then(setProperties);
 
-  useEffect(refresh, []);
+  useEffect(() => { void refresh(); }, []);
 
   const filtered = useMemo(() => {
     const list = properties.filter((p) =>
