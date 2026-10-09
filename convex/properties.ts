@@ -1,4 +1,6 @@
 import { query } from "./_generated/server";
+import type { QueryCtx } from "./_generated/server";
+import type { Doc } from "./_generated/dataModel";
 import { v } from "convex/values";
 
 const publicPropertyFields = {
@@ -32,10 +34,10 @@ const publicPropertyFields = {
   })),
 };
 
-async function publicRecord(ctx: any, property: any) {
+async function publicRecord(ctx: QueryCtx, property: Doc<"properties">) {
   const media = await ctx.db
     .query("propertyMedia")
-    .withIndex("by_property_order", (q: any) => q.eq("property_id", property._id))
+    .withIndex("by_property_order", (q) => q.eq("property_id", property._id))
     .collect();
 
   return {
@@ -62,7 +64,7 @@ async function publicRecord(ctx: any, property: any) {
     is_featured: property.is_featured,
     created_at: property.created_at,
     media: media
-      .filter((item: any) => item.is_public)
+      .filter((item) => item.is_public)
       .map((item: any) => ({
         id: item._id,
         media_type: item.media_type,
