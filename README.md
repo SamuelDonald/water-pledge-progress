@@ -1,22 +1,21 @@
 # NavalHomes
 
-NavalHomes is a real-estate listing and inquiry platform for homes across Dallas, Houston, and the Rio Grande Valley.
+NavalHomes is a real-estate and contract-opportunity marketplace for Dallas, Houston, and the Rio Grande Valley.
 
-## Current features
+## Product scope
 
-- Browse published property listings.
-- View property details, photos, videos, pricing, and key property information.
-- Filter and explore homes by location and listing details.
-- Submit property inquiries through the public website.
-- Manage property listings and media through the admin interface.
-- Store property listings, media, and inquiries in Supabase.
+- Browse reviewed property and acquisition opportunities.
+- Distinguish contract assignments, direct purchases, and seller introductions.
+- Submit seller leads for review; seller submissions are not automatically published.
+- Build investor workflows for saved deals, document requests, offers, and status tracking.
+- Keep exact addresses, seller contact details, and transaction documents behind appropriate access controls.
 
 ## Technology
 
 - React 19 and TypeScript
 - TanStack Start and TanStack Router
 - Tailwind CSS
-- Supabase (PostgreSQL, Auth, and Storage)
+- Convex for the target marketplace backend and Convex Auth
 - Vite and Bun
 
 ## Development
@@ -40,10 +39,26 @@ Run lint checks:
 bun run lint
 ```
 
-## Environment configuration
+## Convex setup
 
-Configure the required Supabase project settings and any optional WhatsApp notification credentials in your deployment environment. Do not commit real secrets or private environment files to version control.
+The Convex schema, authentication configuration, public property queries, and seller-lead mutation are being introduced on the `feat/convex-backend-foundation` branch.
 
-## Database
+1. Authenticate with the Convex CLI in your own terminal.
+2. Run `npx convex dev` to generate `convex/_generated` and deploy the backend to your selected development deployment.
+3. Set `VITE_CONVEX_URL=https://hidden-pigeon-875.convex.cloud` in your local environment and Vercel project.
+4. Configure Convex Auth's site URL and authentication origins using the current official setup instructions.
+5. Validate schema deployment and queries before migrating existing records or switching the live frontend.
 
-Supabase schema changes are tracked in `supabase/migrations/`. Apply the required migrations to the target Supabase project before relying on database-backed listings, media uploads, inquiries, or admin access.
+Do not commit deployment tokens, private keys, or secret environment files. The public Convex URL is not a secret.
+
+## Migration status
+
+This branch establishes the Convex foundation but does not automatically migrate existing Supabase records or switch all frontend reads and admin workflows. Existing Supabase paths must remain in place until their replacements are connected, tested, and verified. Do not remove Supabase credentials or database resources as part of the foundation step.
+
+## Marketplace safety rules
+
+- `properties.price` is the single opportunity price field.
+- A seller lead is not a published listing or a verified contract assignment.
+- Contract assignments must not be publicly represented as verified until contractual rights and required written disclosures have been checked.
+- Public property queries intentionally withhold exact street addresses.
+- Do not use fabricated records as real marketplace inventory.
