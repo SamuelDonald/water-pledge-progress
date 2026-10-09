@@ -65,7 +65,7 @@ async function publicRecord(ctx: QueryCtx, property: Doc<"properties">) {
     created_at: property.created_at,
     media: media
       .filter((item) => item.is_public)
-      .map((item: any) => ({
+      .map((item) => ({
         id: item._id,
         media_type: item.media_type,
         url: item.url,
