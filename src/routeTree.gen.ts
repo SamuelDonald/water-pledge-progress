@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminSubmissionsRouteImport } from './routes/admin-submissions'
 import { Route as SubmitPropertyRouteImport } from './routes/submit-property'
 import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
@@ -17,6 +18,11 @@ import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminSubmissionsRoute = AdminSubmissionsRouteImport.update({
@@ -37,12 +43,14 @@ const PropertiesSlugRoute = PropertiesSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/admin-submissions': typeof AdminSubmissionsRoute
   '/submit-property': typeof SubmitPropertyRoute
   '/properties/$slug': typeof PropertiesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/admin-submissions': typeof AdminSubmissionsRoute
   '/submit-property': typeof SubmitPropertyRoute
   '/properties/$slug': typeof PropertiesSlugRoute
@@ -50,6 +58,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/admin-submissions': typeof AdminSubmissionsRoute
   '/submit-property': typeof SubmitPropertyRoute
   '/properties/$slug': typeof PropertiesSlugRoute
@@ -57,12 +66,22 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/admin-submissions' | '/submit-property' | '/properties/$slug'
+    | '/'
+    | '/admin'
+    | '/admin-submissions'
+    | '/submit-property'
+    | '/properties/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin-submissions' | '/submit-property' | '/properties/$slug'
+  to:
+    | '/'
+    | '/admin'
+    | '/admin-submissions'
+    | '/submit-property'
+    | '/properties/$slug'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/admin-submissions'
     | '/submit-property'
     | '/properties/$slug'
@@ -70,6 +89,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   AdminSubmissionsRoute: typeof AdminSubmissionsRoute
   SubmitPropertyRoute: typeof SubmitPropertyRoute
   PropertiesSlugRoute: typeof PropertiesSlugRoute
@@ -82,6 +102,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin-submissions': {
@@ -110,6 +137,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   AdminSubmissionsRoute: AdminSubmissionsRoute,
   SubmitPropertyRoute: SubmitPropertyRoute,
   PropertiesSlugRoute: PropertiesSlugRoute,
