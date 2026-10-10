@@ -3,7 +3,7 @@ import {useCallback,useEffect,useState} from "react";
 import {ArrowLeft,Check,RefreshCw,X,ExternalLink} from "lucide-react";
 import {supabase} from "@/integrations/supabase/client";
 export const Route=createFileRoute("/admin-submissions")({component:AdminSubmissions});
-type Row=Record<string,any>;
+type Row=any;
 function AdminSubmissions(){
  const [email,setEmail]=useState(import.meta.env["VITE_ADMIN_EMAIL"]??""),[password,setPassword]=useState(""),[session,setSession]=useState<any>(null),[rows,setRows]=useState<Row[]>([]),[error,setError]=useState(""),[busy,setBusy]=useState(false),[notes,setNotes]=useState<Record<string,string>>({}),[verified,setVerified]=useState<Record<string,boolean>>({});
  const load=useCallback(async()=>{setError("");const {data,error}=await (supabase as any).from("property_submissions").select("*").order("created_at",{ascending:false});if(error){setError(error.message);return;}const expanded=[];for(const row of data??[]){const media=[];for(const path of (Array.isArray(row.media_paths)?row.media_paths:[])){const {data:s}=await (supabase as any).storage.from("property-submissions").createSignedUrl(path,300);media.push({path,url:s?.signedUrl??null});}let contractUrl=null;if(row.contract_document_path){const {data:s}=await (supabase as any).storage.from("property-submissions").createSignedUrl(row.contract_document_path,300);contractUrl=s?.signedUrl??null;}expanded.push({...row,media,contractUrl});}setRows(expanded);},[]);
