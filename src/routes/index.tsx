@@ -111,41 +111,6 @@ function Inquiry({ property }: { property?: Property }) {
   );
 }
 
-function SellerSubmission() {
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState("");
-  if (sent) return <div className="border border-white/15 p-8"><p className="eyebrow text-white/40">Submission received</p><h3 className="mt-3 font-serif text-4xl">We will follow up.</h3><p className="mt-3 text-sm leading-6 text-white/60">Your opportunity has been sent to NavalHomes for initial review.</p></div>;
-  return <form className="grid gap-4 sm:grid-cols-2" onSubmit={async (e) => {
-    e.preventDefault(); setError(""); const f = new FormData(e.currentTarget);
-    const message = [
-      "SELLER / CONTRACT OPPORTUNITY SUBMISSION",
-      `Opportunity route: ${String(f.get("route") ?? "")}`,
-      `Property location: ${String(f.get("city") ?? "")}`,
-      `Property type: ${String(f.get("assetType") ?? "")}`,
-      `Contract status: ${String(f.get("contractStatus") ?? "")}`,
-      `Estimated price/value: ${String(f.get("value") ?? "") || "Not provided"}`,
-      `Additional details: ${String(f.get("details") ?? "") || "Not provided"}`,
-    ].join("\n");
-    try {
-      await submitInquiry({ data: { propertyId: null, name: f.get("name"), phone: f.get("phone"), email: f.get("email"), message, allowPhone: f.get("phoneOk") === "on", allowSms: f.get("smsOk") === "on", allowWhatsapp: f.get("waOk") === "on" } });
-      setSent(true);
-    } catch { setError("We could not send your submission. Please try again."); }
-  }}>
-    <input required name="name" placeholder="Your name" className="dark-field" />
-    <input required name="phone" placeholder="Phone number" className="dark-field" />
-    <input required type="email" name="email" placeholder="Email address" className="dark-field" />
-    <input required name="city" placeholder="City / neighborhood" className="dark-field" />
-    <label className="field text-white/55">Submission type<select name="route" required className="mt-1 border-b border-white/20 bg-transparent py-3 text-sm text-white"><option className="text-black" value="Seller property lead">Seller property lead</option><option className="text-black" value="Existing purchase contract for possible assignment">Existing purchase contract for possible assignment</option><option className="text-black" value="Direct property sale opportunity">Direct property sale opportunity</option></select></label>
-    <label className="field text-white/55">Asset type<select name="assetType" required className="mt-1 border-b border-white/20 bg-transparent py-3 text-sm text-white"><option className="text-black">Single-family residential</option><option className="text-black">Multi-family</option><option className="text-black">Land</option><option className="text-black">Commercial</option><option className="text-black">Mixed-use</option><option className="text-black">Other</option></select></label>
-    <label className="field text-white/55">Contract status<select name="contractStatus" required className="mt-1 border-b border-white/20 bg-transparent py-3 text-sm text-white"><option className="text-black" value="No purchase contract">No purchase contract</option><option className="text-black" value="Existing contract held">Existing contract held</option><option className="text-black" value="Contract rights / assignment eligibility unknown">Not sure</option></select></label>
-    <input name="value" placeholder="Expected price / value (optional)" className="dark-field" />
-    <textarea name="details" rows={3} placeholder="Brief property details (do not include confidential documents)" className="dark-field resize-none sm:col-span-2" />
-    <div className="space-y-2 text-xs text-white/55 sm:col-span-2"><label className="block"><input name="phoneOk" type="checkbox" className="mr-2" />You may contact me by phone</label><label className="block"><input name="smsOk" type="checkbox" className="mr-2" />You may contact me by SMS</label><label className="block"><input name="waOk" type="checkbox" className="mr-2" />You may contact me on WhatsApp</label></div>
-    {error ? <p className="text-xs text-red-300 sm:col-span-2">{error}</p> : null}
-    <button className="w-fit bg-white px-7 py-4 text-xs uppercase tracking-[.16em] text-black sm:col-span-2">Submit opportunity <ArrowRight className="ml-2 inline size-4" /></button>
-  </form>;
-}
-
 function Admin({ close, properties, onRefresh }: { close: () => void; properties: Property[]; onRefresh: () => void }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
