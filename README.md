@@ -1,6 +1,6 @@
-# NavalHomes
+# Liberty Crest Realty
 
-NavalHomes is a real-estate listing and inquiry platform for homes across Dallas, Houston, and the Rio Grande Valley.
+Liberty Crest Realty is a real-estate listing and inquiry platform for homes across Dallas, Houston, and the Rio Grande Valley.
 
 ## Current features
 
