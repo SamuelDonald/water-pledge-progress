@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Bath, BedDouble, LockKeyhole, Menu, Search } from "lucide-react";
 import { getProperties, locationImages, type Property } from "@/lib/navalhomes";
-import { submitInquiry } from "@/lib/navalhomes.functions";
+import { submitInquiry } from "@/lib/Liberty Crest Realtyfunctions";
 
 export const Route = createFileRoute("/")({ component: Home });
 
@@ -55,7 +55,7 @@ function Inquiry({ property }: { property?: Property }) {
       <div className="border border-white/15 p-8">
         <p className="eyebrow text-white/40">Inquiry received</p>
         <h3 className="mt-3 font-serif text-4xl">Thank you.</h3>
-        <p className="mt-3 text-white/55">NavalHomes will be in touch.</p>
+        <p className="mt-3 text-white/55">Liberty Crest Realty will be in touch.</p>
       </div>
     );
   }
@@ -141,7 +141,7 @@ function Home() {
   return (
     <div className="min-h-screen bg-[#f5f3ee]">
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-6 py-6 text-white lg:px-10">
-        <Link to="/" className="font-serif text-3xl">navalhomes.</Link>
+        <Link to="/" className="font-serif text-3xl">Liberty Crest Realty</Link>
         <nav className="hidden gap-9 text-xs uppercase tracking-[.18em] md:flex">
           <a href="#properties">Opportunities</a><a href="#how-it-works">How it works</a><Link to="/submit-property">Submit a property</Link>
         </nav>
@@ -219,7 +219,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-[#f5f3ee] px-6 py-12 lg:px-10"><div className="mx-auto max-w-7xl border-l-2 border-black/25 pl-5"><p className="eyebrow">Contract opportunity standards</p><p className="mt-3 max-w-5xl text-sm leading-6 text-black/60">NavalHomes distinguishes seller leads, direct property opportunities, and contract assignments. An opportunity is not presented as an assignment unless the required contractual rights and written disclosures are in place. Under Texas Property Code § 5.0205 and Texas Occupations Code § 1101.0045, applicable assignment disclosures include the nature of the interest and the fact that the assignor does not hold legal title; written disclosure to the property owner and potential buyer must be handled before entering into the assignment contract. This summary is informational, not legal advice.</p></div></section>
+      <section className="bg-[#f5f3ee] px-6 py-12 lg:px-10"><div className="mx-auto max-w-7xl border-l-2 border-black/25 pl-5"><p className="eyebrow">Contract opportunity standards</p><p className="mt-3 max-w-5xl text-sm leading-6 text-black/60">Liberty Crest Realty distinguishes seller leads, direct property opportunities, and contract assignments. An opportunity is not presented as an assignment unless the required contractual rights and written disclosures are in place. Under Texas Property Code § 5.0205 and Texas Occupations Code § 1101.0045, applicable assignment disclosures include the nature of the interest and the fact that the assignor does not hold legal title; written disclosure to the property owner and potential buyer must be handled before entering into the assignment contract. This summary is informational, not legal advice.</p></div></section>
 
       <section id="contact" className="bg-[#171716] px-6 py-24 text-white lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2">
@@ -229,7 +229,7 @@ function Home() {
       </section>
 
       <footer className="flex flex-col gap-4 border-t border-white/10 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10">
-        <span>© 2026 NavalHomesDallas · Houston · Rio Grande Valley</span>
+        <span>© 2026 Liberty Crest RealtyDallas · Houston · Rio Grande Valley</span>
         <div className="flex flex-wrap items-center gap-3"><Link to="/admin-submissions" className="text-white/45 underline-offset-4 hover:text-white hover:underline">Review submissions</Link><Link to="/admin" aria-label="Admin" className="inline-flex w-fit items-center gap-2 border border-white/15 px-3 py-2 text-white/45 transition hover:border-white/30 hover:text-white"><LockKeyhole size={12} /> Admin</Link></div>
       </footer>
 
