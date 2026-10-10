@@ -1,15 +1,15 @@
-import { supabase } from "@/integrations/supabase/client";
+import { listPublishedProperties, getPublishedProperty } from "@/lib/navalhomes.functions";
 
 export type Property = {
   id:string; slug:string; title:string;
   location:"Dallas"|"Houston"|"Rio Grande Valley"; city:string;
   status:"For Sale"|"For Rent"|"Sold"|"Rented";
   property_type:"House"|"Condo"|"Apartment"|"Multi-family"|"Land"|"Commercial"|"Mixed-use"|"Other";
-  opportunity_type?:"contract_assignment"|"direct_purchase"|"seller_introduction";
+  opportunity_type?:"contract_assignment"|"direct_purchase"|"seller_introduction"|null;
   contract_rights_verified?:boolean;
   written_disclosures_verified?:boolean;
   price:number; bedrooms:number; bathrooms:number; sqft:number; lot_size:number|null;
-  description:string; neighborhood:string|null; address:string|null;
+  description:string; neighborhood:string|null; address?:string|null;
   seller_or_contract_holder_label?:string|null;
   opportunity_summary?:string|null;
   latitude:number|null; longitude:number|null; is_featured:boolean; is_published:boolean;
@@ -23,15 +23,10 @@ export const locationImages = {
   "Rio Grande Valley":"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=85",
 } as const;
 
-export const fallbackProperties:Property[] = [];
-
 export async function getProperties():Promise<Property[]> {
-  const {data,error}=await (supabase as any).from("properties").select("*, property_media(*)").eq("is_published",true).order("is_featured",{ascending:false}).order("created_at",{ascending:false});
-  return error || !data?.length ? fallbackProperties : data as unknown as Property[];
+  try { return (await listPublishedProperties()) as Property[]; } catch { return []; }
 }
 
 export async function getPropertyBySlug(slug:string):Promise<Property|null> {
-  const {data,error}=await (supabase as any).from("properties").select("*, property_media(*)").eq("slug",slug).eq("is_published",true).maybeSingle();
-  if(!error && data) return data as unknown as Property;
-  return fallbackProperties.find(p=>p.slug===slug) ?? null;
+  try { return (await getPublishedProperty({ data: { slug } })) as Property | null; } catch { return null; }
 }
