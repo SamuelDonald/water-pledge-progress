@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Bath, BedDouble, LockKeyhole, Menu, Search } from "lucide-react";
 import { getProperties, locationImages, type Property } from "@/lib/navalhomes";
-import { supabase } from "@/integrations/supabase/client";
 import { submitInquiry } from "@/lib/navalhomes.functions";
 
 export const Route = createFileRoute("/")({ component: Home });
@@ -70,7 +69,7 @@ function Inquiry({ property }: { property?: Property }) {
         try {
           await submitInquiry({
             data: {
-              propertyId: property?.id.startsWith("demo-") ? null : property?.id ?? null,
+              propertyId: property?.id ?? null,
               name: f.get("name"),
               phone: f.get("phone"),
               email: f.get("email"),
@@ -111,164 +110,10 @@ function Inquiry({ property }: { property?: Property }) {
   );
 }
 
-function Admin({ close, properties, onRefresh }: { close: () => void; properties: Property[]; onRefresh: () => void }) {
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [ok, setOk] = useState(false);
-  const [editing, setEditing] = useState<Property | null>(null);
-  const empty = {
-    title: "", slug: "", location: "Dallas", city: "Dallas", status: "For Sale", property_type: "House",
-    price: "", bedrooms: "", bathrooms: "", sqft: "", lot_size: "", description: "", neighborhood: "",
-    address: "", latitude: "", longitude: "", is_featured: false, is_published: false,
-  };
-  const [form, setForm] = useState(empty);
-
-  const login = async () => {
-    const email = import.meta.env["VITE_ADMIN_EMAIL"];
-    if (!email) return setError("Set VITE_ADMIN_EMAIL to the NavalHomes admin account.");
-    const result = await supabase.auth.signInWithPassword({ email, password });
-    if (result.error) setError("Incorrect password.");
-    else setOk(true);
-  };
-
-  const save = async () => {
-    setError("");
-    const payload = {
-      ...form,
-      price: Number(form.price) || 0,
-      bedrooms: Number(form.bedrooms) || 0,
-      bathrooms: Number(form.bathrooms) || 0,
-      sqft: Number(form.sqft) || 0,
-      lot_size: form.lot_size ? Number(form.lot_size) : null,
-      latitude: form.latitude ? Number(form.latitude) : null,
-      longitude: form.longitude ? Number(form.longitude) : null,
-    };
-    const query = editing
-      ? (supabase as any).from("properties").update(payload).eq("id", editing.id)
-      : (supabase as any).from("properties").insert(payload);
-    const { error: saveError } = await query;
-    if (saveError) return setError(saveError.message);
-    setForm(empty);
-    setEditing(null);
-    onRefresh();
-  };
-
-  const edit = (p: Property) => {
-    setEditing(p);
-    setForm({
-      title: p.title, slug: p.slug, location: p.location, city: p.city, status: p.status,
-      property_type: p.property_type, price: String(p.price), bedrooms: String(p.bedrooms),
-      bathrooms: String(p.bathrooms), sqft: String(p.sqft), lot_size: p.lot_size ? String(p.lot_size) : "",
-      description: p.description, neighborhood: p.neighborhood ?? "", address: p.address ?? "",
-      latitude: p.latitude ? String(p.latitude) : "", longitude: p.longitude ? String(p.longitude) : "",
-      is_featured: p.is_featured, is_published: p.is_published,
-    });
-  };
-
-  const uploadMedia = async (files: FileList | null) => {
-    if (!editing || !files) return;
-    for (const file of Array.from(files)) {
-      const path = `${editing.id}/${crypto.randomUUID()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
-      const upload = await (supabase as any).storage.from("property-media").upload(path, file);
-      if (upload.error) return setError(upload.error.message);
-      const publicUrl = (supabase as any).storage.from("property-media").getPublicUrl(path).data.publicUrl;
-      const { error: mediaError } = await (supabase as any).from("property_media").insert({
-        property_id: editing.id,
-        media_type: file.type.startsWith("video/") ? "video" : "image",
-        url: publicUrl,
-        caption: file.name,
-        sort_order: 0,
-      });
-      if (mediaError) return setError(mediaError.message);
-    }
-    onRefresh();
-  };
-
-  if (!ok) {
-    return (
-      <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/85 p-5">
-        <div className="w-full max-w-sm bg-[#f5f3ee] p-8 text-black">
-          <div className="flex justify-between"><p className="eyebrow">NavalHomes Admin</p><button onClick={close}>×</button></div>
-          <h2 className="mt-3 font-serif text-4xl">Private access.</h2>
-          <input autoFocus type="password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && login()} placeholder="Password" className="field-input mt-8 w-full" />
-          {error ? <p className="mt-2 text-xs text-red-700">{error}</p> : null}
-          <button onClick={login} className="mt-4 w-full bg-black py-3 text-xs uppercase tracking-[.15em] text-white">Enter</button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="fixed inset-0 z-[70] overflow-auto bg-[#111] text-white">
-      <div className="mx-auto max-w-7xl p-6 lg:p-10">
-        <div className="flex items-center justify-between">
-          <div><p className="eyebrow text-white/40">Control room</p><h1 className="font-serif text-5xl">NavalHomes</h1></div>
-          <button onClick={async () => { await supabase.auth.signOut(); close(); }} className="text-xs uppercase tracking-[.15em]">Sign out</button>
-        </div>
-
-        <div className="mt-10 grid gap-3 md:grid-cols-3">
-          {[
-            ["Properties", properties.length],
-            ["Published", properties.filter((p) => p.is_published).length],
-            ["Featured", properties.filter((p) => p.is_featured).length],
-          ].map(([label, value]) => <div className="admin-stat" key={String(label)}><span>{label}</span><strong>{String(value)}</strong></div>)}
-        </div>
-
-        <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_1.5fr]">
-          <div className="border border-white/10 p-6">
-            <p className="eyebrow text-white/40">{editing ? "Edit property" : "New property"}</p>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {Object.entries({
-                title: "Title", slug: "Slug", city: "City", price: "Price", bedrooms: "Bedrooms",
-                bathrooms: "Bathrooms", sqft: "Sqft", lot_size: "Lot size", neighborhood: "Neighborhood",
-                address: "Private address", latitude: "Latitude", longitude: "Longitude",
-              }).map(([key, label]) => (
-                <input key={key} placeholder={label} value={(form as any)[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} className="dark-field" />
-              ))}
-            </div>
-            <div className="mt-3 grid grid-cols-3 gap-3">
-              <select value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value as Location })} className="admin-select"><option>Dallas</option><option>Houston</option><option>Rio Grande Valley</option></select>
-              <select value={form.property_type} onChange={(e) => setForm({ ...form, property_type: e.target.value })} className="admin-select"><option>House</option><option>Condo</option><option>Apartment</option></select>
-              <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="admin-select"><option>For Sale</option><option>For Rent</option><option>Sold</option><option>Rented</option></select>
-            </div>
-            <textarea placeholder="Description" rows={5} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="dark-field mt-3 resize-none" />
-            <div className="mt-4 flex gap-5 text-xs">
-              <label><input type="checkbox" checked={form.is_featured} onChange={(e) => setForm({ ...form, is_featured: e.target.checked })} className="mr-2" />Featured</label>
-              <label><input type="checkbox" checked={form.is_published} onChange={(e) => setForm({ ...form, is_published: e.target.checked })} className="mr-2" />Published</label>
-            </div>
-            {editing ? (
-              <div className="mt-5 border border-white/10 p-4">
-                <p className="eyebrow text-white/40">Property media</p>
-                <input type="file" multiple accept="image/*,video/*" className="mt-3 w-full text-xs" onChange={(e) => uploadMedia(e.target.files)} />
-                <p className="mt-2 text-[11px] text-white/40">Upload photos and videos to this property.</p>
-              </div>
-            ) : null}
-            <div className="mt-5 flex gap-2">
-              <button onClick={save} className="bg-white px-5 py-3 text-xs uppercase tracking-wider text-black">{editing ? "Save changes" : "Create property"}</button>
-              {editing ? <button onClick={() => { setForm(empty); setEditing(null); }} className="border border-white/20 px-5 py-3 text-xs">Cancel</button> : null}
-            </div>
-            {error ? <p className="mt-3 text-xs text-red-400">{error}</p> : null}
-          </div>
-
-          <div className="border border-white/10">
-            {properties.map((p) => (
-              <div key={p.id} className="flex items-center justify-between gap-4 border-b border-white/10 p-5">
-                <div><div className="font-serif text-2xl">{p.title}</div><div className="mt-1 text-xs text-white/45">{p.location} · {p.status} · {p.is_published ? "Published" : "Draft"}</div></div>
-                <button onClick={() => edit(p)} className="border border-white/20 px-3 py-2 text-xs">Edit</button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function Home() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [location, setLocation] = useState<Location>("Dallas");
   const [search, setSearch] = useState(false);
-  const [admin, setAdmin] = useState(false);
   const [filters, setFilters] = useState({ location: "", minPrice: "", maxPrice: "", beds: "", type: "", status: "", opportunityType: "" });
   const [sort, setSort] = useState("featured");
   const refresh = () => getProperties().then(setProperties);
@@ -385,10 +230,9 @@ function Home() {
 
       <footer className="flex flex-col gap-4 border-t border-white/10 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10">
         <span>© 2026 NavalHomesDallas · Houston · Rio Grande Valley</span>
-        <div className="flex flex-wrap items-center gap-3"><Link to="/admin-submissions" className="text-white/45 underline-offset-4 hover:text-white hover:underline">Review submissions</Link><button aria-label="Admin" onClick={() => setAdmin(true)} className="inline-flex w-fit items-center gap-2 border border-white/15 px-3 py-2 text-white/45 transition hover:border-white/30 hover:text-white"><LockKeyhole size={12} /> Admin</button></div>
+        <div className="flex flex-wrap items-center gap-3"><Link to="/admin-submissions" className="text-white/45 underline-offset-4 hover:text-white hover:underline">Review submissions</Link><Link to="/admin" aria-label="Admin" className="inline-flex w-fit items-center gap-2 border border-white/15 px-3 py-2 text-white/45 transition hover:border-white/30 hover:text-white"><LockKeyhole size={12} /> Admin</Link></div>
       </footer>
 
-      {admin ? <Admin close={() => setAdmin(false)} properties={properties} onRefresh={refresh} /> : null}
     </div>
   );
 }
