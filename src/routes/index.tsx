@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Bath, BedDouble, LockKeyhole, Menu, Search } from "lucide-react";
 import { getProperties, locationImages, type Property } from "@/lib/navalhomes";
-import { submitInquiry } from "@/lib/Liberty Crest Realtyfunctions";
+import { submitInquiry } from "@/lib/navalhomes.functions";
 
 export const Route = createFileRoute("/")({ component: Home });
 
