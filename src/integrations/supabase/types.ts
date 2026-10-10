@@ -400,6 +400,59 @@ export type Database = {
         }
         Relationships: []
       }
+      inquiries: {
+        Row: {
+          admin_notes: string
+          allow_phone: boolean
+          allow_sms: boolean
+          allow_whatsapp: boolean
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string
+          property_id: string | null
+          status: string
+        }
+        Insert: {
+          admin_notes?: string
+          allow_phone?: boolean
+          allow_sms?: boolean
+          allow_whatsapp?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone: string
+          property_id?: string | null
+          status?: string
+        }
+        Update: {
+          admin_notes?: string
+          allow_phone?: boolean
+          allow_sms?: boolean
+          allow_whatsapp?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string
+          property_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inquiries_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       partners: {
         Row: {
           id: string
@@ -429,6 +482,134 @@ export type Database = {
           website?: string | null
         }
         Relationships: []
+      }
+      properties: {
+        Row: {
+          address: string | null
+          bathrooms: number
+          bedrooms: number
+          city: string
+          contract_rights_verified: boolean
+          created_at: string
+          description: string
+          id: string
+          is_featured: boolean
+          is_published: boolean
+          latitude: number | null
+          location: string
+          longitude: number | null
+          lot_size: number | null
+          neighborhood: string | null
+          opportunity_summary: string | null
+          opportunity_type: string | null
+          price: number
+          property_type: string
+          seller_or_contract_holder_label: string | null
+          slug: string
+          sqft: number
+          status: string
+          title: string
+          updated_at: string
+          written_disclosures_verified: boolean
+        }
+        Insert: {
+          address?: string | null
+          bathrooms?: number
+          bedrooms?: number
+          city?: string
+          contract_rights_verified?: boolean
+          created_at?: string
+          description?: string
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          latitude?: number | null
+          location: string
+          longitude?: number | null
+          lot_size?: number | null
+          neighborhood?: string | null
+          opportunity_summary?: string | null
+          opportunity_type?: string | null
+          price?: number
+          property_type?: string
+          seller_or_contract_holder_label?: string | null
+          slug: string
+          sqft?: number
+          status?: string
+          title: string
+          updated_at?: string
+          written_disclosures_verified?: boolean
+        }
+        Update: {
+          address?: string | null
+          bathrooms?: number
+          bedrooms?: number
+          city?: string
+          contract_rights_verified?: boolean
+          created_at?: string
+          description?: string
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          latitude?: number | null
+          location?: string
+          longitude?: number | null
+          lot_size?: number | null
+          neighborhood?: string | null
+          opportunity_summary?: string | null
+          opportunity_type?: string | null
+          price?: number
+          property_type?: string
+          seller_or_contract_holder_label?: string | null
+          slug?: string
+          sqft?: number
+          status?: string
+          title?: string
+          updated_at?: string
+          written_disclosures_verified?: boolean
+        }
+        Relationships: []
+      }
+      property_media: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          media_type: string
+          property_id: string
+          sort_order: number
+          storage_path: string | null
+          url: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          media_type?: string
+          property_id: string
+          sort_order?: number
+          storage_path?: string | null
+          url?: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          media_type?: string
+          property_id?: string
+          sort_order?: number
+          storage_path?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_media_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       stories: {
         Row: {
