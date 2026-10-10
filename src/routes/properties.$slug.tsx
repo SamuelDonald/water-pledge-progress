@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Bath, BedDouble } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getPropertyBySlug, type Property } from "@/lib/navalhomes";
-import { submitInquiry } from "@/lib/Liberty Crest Realtyfunctions";
+import { submitInquiry } from "@/lib/navalhomes.functions";
 
 export const Route = createFileRoute("/properties/$slug")({ component: PropertyPage });
 
