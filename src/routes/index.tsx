@@ -385,9 +385,7 @@ function Home() {
 
       <footer className="flex flex-col gap-4 border-t border-white/10 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10">
         <span>© 2026 NavalHomesDallas · Houston · Rio Grande Valley</span>
-        <button aria-label="Admin" onClick={() => setAdmin(true)} className="inline-flex w-fit items-center gap-2 border border-white/15 px-3 py-2 text-white/45 transition hover:border-white/30 hover:text-white">
-          <LockKeyhole size={12} /> Admin
-        </button>
+        <div className="flex flex-wrap items-center gap-3"><Link to="/admin-submissions" className="text-white/45 underline-offset-4 hover:text-white hover:underline">Review submissions</Link><button aria-label="Admin" onClick={() => setAdmin(true)} className="inline-flex w-fit items-center gap-2 border border-white/15 px-3 py-2 text-white/45 transition hover:border-white/30 hover:text-white"><LockKeyhole size={12} /> Admin</button></div>
       </footer>
 
       {admin ? <Admin close={() => setAdmin(false)} properties={properties} onRefresh={refresh} /> : null}
