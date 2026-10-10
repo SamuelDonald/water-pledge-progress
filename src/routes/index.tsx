@@ -111,41 +111,6 @@ function Inquiry({ property }: { property?: Property }) {
   );
 }
 
-function SellerSubmission() {
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState("");
-  if (sent) return <div className="border border-white/15 p-8"><p className="eyebrow text-white/40">Submission received</p><h3 className="mt-3 font-serif text-4xl">We will follow up.</h3><p className="mt-3 text-sm leading-6 text-white/60">Your opportunity has been sent to NavalHomes for initial review.</p></div>;
-  return <form className="grid gap-4 sm:grid-cols-2" onSubmit={async (e) => {
-    e.preventDefault(); setError(""); const f = new FormData(e.currentTarget);
-    const message = [
-      "SELLER / CONTRACT OPPORTUNITY SUBMISSION",
-      `Opportunity route: ${String(f.get("route") ?? "")}`,
-      `Property location: ${String(f.get("city") ?? "")}`,
-      `Property type: ${String(f.get("assetType") ?? "")}`,
-      `Contract status: ${String(f.get("contractStatus") ?? "")}`,
-      `Estimated price/value: ${String(f.get("value") ?? "") || "Not provided"}`,
-      `Additional details: ${String(f.get("details") ?? "") || "Not provided"}`,
-    ].join("\n");
-    try {
-      await submitInquiry({ data: { propertyId: null, name: f.get("name"), phone: f.get("phone"), email: f.get("email"), message, allowPhone: f.get("phoneOk") === "on", allowSms: f.get("smsOk") === "on", allowWhatsapp: f.get("waOk") === "on" } });
-      setSent(true);
-    } catch { setError("We could not send your submission. Please try again."); }
-  }}>
-    <input required name="name" placeholder="Your name" className="dark-field" />
-    <input required name="phone" placeholder="Phone number" className="dark-field" />
-    <input required type="email" name="email" placeholder="Email address" className="dark-field" />
-    <input required name="city" placeholder="City / neighborhood" className="dark-field" />
-    <label className="field text-white/55">Submission type<select name="route" required className="mt-1 border-b border-white/20 bg-transparent py-3 text-sm text-white"><option className="text-black" value="Seller property lead">Seller property lead</option><option className="text-black" value="Existing purchase contract for possible assignment">Existing purchase contract for possible assignment</option><option className="text-black" value="Direct property sale opportunity">Direct property sale opportunity</option></select></label>
-    <label className="field text-white/55">Asset type<select name="assetType" required className="mt-1 border-b border-white/20 bg-transparent py-3 text-sm text-white"><option className="text-black">Single-family residential</option><option className="text-black">Multi-family</option><option className="text-black">Land</option><option className="text-black">Commercial</option><option className="text-black">Mixed-use</option><option className="text-black">Other</option></select></label>
-    <label className="field text-white/55">Contract status<select name="contractStatus" required className="mt-1 border-b border-white/20 bg-transparent py-3 text-sm text-white"><option className="text-black" value="No purchase contract">No purchase contract</option><option className="text-black" value="Existing contract held">Existing contract held</option><option className="text-black" value="Contract rights / assignment eligibility unknown">Not sure</option></select></label>
-    <input name="value" placeholder="Expected price / value (optional)" className="dark-field" />
-    <textarea name="details" rows={3} placeholder="Brief property details (do not include confidential documents)" className="dark-field resize-none sm:col-span-2" />
-    <div className="space-y-2 text-xs text-white/55 sm:col-span-2"><label className="block"><input name="phoneOk" type="checkbox" className="mr-2" />You may contact me by phone</label><label className="block"><input name="smsOk" type="checkbox" className="mr-2" />You may contact me by SMS</label><label className="block"><input name="waOk" type="checkbox" className="mr-2" />You may contact me on WhatsApp</label></div>
-    {error ? <p className="text-xs text-red-300 sm:col-span-2">{error}</p> : null}
-    <button className="w-fit bg-white px-7 py-4 text-xs uppercase tracking-[.16em] text-black sm:col-span-2">Submit opportunity <ArrowRight className="ml-2 inline size-4" /></button>
-  </form>;
-}
-
 function Admin({ close, properties, onRefresh }: { close: () => void; properties: Property[]; onRefresh: () => void }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -333,7 +298,7 @@ function Home() {
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-6 py-6 text-white lg:px-10">
         <Link to="/" className="font-serif text-3xl">navalhomes.</Link>
         <nav className="hidden gap-9 text-xs uppercase tracking-[.18em] md:flex">
-          <a href="#properties">Opportunities</a><a href="#how-it-works">How it works</a><a href="#seller-intake">Submit a property</a>
+          <a href="#properties">Opportunities</a><a href="#how-it-works">How it works</a><Link to="/submit-property">Submit a property</Link>
         </nav>
         <Menu className="md:hidden" />
       </header>
@@ -402,7 +367,12 @@ function Home() {
 
       <section id="how-it-works" className="bg-[#e9e6de] px-6 py-24 lg:px-10"><div className="mx-auto max-w-7xl"><p className="eyebrow">A clear process</p><h2 className="section-title">From interest to<br /><i>next steps.</i></h2><div className="mt-12 grid gap-8 md:grid-cols-3"><div className="border-t border-black/15 pt-5"><p className="eyebrow">01 · Explore</p><h3 className="mt-3 font-serif text-2xl">Review the opportunity</h3><p className="mt-3 text-sm leading-6 text-black/60">Start with the public summary, acquisition price, property details, and clearly stated opportunity type.</p></div><div className="border-t border-black/15 pt-5"><p className="eyebrow">02 · Request</p><h3 className="mt-3 font-serif text-2xl">Verify and review</h3><p className="mt-3 text-sm leading-6 text-black/60">Create an investor account to request restricted documents. Access may require approval and an NDA.</p></div><div className="border-t border-black/15 pt-5"><p className="eyebrow">03 · Propose</p><h3 className="mt-3 font-serif text-2xl">Submit your offer</h3><p className="mt-3 text-sm leading-6 text-black/60">Send a structured proposal. The seller or authorized contract holder makes the decision, with required approvals recorded.</p></div></div></div></section>
 
-      <section id="seller-intake" className="relative overflow-hidden bg-[#171716] px-6 py-24 text-white lg:px-10"><img src={locationImages["Houston"]} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover opacity-20" /><div className="absolute inset-0 bg-gradient-to-r from-[#171716] via-[#171716]/95 to-[#171716]/65" /><div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-end"><div><p className="eyebrow text-white/45">For property owners and contract holders</p><h2 className="section-title text-white">Have an<br /><i>opportunity?</i></h2><p className="mt-6 max-w-lg text-sm leading-7 text-white/65">Submit a property for free. NavalHomes reviews the details and follows up. If you already hold a purchase contract you want to offer for assignment, tell us so it can be reviewed separately from an ordinary seller lead.</p><p className="mt-4 text-xs leading-5 text-white/45">Submitting a property does not guarantee an offer or publication. Do not upload confidential contract documents through this public form.</p></div><SellerSubmission /></div></section>
+      <section id="seller-intake" className="bg-[#171716] px-6 py-20 text-white lg:px-10">
+        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div><p className="eyebrow text-white/45">For property owners and contract holders</p><h2 className="section-title mt-3 text-white">Bring us your<br /><i>opportunity.</i></h2><p className="mt-5 max-w-xl text-sm leading-7 text-white/65">Submit your property, upload photos, and optionally offer contractual rights for review. Approved opportunities can be published for buyers and investors.</p></div>
+          <Link to="/submit-property" className="inline-flex w-fit items-center bg-white px-7 py-4 text-xs uppercase tracking-[.16em] text-black">Submit a property <ArrowRight className="ml-2 size-4" /></Link>
+        </div>
+      </section>
 
       <section className="bg-[#f5f3ee] px-6 py-12 lg:px-10"><div className="mx-auto max-w-7xl border-l-2 border-black/25 pl-5"><p className="eyebrow">Contract opportunity standards</p><p className="mt-3 max-w-5xl text-sm leading-6 text-black/60">NavalHomes distinguishes seller leads, direct property opportunities, and contract assignments. An opportunity is not presented as an assignment unless the required contractual rights and written disclosures are in place. Under Texas Property Code § 5.0205 and Texas Occupations Code § 1101.0045, applicable assignment disclosures include the nature of the interest and the fact that the assignor does not hold legal title; written disclosure to the property owner and potential buyer must be handled before entering into the assignment contract. This summary is informational, not legal advice.</p></div></section>
 
@@ -415,9 +385,7 @@ function Home() {
 
       <footer className="flex flex-col gap-4 border-t border-white/10 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10">
         <span>© 2026 NavalHomesDallas · Houston · Rio Grande Valley</span>
-        <button aria-label="Admin" onClick={() => setAdmin(true)} className="inline-flex w-fit items-center gap-2 border border-white/15 px-3 py-2 text-white/45 transition hover:border-white/30 hover:text-white">
-          <LockKeyhole size={12} /> Admin
-        </button>
+        <div className="flex flex-wrap items-center gap-3"><Link to="/admin-submissions" className="text-white/45 underline-offset-4 hover:text-white hover:underline">Review submissions</Link><button aria-label="Admin" onClick={() => setAdmin(true)} className="inline-flex w-fit items-center gap-2 border border-white/15 px-3 py-2 text-white/45 transition hover:border-white/30 hover:text-white"><LockKeyhole size={12} /> Admin</button></div>
       </footer>
 
       {admin ? <Admin close={() => setAdmin(false)} properties={properties} onRefresh={refresh} /> : null}
