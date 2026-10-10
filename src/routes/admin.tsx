@@ -9,11 +9,11 @@ import {
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [
-    { title: "Admin — NavalHomes" },
-    { name: "description", content: "Private NavalHomes control room for listings and inquiries." },
+    { title: "Admin — Liberty Crest Realty" },
+    { name: "description", content: "Private Liberty Crest Realty control room for listings and inquiries." },
     { name: "robots", content: "noindex,nofollow" },
-    { property: "og:title", content: "Admin — NavalHomes" },
-    { property: "og:description", content: "Private NavalHomes control room." },
+    { property: "og:title", content: "Admin — Liberty Crest Realty" },
+    { property: "og:description", content: "Private Liberty Crest Realty control room." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
   ] }),
@@ -47,7 +47,7 @@ function Lock({ onToken }: { onToken: (t: string) => void }) {
     <main className="flex min-h-screen items-center justify-center bg-[#171716] p-5">
       <form onSubmit={async (e) => { e.preventDefault(); setBusy(true); setErr(""); try { const r = await adminLogin({ data: { password: pw } }); onToken(r.token); } catch { setErr("Incorrect password."); } finally { setBusy(false); } }}
         className="w-full max-w-sm bg-[#f5f3ee] p-8 text-black">
-        <p className="eyebrow">NavalHomes Admin</p>
+        <p className="eyebrow">Liberty Crest Realty Admin</p>
         <h1 className="mt-3 font-serif text-4xl">Private access.</h1>
         <input autoFocus type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Password" className="field-input mt-8 w-full" />
         {err ? <p className="mt-2 text-xs text-red-700">{err}</p> : null}
@@ -109,7 +109,7 @@ function Dashboard({ token, logout }: { token: string; logout: () => void }) {
     <main className="min-h-screen bg-[#f5f3ee] text-[#171716]">
       <header className="border-b border-black/10 px-6 py-6">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <Link to="/" className="font-serif text-3xl">navalhomes.</Link>
+          <Link to="/" className="font-serif text-3xl">Liberty Crest Realty</Link>
           <div className="flex gap-2 text-xs uppercase tracking-wider">
             <button onClick={() => void load()} className="border border-black/15 px-4 py-3"><RefreshCw className="mr-2 inline size-4" />Refresh</button>
             <button onClick={logout} className="border border-black/15 px-4 py-3">Sign out</button>
