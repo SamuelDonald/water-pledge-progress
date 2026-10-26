@@ -49,8 +49,8 @@ const marketStories = {
     gallery: [
       { src: "https://images.unsplash.com/photo-1600585153490-76fb20a32601?auto=format&fit=crop&w=1800&q=85", alt: "Residential architecture with warm natural light", caption: "A welcoming place to land" },
       { src: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1800&q=85", alt: "Contemporary home with an inviting exterior", caption: "A home with room to breathe" },
-      { src: "https://images.unsplash.com/photo-1600566752734-2a0b7d8d2c8b?auto=format&fit=crop&w=1800&q=85", alt: "Elegant residential interior with neutral finishes", caption: "Simple, considered interiors" },
-      { src: "https://images.unsplash.com/photo-1600607687956-c5c4c1f6d2d5?auto=format&fit=crop&w=1800&q=85", alt: "Bright living space with open sightlines", caption: "Light-filled everyday spaces" },
+      { src: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1800&q=85", alt: "Elegant residential interior with neutral finishes", caption: "Simple, considered interiors" },
+      { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=85", alt: "Bright living space with open sightlines", caption: "Light-filled everyday spaces" },
       { src: "https://images.unsplash.com/photo-1721134111286-b3c4a5772ea9?auto=format&fit=crop&w=1800&q=85", alt: "Comfortable residential living area", caption: "Comfort in the details" },
     ],
     highlights: ["Distinct urban, suburban, and residential communities", "Choices across different home styles and layouts", "Space to prioritize commute, lifestyle, and neighborhood feel"],
