@@ -46,13 +46,13 @@ function FindAHome() {
     { title: "Where are you in the buying journey?", description: "There is no wrong answer — this simply helps us understand your readiness.", key: "journey" as const, choices: options.journey },
     { title: "A few optional planning details", description: "Ranges are enough. You can skip these questions if you prefer.", key: "credit" as const, choices: options.credit },
     { title: "When are you hoping to move?", description: "Choose the closest match or let us know you are flexible.", key: "timeline" as const, choices: options.timeline },
-    { title: "Which area should we focus on?", description: "Select one or more markets, then narrow your search.", key: "markets" as const, choices: markets as unknown as readonly string[] },
     { title: "How should we help you move forward?", description: "Choose the path that best describes your interest.", key: "path" as const, choices: options.path },
+    { title: "Which area should we focus on?", description: "Select one or more markets, then narrow your search.", key: "markets" as const, choices: markets as unknown as readonly string[] },
     { title: "How can we contact you?", description: "Your contact details are used to respond to this request.", key: "contact" as const, choices: [] as readonly string[] },
   ];
   const current = pages[step];
   const selected = current.key === "markets" ? answers.markets.length > 0 : current.key === "contact" ? answers.name.trim().length >= 2 && /^\\S+@\\S+\\.\\S+$/.test(answers.email) && answers.phone.trim().length >= 7 && answers.contactConsent : Boolean(answers[current.key as keyof Answers]);
-  const canContinue = step === 3 || step === 6 || step === 10 ? true : selected;
+  const canContinue = step === 6 ? true : step === 3 ? Boolean(answers.military) && (!["Active duty", "Reserve or National Guard", "Veteran"].includes(answers.military) || Boolean(answers.branch)) : selected;
 
   async function submit() {
     setBusy(true); setError("");
@@ -83,7 +83,7 @@ function FindAHome() {
               : <div className="space-y-3">{current.choices.map((choice) => <Choice key={choice} label={choice} selected={answers[current.key as keyof Answers] === choice} onClick={() => update(current.key as keyof Answers, choice)} />)}</div>}
           </div>
           {error ? <p role="alert" className="mt-5 bg-red-50 p-4 text-sm text-red-800">{error}</p> : null}
-          <div className="mt-9 flex items-center justify-between gap-3 border-t border-black/10 pt-5"><button type="button" disabled={step === 0 || busy} onClick={() => { setStep((n) => Math.max(0, n - 1)); setError(""); }} className="inline-flex items-center gap-2 px-3 py-3 text-xs uppercase tracking-[.12em] text-black/60 disabled:opacity-30"><ChevronLeft className="size-4" />Back</button><button type="button" disabled={busy || (!canContinue && step !== 10)} onClick={() => { if (step < pages.length - 1) { setStep((n) => n + 1); setError(""); } else void submit(); }} className="inline-flex items-center bg-black px-6 py-4 text-xs uppercase tracking-[.14em] text-white disabled:opacity-40">{step === pages.length - 1 ? (busy ? "Submitting…" : "Submit request") : "Continue"} <ArrowRight className="ml-3 size-4" /></button></div>
+          <div className="mt-9 flex items-center justify-between gap-3 border-t border-black/10 pt-5"><button type="button" disabled={step === 0 || busy} onClick={() => { setStep((n) => Math.max(0, n - 1)); setError(""); }} className="inline-flex items-center gap-2 px-3 py-3 text-xs uppercase tracking-[.12em] text-black/60 disabled:opacity-30"><ChevronLeft className="size-4" />Back</button><button type="button" disabled={busy || !canContinue} onClick={() => { if (step < pages.length - 1) { setStep((n) => n + 1); setError(""); } else void submit(); }} className="inline-flex items-center bg-black px-6 py-4 text-xs uppercase tracking-[.14em] text-white disabled:opacity-40">{step === pages.length - 1 ? (busy ? "Submitting…" : "Submit request") : "Continue"} <ArrowRight className="ml-3 size-4" /></button></div>
           <p className="mt-5 text-center text-[11px] leading-5 text-black/40">Your information is used to respond to this request. Please do not include sensitive financial account numbers or government identification.</p>
         </>}
       </section>
