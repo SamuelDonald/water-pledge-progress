@@ -165,3 +165,34 @@ export const adminUpdateInquiry = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+
+export const adminListBuyerRequests = createServerFn({ method: "POST" })
+  .inputValidator((d: { token: string; status?: string }) => ({ token: tok(d), status: d.status ? String(d.status) : "" }))
+  .handler(async ({ data }) => {
+    await verify(data.token);
+    const db = await admin();
+    let query = db.from("buyer_requests").select("*").order("created_at", { ascending: false }).limit(500);
+    if (["new", "reviewing", "contacted", "matched", "closed"].includes(data.status)) query = query.eq("status", data.status);
+    const { data: rows, error } = await query;
+    if (error) throw new Error(error.message);
+    return rows ?? [];
+  });
+
+export const adminUpdateBuyerRequest = createServerFn({ method: "POST" })
+  .inputValidator((d: { token: string; id: string; status: string; notes?: string; assignedTo?: string }) => ({
+    token: tok(d), id: String(d.id), status: String(d.status),
+    notes: d.notes === undefined ? undefined : String(d.notes).slice(0, 4000),
+    assignedTo: d.assignedTo === undefined ? undefined : String(d.assignedTo).slice(0, 120),
+  }))
+  .handler(async ({ data }) => {
+    await verify(data.token);
+    if (!["new", "reviewing", "contacted", "matched", "closed"].includes(data.status)) throw new Error("Invalid status");
+    const db = await admin();
+    const patch: any = { status: data.status };
+    if (data.notes !== undefined) patch.admin_notes = data.notes;
+    if (data.assignedTo !== undefined) patch.assigned_to = data.assignedTo || null;
+    const { error } = await db.from("buyer_requests").update(patch).eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
