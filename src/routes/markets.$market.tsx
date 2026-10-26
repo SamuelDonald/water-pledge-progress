@@ -72,9 +72,9 @@ const marketStories = {
     gallery: [
       { src: "https://static.wixstatic.com/media/289773_9d3bf305e81e42d3891cbcd90f52dca8~mv2.jpg", alt: "Residential home exterior framed by greenery", caption: "A welcoming South Texas setting" },
       { src: "https://static.wixstatic.com/media/6e624a_a32ef6ae8cdc4b978b3682106578566d.jpg", alt: "Bright home interior with a relaxed atmosphere", caption: "A calm place to return to" },
-      { src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b-alt?auto=format&fit=crop&w=1800&q=85", alt: "Thoughtfully styled living room", caption: "Everyday comfort" },
-      { src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea-alt?auto=format&fit=crop&w=1800&q=85", alt: "Modern home with outdoor landscaping", caption: "Outdoor space and possibility" },
-      { src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0-alt?auto=format&fit=crop&w=1800&q=85", alt: "Warm residential interior with natural textures", caption: "Room for your own story" },
+      { src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1800&q=85", alt: "Thoughtfully styled living room", caption: "Everyday comfort" },
+      { src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1800&q=85", alt: "Modern home with outdoor landscaping", caption: "Outdoor space and possibility" },
+      { src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1800&q=85", alt: "Warm residential interior with natural textures", caption: "Room for your own story" },
     ],
     highlights: ["McAllen, Edinburg, Brownsville, Harlingen, and nearby communities", "A strong local identity and a variety of residential settings", "Options to explore around your own budget and timeline"],
     close: "Let’s talk about the community and property that could fit your plans in the Valley.",
