@@ -7,7 +7,7 @@ const clean = (v: unknown, max = 200) => String(v ?? "").trim().slice(0, max);
 export type BuyerRequestInput = {
   homeType: string; priceRange: string; use: string; military: string; branch: string; downPayment: string;
   journey: string; credit: string; employment: string; income: string; timeline: string; path: string;
-  markets: string[]; city: string; area: string; notes: string; name: string; email: string; phone: string; contactConsent: boolean;
+  markets: string[]; city: string; otherCity: string; area: string; notes: string; name: string; email: string; phone: string; contactConsent: boolean;
 };
 
 export const submitBuyerRequest = createServerFn({ method: "POST" })
@@ -17,7 +17,7 @@ export const submitBuyerRequest = createServerFn({ method: "POST" })
     journey: clean(d.journey, 80), credit: clean(d.credit, 80), employment: clean(d.employment, 100),
     income: clean(d.income, 80), timeline: clean(d.timeline, 80), path: clean(d.path, 100),
     markets: Array.isArray(d.markets) ? d.markets.filter((x) => valid(x, marketOptions)).slice(0, 3) : [],
-    city: clean(d.city, 160), area: clean(d.area, 160), notes: clean(d.notes, 2000),
+    city: clean(d.city, 160), otherCity: clean(d.otherCity, 160), area: clean(d.area, 160), notes: clean(d.notes, 2000),
     name: clean(d.name, 120), email: clean(d.email, 254).toLowerCase(), phone: clean(d.phone, 40),
     contactConsent: d.contactConsent === true,
   }))
@@ -55,7 +55,7 @@ export const submitBuyerRequest = createServerFn({ method: "POST" })
       military_status: data.military, military_branch: data.branch || null, down_payment_range: data.downPayment,
       buying_journey: data.journey, credit_score_range: data.credit || null, employment_situation: data.employment || null,
       annual_income_range: data.income || null, timeline: data.timeline, opportunity_path: data.path,
-      preferred_markets: data.markets, preferred_city: data.city || null, preferred_area: data.area || null,
+      preferred_markets: data.markets, preferred_city: (data.city === "Other / not sure" ? data.otherCity : data.city) || null, preferred_area: data.area || null,
       additional_notes: data.notes || null, contact_name: data.name, contact_email: data.email,
       contact_phone: data.phone, contact_consent: true, status: "new",
     }).select("id").single();
