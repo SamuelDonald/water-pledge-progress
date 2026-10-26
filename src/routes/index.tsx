@@ -50,7 +50,7 @@ function Home() {
 
       <section className="bg-[#e9e6de] px-6 py-20 lg:px-10"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="eyebrow">For owners and contract holders</p><h2 className="section-title mt-3">Have an opportunity<br /><i>to share?</i></h2><p className="mt-4 max-w-xl text-sm leading-7 text-black/60">Property owners and authorized contract holders can still submit opportunities privately for review. Seller submissions remain a separate process.</p></div><Link to="/submit-property" className="inline-flex w-fit items-center border border-black/20 px-7 py-4 text-xs uppercase tracking-[.16em]">Submit a property <ArrowRight className="ml-3 size-4" /></Link></div></section>
 
-      <footer className="flex flex-col gap-4 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10"><span>© 2026 Liberty Crest Realty · Dallas · Houston · Rio Grande Valley</span><div className="flex flex-wrap gap-4"><Link to="/admin-buyer-requests" className="underline-offset-4 hover:text-white hover:underline">Buyer requests</Link><Link to="/admin-submissions" className="underline-offset-4 hover:text-white hover:underline">Seller submissions</Link><Link to="/admin" className="underline-offset-4 hover:text-white hover:underline">Admin</Link></div></footer>
+      <footer className="flex flex-col gap-4 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10"><span>© 2026 Liberty Crest Realty · Dallas · Houston · Rio Grande Valley</span></footer>
     </main>
   );
 }
