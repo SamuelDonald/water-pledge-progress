@@ -1,6 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, MapPin, Compass, Home as HomeIcon } from "lucide-react";
-import { locationImages } from "@/lib/navalhomes";
 
 export const Route = createFileRoute("/markets/$market")({
   head: ({ params }) => {
@@ -16,7 +15,7 @@ const marketStories = {
     region: "Dallas–Fort Worth",
     metaTitle: "Discover Dallas–Fort Worth | Liberty Crest Realty",
     metaDescription: "Explore the character of Dallas–Fort Worth and share the home or property opportunity you are looking for with Liberty Crest Realty.",
-    hero: locationImages.Dallas,
+    hero: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1800&q=85",
     intro: "Room for your next chapter.",
     lead: "A home search is about more than an address. It is about the pace of your mornings, the neighborhood you return to, and the space you want to grow into. Across Dallas–Fort Worth, city energy meets established residential streets, newer communities, and a wide variety of home styles.",
     paragraphs: [
@@ -25,11 +24,11 @@ const marketStories = {
       { title: "A more considered way to find a property", body: "Liberty Crest Realty starts with your brief rather than asking you to sort through a catalogue that may not match your needs. Tell us your preferred home type, price range, timing, and target community. Our team reviews the request and follows up about potential opportunities and practical next steps." },
     ],
     gallery: [
-      { src: locationImages.Dallas, alt: "Contemporary residential architecture in a warm, natural setting", caption: "Modern lines and welcoming spaces" },
-      { src: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85", alt: "Light-filled living room with contemporary finishes", caption: "Spaces to settle into" },
-      { src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1400&q=85", alt: "Inviting modern home interior", caption: "Comfort with considered detail" },
-      { src: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1400&q=85", alt: "House exterior with landscaped surroundings", caption: "A place to make your own" },
-      { src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85", alt: "Warm, carefully styled residential interior", caption: "Everyday living, thoughtfully imagined" },
+      { src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1800&q=85", alt: "Contemporary residential architecture in a warm, natural setting", caption: "Modern lines and welcoming spaces" },
+      { src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1800&q=85", alt: "Light-filled living room with contemporary finishes", caption: "Spaces to settle into" },
+      { src: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1800&q=85", alt: "Inviting modern home interior", caption: "Comfort with considered detail" },
+      { src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1800&q=85", alt: "House exterior with landscaped surroundings", caption: "A place to make your own" },
+      { src: "https://images.unsplash.com/photo-1600585152915-d208bec867a1?auto=format&fit=crop&w=1800&q=85", alt: "Warm, carefully styled residential interior", caption: "Everyday living, thoughtfully imagined" },
     ],
     highlights: ["Established neighborhoods and newer communities", "A broad mix of home styles and property types", "Urban amenities alongside quieter residential pockets"],
     close: "Let’s find the part of Dallas–Fort Worth that feels like your next chapter.",
@@ -39,7 +38,7 @@ const marketStories = {
     region: "Greater Houston",
     metaTitle: "Discover Greater Houston | Liberty Crest Realty",
     metaDescription: "Explore Greater Houston's residential character and tell Liberty Crest Realty what kind of property would fit your plans.",
-    hero: locationImages.Houston,
+    hero: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1800&q=85",
     intro: "Space to live your way.",
     lead: "Greater Houston is a collection of distinct communities, each with its own feel. From energetic city neighborhoods to tree-lined residential streets and spacious suburban settings, the region offers many different ideas of what home can look like.",
     paragraphs: [
@@ -48,11 +47,11 @@ const marketStories = {
       { title: "Start with what matters to you", body: "Liberty Crest Realty uses a guided request process to understand your priorities before discussing possible opportunities. Share your target budget, property type, intended use, timeline, and preferred part of Greater Houston. Our team reviews your brief and contacts you about possible matches and next steps." },
     ],
     gallery: [
-      { src: locationImages.Houston, alt: "Residential architecture with warm natural light", caption: "A welcoming place to land" },
-      { src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85", alt: "Contemporary home with an inviting exterior", caption: "A home with room to breathe" },
-      { src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1400&q=85", alt: "Elegant residential interior with neutral finishes", caption: "Simple, considered interiors" },
-      { src: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85", alt: "Bright living space with open sightlines", caption: "Light-filled everyday spaces" },
-      { src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85", alt: "Comfortable residential living area", caption: "Comfort in the details" },
+      { src: "https://images.unsplash.com/photo-1600585153490-76fb20a32601?auto=format&fit=crop&w=1800&q=85", alt: "Residential architecture with warm natural light", caption: "A welcoming place to land" },
+      { src: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1800&q=85", alt: "Contemporary home with an inviting exterior", caption: "A home with room to breathe" },
+      { src: "https://images.unsplash.com/photo-1600566752734-2a0b7d8d2c8b?auto=format&fit=crop&w=1800&q=85", alt: "Elegant residential interior with neutral finishes", caption: "Simple, considered interiors" },
+      { src: "https://images.unsplash.com/photo-1600607687956-c5c4c1f6d2d5?auto=format&fit=crop&w=1800&q=85", alt: "Bright living space with open sightlines", caption: "Light-filled everyday spaces" },
+      { src: "https://images.unsplash.com/photo-1721134111286-b3c4a5772ea9?auto=format&fit=crop&w=1800&q=85", alt: "Comfortable residential living area", caption: "Comfort in the details" },
     ],
     highlights: ["Distinct urban, suburban, and residential communities", "Choices across different home styles and layouts", "Space to prioritize commute, lifestyle, and neighborhood feel"],
     close: "Tell us what home means to you in Greater Houston, and we’ll take it from there.",
@@ -62,7 +61,7 @@ const marketStories = {
     region: "South Texas",
     metaTitle: "Discover the Rio Grande Valley | Liberty Crest Realty",
     metaDescription: "Explore the welcoming communities of the Rio Grande Valley and share your property goals with Liberty Crest Realty.",
-    hero: locationImages["Rio Grande Valley"],
+    hero: "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&w=1800&q=85",
     intro: "A warmer kind of homecoming.",
     lead: "In the Rio Grande Valley, home can mean familiar community ties, sunlit days, local character, and a pace that feels personal. From McAllen and Edinburg to Brownsville and Harlingen, the Valley brings together growing cities and established neighborhoods across South Texas.",
     paragraphs: [
@@ -71,11 +70,11 @@ const marketStories = {
       { title: "A personal route to potential opportunities", body: "Liberty Crest Realty is built around understanding the buyer's brief first. Submit your preferred Valley city or neighborhood and the type of opportunity you have in mind. Our team will review the details and follow up about potential next steps, including direct-purchase or contractual-rights conversations where appropriate." },
     ],
     gallery: [
-      { src: locationImages["Rio Grande Valley"], alt: "Residential home exterior framed by greenery", caption: "A welcoming South Texas setting" },
-      { src: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85", alt: "Bright home interior with a relaxed atmosphere", caption: "A calm place to return to" },
-      { src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1400&q=85", alt: "Thoughtfully styled living room", caption: "Everyday comfort" },
-      { src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85", alt: "Modern home with outdoor landscaping", caption: "Outdoor space and possibility" },
-      { src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85", alt: "Warm residential interior with natural textures", caption: "Room for your own story" },
+      { src: "https://static.wixstatic.com/media/289773_9d3bf305e81e42d3891cbcd90f52dca8~mv2.jpg", alt: "Residential home exterior framed by greenery", caption: "A welcoming South Texas setting" },
+      { src: "https://static.wixstatic.com/media/6e624a_a32ef6ae8cdc4b978b3682106578566d.jpg", alt: "Bright home interior with a relaxed atmosphere", caption: "A calm place to return to" },
+      { src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b-alt?auto=format&fit=crop&w=1800&q=85", alt: "Thoughtfully styled living room", caption: "Everyday comfort" },
+      { src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea-alt?auto=format&fit=crop&w=1800&q=85", alt: "Modern home with outdoor landscaping", caption: "Outdoor space and possibility" },
+      { src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0-alt?auto=format&fit=crop&w=1800&q=85", alt: "Warm residential interior with natural textures", caption: "Room for your own story" },
     ],
     highlights: ["McAllen, Edinburg, Brownsville, Harlingen, and nearby communities", "A strong local identity and a variety of residential settings", "Options to explore around your own budget and timeline"],
     close: "Let’s talk about the community and property that could fit your plans in the Valley.",
