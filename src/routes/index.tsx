@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight, Menu, X, Home as HomeIcon, MapPin, ShieldCheck } from "lucide-react";
+import { ArrowRight, Menu, X, Home as HomeIcon, MapPin, ShieldCheck, LockKeyhole } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: Home });
 
@@ -50,7 +50,7 @@ function Home() {
 
       <section className="bg-[#e9e6de] px-6 py-20 lg:px-10"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="eyebrow">For owners and contract holders</p><h2 className="section-title mt-3">Have an opportunity<br /><i>to share?</i></h2><p className="mt-4 max-w-xl text-sm leading-7 text-black/60">Property owners and authorized contract holders can still submit opportunities privately for review. Seller submissions remain a separate process.</p></div><Link to="/submit-property" className="inline-flex w-fit items-center border border-black/20 px-7 py-4 text-xs uppercase tracking-[.16em]">Submit a property <ArrowRight className="ml-3 size-4" /></Link></div></section>
 
-      <footer className="flex flex-col gap-4 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10"><span>© 2026 Liberty Crest Realty · Dallas · Houston · Rio Grande Valley</span></footer>
+      <footer className="flex flex-col gap-4 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10"><span>© 2026 Liberty Crest Realty · Dallas · Houston · Rio Grande Valley</span><Link to="/admin" aria-label="Admin sign in" title="Admin sign in" className="inline-flex size-10 items-center justify-center self-end border border-white/20 text-white/60 transition hover:border-white/60 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white sm:self-auto"><LockKeyhole className="size-4" aria-hidden="true" /></Link></footer>
     </main>
   );
 }
