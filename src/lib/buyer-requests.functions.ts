@@ -13,7 +13,7 @@ export type BuyerRequestInput = {
 export const submitBuyerRequest = createServerFn({ method: "POST" })
   .inputValidator((d: BuyerRequestInput) => ({
     homeType: clean(d.homeType, 80), priceRange: clean(d.priceRange, 80), use: clean(d.use, 80),
-    military: clean(d.military, 80), branch: clean(d.branch, 80), downPayment: clean(d.downPayment, 80),
+    military: clean(d.military, 80), branch: clean(d.branch, 80), downPayment: clean(d.downPayment, 80) || "Not sure yet",
     journey: clean(d.journey, 80), credit: clean(d.credit, 80), employment: clean(d.employment, 100),
     income: clean(d.income, 80), timeline: clean(d.timeline, 80), path: clean(d.path, 100),
     markets: Array.isArray(d.markets) ? d.markets.filter((x) => valid(x, marketOptions)).slice(0, 3) : [],
