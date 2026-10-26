@@ -28,7 +28,7 @@ const marketStories = {
       { src: locationImages.Dallas, alt: "Contemporary residential architecture in a warm, natural setting", caption: "Modern lines and welcoming spaces" },
       { src: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85", alt: "Light-filled living room with contemporary finishes", caption: "Spaces to settle into" },
       { src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1400&q=85", alt: "Inviting modern home interior", caption: "Comfort with considered detail" },
-      { src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85", alt: "House exterior with landscaped surroundings", caption: "A place to make your own" },
+      { src: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1400&q=85", alt: "House exterior with landscaped surroundings", caption: "A place to make your own" },
       { src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85", alt: "Warm, carefully styled residential interior", caption: "Everyday living, thoughtfully imagined" },
     ],
     highlights: ["Established neighborhoods and newer communities", "A broad mix of home styles and property types", "Urban amenities alongside quieter residential pockets"],
@@ -50,7 +50,7 @@ const marketStories = {
     gallery: [
       { src: locationImages.Houston, alt: "Residential architecture with warm natural light", caption: "A welcoming place to land" },
       { src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85", alt: "Contemporary home with an inviting exterior", caption: "A home with room to breathe" },
-      { src: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1400&q=85", alt: "Elegant residential interior with neutral finishes", caption: "Simple, considered interiors" },
+      { src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1400&q=85", alt: "Elegant residential interior with neutral finishes", caption: "Simple, considered interiors" },
       { src: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85", alt: "Bright living space with open sightlines", caption: "Light-filled everyday spaces" },
       { src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85", alt: "Comfortable residential living area", caption: "Comfort in the details" },
     ],
