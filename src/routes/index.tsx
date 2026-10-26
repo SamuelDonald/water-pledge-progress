@@ -1,14 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowRight, Menu, X, Home as HomeIcon, MapPin, ShieldCheck } from "lucide-react";
-import { locationImages } from "@/lib/navalhomes";
 
 export const Route = createFileRoute("/")({ component: Home });
 
 const markets = [
-  { name: "Dallas", slug: "dallas", subtitle: "Dallas–Fort Worth", image: locationImages.Dallas, copy: "A metropolitan mix of established neighborhoods, modern homes, and room to make your next chapter your own." },
-  { name: "Houston", slug: "houston", subtitle: "Greater Houston", image: locationImages.Houston, copy: "A city of distinct communities, leafy residential streets, and many ways to define home." },
-  { name: "Rio Grande Valley", slug: "rio-grande-valley", subtitle: "South Texas", image: locationImages["Rio Grande Valley"], copy: "A warm South Texas setting with close-knit communities, relaxed living, and homes for different stages of life." },
+  { name: "Dallas", slug: "dallas", subtitle: "Dallas–Fort Worth", image: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1800&q=85", copy: "A metropolitan mix of established neighborhoods, modern homes, and room to make your next chapter your own." },
+  { name: "Houston", slug: "houston", subtitle: "Greater Houston", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=85", copy: "A city of distinct communities, leafy residential streets, and many ways to define home." },
+  { name: "Rio Grande Valley", slug: "rio-grande-valley", subtitle: "South Texas", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=85", copy: "A warm South Texas setting with close-knit communities, relaxed living, and homes for different stages of life." },
 ];
 
 function Home() {
@@ -26,7 +25,7 @@ function Home() {
       {menuOpen ? <nav className="absolute inset-x-0 top-[76px] z-40 space-y-5 bg-[#171716] px-6 py-6 text-sm text-white md:hidden"><a className="block" href="#markets" onClick={() => setMenuOpen(false)}>Our markets</a><a className="block" href="#process" onClick={() => setMenuOpen(false)}>How it works</a><Link className="block" to="/submit-property" onClick={() => setMenuOpen(false)}>Submit a property</Link><Link className="block border border-white/30 p-3" to="/find-a-home" onClick={() => setMenuOpen(false)}>Find my home <ArrowRight className="ml-2 inline size-4" /></Link></nav> : null}
 
       <section className="relative flex min-h-[88vh] items-end overflow-hidden bg-[#171716] text-white">
-        <img src={locationImages.Dallas} alt="Residential architecture representing Liberty Crest Realty's Texas markets" className="absolute inset-0 h-full w-full object-cover" fetchPriority="high" />
+        <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=85" alt="Residential architecture representing Liberty Crest Realty's Texas markets" className="absolute inset-0 h-full w-full object-cover" fetchPriority="high" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-black/15" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
         <div className="relative mx-auto w-full max-w-7xl px-6 pb-16 pt-36 lg:px-10 lg:pb-24">
