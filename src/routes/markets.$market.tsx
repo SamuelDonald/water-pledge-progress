@@ -4,7 +4,7 @@ import { locationImages } from "@/lib/navalhomes";
 
 export const Route = createFileRoute("/markets/$market")({
   head: ({ params }) => {
-    const market = marketStories[params.market];
+    const market = marketStories[params.market as keyof typeof marketStories];
     return { meta: [{ title: market ? market.metaTitle : "Texas Markets — Liberty Crest Realty" }, { name: "description", content: market?.metaDescription ?? "Explore Texas communities and share your property goals with Liberty Crest Realty." }] };
   },
   component: MarketStoryPage,
