@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
-import { ArrowLeft, RefreshCw, Save, LogOut, Users } from "lucide-react";
+import { RefreshCw, Save, LogOut, Users } from "lucide-react";
 import { adminCheck, adminListBuyerRequests, adminLogin, adminUpdateBuyerRequest } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin-buyer-requests")({ component: AdminBuyerRequests });
