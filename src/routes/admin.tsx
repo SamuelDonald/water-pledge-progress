@@ -117,6 +117,13 @@ function Dashboard({ token, logout }: { token: string; logout: () => void }) {
           </div>
         </div>
       </header>
+      <div className="border-b border-black/10 bg-white px-6 py-3">
+        <nav aria-label="Admin sections" className="mx-auto flex max-w-7xl flex-wrap gap-2">
+          <Link to="/admin" className="border border-black/15 bg-black px-4 py-3 text-xs uppercase tracking-wider text-white">Admin dashboard</Link>
+          <Link to="/admin-buyer-requests" className="border border-black/15 px-4 py-3 text-xs uppercase tracking-wider hover:bg-black hover:text-white">Buyer requests</Link>
+          <Link to="/admin-submissions" className="border border-black/15 px-4 py-3 text-xs uppercase tracking-wider hover:bg-black hover:text-white">Seller submissions</Link>
+        </nav>
+      </div>
       <div className="mx-auto max-w-7xl px-6 py-10">
         <p className="eyebrow">Control room</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-4">
