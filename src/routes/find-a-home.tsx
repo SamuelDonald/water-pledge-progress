@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, MapPin } from "lucide-react";
 import { submitBuyerRequest } from "@/lib/buyer-requests.functions";
 
-export const Route = createFileRoute("/find-a-home")({ validateSearch: (search: Record<string, unknown>) => ({ market: typeof search.market === "string" ? search.market : undefined }), component: FindAHome });
+export const Route = createFileRoute("/find-a-home")({ validateSearch: (search: Record<string, unknown>): { market?: string } => ({ market: typeof search.market === "string" ? search.market : undefined }), component: FindAHome });
 
 const markets = ["Dallas", "Houston", "Rio Grande Valley"] as const;
 const marketCities: Record<string, string[]> = {
@@ -55,7 +55,7 @@ function FindAHome() {
     { title: "Which area should we focus on?", description: "Select one or more markets, then narrow your search.", key: "markets" as const, choices: markets as unknown as readonly string[] },
     { title: "How can we contact you?", description: "Your contact details are used to respond to this request.", key: "contact" as const, choices: [] as readonly string[] },
   ];
-  const current = pages[step];
+  const current = pages[step]!;
   const selected = current.key === "markets" ? answers.markets.length > 0 : current.key === "contact" ? answers.name.trim().length >= 2 && /^\\S+@\\S+\\.\\S+$/.test(answers.email) && answers.phone.trim().length >= 7 && answers.contactConsent : Boolean(answers[current.key as keyof Answers]);
   const canContinue = step === 4 || step === 6 ? true : step === 3 ? Boolean(answers.military) && (!["Active duty", "Reserve or National Guard", "Veteran"].includes(answers.military) || Boolean(answers.branch)) : selected;
 
