@@ -2,41 +2,37 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle2, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-export const Route=createFileRoute("/submit-property")({component:SubmitProperty});
+import { createSubmissionUpload, submitPropertySubmission } from "@/lib/submissions.functions";
+export const Route=createFileRoute("/submit-property")({
+ head:()=>({meta:[{title:"Submit a Property — Liberty Crest Realty"},{name:"description",content:"Submit your Texas property for review by Liberty Crest Realty."},{property:"og:title",content:"Submit a Property — Liberty Crest Realty"},{property:"og:description",content:"Send your property details for private review before listing."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"}]}),
+ component:SubmitProperty});
 const locations=["Dallas","Houston","Rio Grande Valley"];
 const types=["House","Condo","Apartment","Multi-family","Land","Commercial","Mixed-use","Other"];
 function SubmitProperty(){
- const [files,setFiles]=useState<File[]>([]),[contractFile,setContractFile]=useState<File|null>(null),[rights,setRights]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(""),[done,setDone]=useState(false);
+ const [files,setFiles]=useState<File[]>([]),[contractFile,setContractFile]=useState<File|null>(null),[rights,setRights]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(""),[done,setDone]=useState<null|{contact:string;whatsapp:boolean}>(null);
+ async function uploadOne(file:File,kind:"media"|"contract"){
+  const u=await createSubmissionUpload({data:{filename:file.name,kind}});
+  const {error}=await supabase.storage.from("property-submissions").uploadToSignedUrl(u.path,u.token,file,{contentType:file.type});
+  if(error)throw new Error("Upload failed for "+file.name+". Please try again.");
+  return u.path;
+ }
  async function submit(e:React.FormEvent<HTMLFormElement>){
   e.preventDefault();setBusy(true);setError("");const f=new FormData(e.currentTarget);
   try{
+   if(!f.get("preferredContact"))throw new Error("Please choose how you'd like to be contacted.");
    const mediaPaths:string[]=[];
    for(const file of files){
     if(file.size>25*1024*1024)throw new Error("Each photo or video must be 25 MB or smaller.");
-    const path="pending/"+crypto.randomUUID()+"-"+file.name.replace(/[^a-zA-Z0-9._-]/g,"-");
-    const {error}=await (supabase as any).storage.from("property-submissions").upload(path,file,{contentType:file.type});
-    if(error)throw error;mediaPaths.push(path);
+    mediaPaths.push(await uploadOne(file,"media"));
    }
-   let contractPath="";
-   if(contractFile){
+   let contractPath:string|null=null;
+   if(rights&&contractFile){
     if(contractFile.size>20*1024*1024)throw new Error("Contract document must be 20 MB or smaller.");
-    contractPath="contracts/"+crypto.randomUUID()+"-"+contractFile.name.replace(/[^a-zA-Z0-9._-]/g,"-");
-    const {error}=await (supabase as any).storage.from("property-submissions").upload(contractPath,contractFile,{contentType:contractFile.type});
-    if(error)throw error;
+    contractPath=await uploadOne(contractFile,"contract");
    }
-   const title=String(f.get("title")??"").trim();
-   const slug=title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-"+crypto.randomUUID().slice(0,8);
-   const {error}=await (supabase as any).from("property_submissions").insert({
-    title,slug,location:f.get("location"),city:f.get("city"),property_type:f.get("propertyType"),listing_status:f.get("listingStatus"),
-    asking_price:Number(f.get("askingPrice")),bedrooms:Number(f.get("bedrooms")||0),bathrooms:Number(f.get("bathrooms")||0),
-    sqft:Number(f.get("sqft")||0),lot_size:f.get("lotSize")?Number(f.get("lotSize")):null,description:f.get("description"),
-    neighborhood:f.get("neighborhood")||null,address:f.get("address")||null,seller_name:f.get("sellerName"),seller_phone:f.get("sellerPhone"),
-    seller_email:f.get("sellerEmail"),seller_role:f.get("sellerRole"),media_paths:mediaPaths,has_contract_rights:rights,
-    contract_type:rights?f.get("contractType"):null,contract_price:rights?Number(f.get("contractPrice")):null,
-    contract_status:rights?f.get("contractStatus"):null,contract_notes:rights?f.get("contractNotes"):null,
-    contract_document_path:contractPath||null,authorization_confirmed:f.get("authorized")==="on",review_status:"pending"
-   });
-   if(error)throw error;setDone(true);window.scrollTo({top:0,behavior:"smooth"});
+   const payload:Record<string,unknown>={};f.forEach((v,k)=>{if(typeof v==="string")payload[k]=v;});
+   const r=await submitPropertySubmission({data:{...payload,hasContractRights:rights,authorized:f.get("authorized")==="on",whatsappAvailable:f.get("whatsappAvailable")==="on",mediaPaths,contractPath}});
+   setDone({contact:r.preferredContact,whatsapp:f.get("whatsappAvailable")==="on"});window.scrollTo({top:0,behavior:"smooth"});
   }catch(e){setError(e instanceof Error?e.message:"Submission failed. Please try again.");}finally{setBusy(false);}
  }
  return <main className="min-h-screen bg-[#f5f3ee] text-[#171716]"><header className="border-b border-black/10 px-6 py-6"><div className="mx-auto flex max-w-7xl justify-between"><Link to="/" className="font-serif text-3xl">Liberty Crest Realty</Link><Link to="/" className="text-xs uppercase tracking-wider"><ArrowLeft className="mr-2 inline size-4"/>Marketplace</Link></div></header>
