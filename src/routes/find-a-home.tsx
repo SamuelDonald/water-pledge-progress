@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle2, ChevronLeft, MapPin } from "lucide-react";
 import { submitBuyerRequest } from "@/lib/buyer-requests.functions";
 
-export const Route = createFileRoute("/find-a-home")({ validateSearch: (search: Record<string, unknown>): { market?: string } => ({ market: typeof search["market"] === "string" ? search["market"] : undefined }), component: FindAHome });
+export const Route = createFileRoute("/find-a-home")({ validateSearch: (search: Record<string, unknown>): { market?: string | undefined } => ({ market: typeof search["market"] === "string" ? search["market"] : undefined }), component: FindAHome });
 
 const markets = ["Dallas", "Houston", "Rio Grande Valley"] as const;
 const marketCities: Record<string, string[]> = {

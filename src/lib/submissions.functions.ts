@@ -37,7 +37,7 @@ export const submitPropertySubmission = createServerFn({ method: "POST" })
     const contact = d.preferredContact === "phone" ? "phone" : d.preferredContact === "email" ? "email" : "";
     const rights = d.hasContractRights === true;
     const okPath = (p: unknown) => typeof p === "string" && /^(pending|contracts)\/[a-zA-Z0-9._-]+$/.test(p);
-    const mediaPaths = (Array.isArray(d.mediaPaths) ? d.mediaPaths : []).filter((p) => okPath(p) && String(p).startsWith("pending/")).slice(0, 20);
+    const mediaPaths = (Array.isArray(d.mediaPaths) ? d.mediaPaths : []).filter((p: unknown) => okPath(p) && String(p).startsWith("pending/")).slice(0, 20);
     const contractPath = okPath(d.contractPath) && String(d.contractPath).startsWith("contracts/") ? String(d.contractPath) : null;
     if (title.length < 4 || !LOCATIONS.includes(location) || !TYPES.includes(type) || !s(d.city) || !s(d.description, 5000) ||
       s(d.sellerName, 120).length < 2 || !/^\S+@\S+\.\S+$/.test(email) || phone.replace(/\D/g, "").length < 7 ||
