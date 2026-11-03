@@ -100,7 +100,7 @@ function AdminSubmissions() {
       {rows.length === 0 ? <p className="mt-5 bg-white p-8 text-sm text-black/55">No submissions yet.</p> : <div className="mt-6 space-y-6">
         {rows.map((row) => <article key={row.id} className="bg-white p-5 md:p-8">
           <div className="flex flex-wrap justify-between gap-4">
-            <div><p className="eyebrow">{row.review_status} · {row.location} / {row.city}</p><h2 className="mt-2 font-serif text-3xl">{row.title}</h2><p className="mt-2 text-sm text-black/55">{row.seller_name} · {row.seller_phone} · {row.seller_email}</p></div>
+            <div><p className="eyebrow">{row.review_status} · {row.location} / {row.city}</p><h2 className="mt-2 font-serif text-3xl">{row.title}</h2><p className="mt-2 text-sm text-black/55">{row.seller_name} · <a className="underline" href={"tel:"+row.seller_phone}>{row.seller_phone}</a> · <a className="underline" href={"mailto:"+row.seller_email}>{row.seller_email}</a></p><div className="mt-2 flex flex-wrap gap-2 text-[11px] uppercase tracking-wider"><span className="bg-black px-2 py-1 text-white">Prefers {row.preferred_contact_method === "phone" ? "phone" : "email"}</span>{row.whatsapp_available ? <a href={"https://wa.me/"+String(row.seller_phone).replace(/\D/g,"")} target="_blank" rel="noreferrer" className="bg-[#e8eee7] px-2 py-1 text-[#42684c]">WhatsApp available</a> : null}<span className="border border-black/15 px-2 py-1">Received {new Date(row.created_at).toLocaleString()}</span></div></div>
             <strong className="text-xl">{money(row.asking_price)}</strong>
           </div>
           <p className="mt-4 whitespace-pre-wrap text-sm leading-6 text-black/65">{row.description}</p>
