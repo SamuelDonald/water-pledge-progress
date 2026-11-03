@@ -22,11 +22,13 @@ export const createSubmissionUpload = createServerFn({ method: "POST" })
     return { path, token: signed.token as string };
   });
 
-export type SubmissionInput = Record<string, unknown> & { mediaPaths: string[]; contractPath: string | null };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type SubmissionInput = { [k: string]: any; mediaPaths: string[]; contractPath: string | null };
 
 export const submitPropertySubmission = createServerFn({ method: "POST" })
   .inputValidator((d: SubmissionInput) => d)
-  .handler(async ({ data: d }) => {
+  .handler(async ({ data }) => {
+    const d: any = data;
     const title = s(d.title, 180);
     const location = s(d.location, 40);
     const type = s(d.propertyType, 40);
