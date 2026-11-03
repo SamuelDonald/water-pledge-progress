@@ -255,7 +255,7 @@ export const adminReviewPropertySubmission = createServerFn({ method: "POST" })
       const copiedPaths: string[] = [];
       try {
         for (let i = 0; i < paths.length; i++) {
-          const path = paths[i];
+          const path = paths[i]!;
           const { data: blob, error: downloadError } = await db.storage.from("property-submissions").download(path);
           if (downloadError || !blob) throw new Error("A submission photo or video could not be copied, so approval was cancelled.");
           const filename = path.split("/").pop() ?? `media-${i}`;

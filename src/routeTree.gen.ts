@@ -11,10 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AdminBuyerRequestsRouteImport } from './routes/admin-buyer-requests'
 import { Route as AdminSubmissionsRouteImport } from './routes/admin-submissions'
+import { Route as FindAHomeRouteImport } from './routes/find-a-home'
 import { Route as SubmitPropertyRouteImport } from './routes/submit-property'
-import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
 import { Route as MarketsMarketRouteImport } from './routes/markets.$market'
+import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -26,9 +28,19 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminBuyerRequestsRoute = AdminBuyerRequestsRouteImport.update({
+  id: '/admin-buyer-requests',
+  path: '/admin-buyer-requests',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSubmissionsRoute = AdminSubmissionsRouteImport.update({
   id: '/admin-submissions',
   path: '/admin-submissions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FindAHomeRoute = FindAHomeRouteImport.update({
+  id: '/find-a-home',
+  path: '/find-a-home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubmitPropertyRoute = SubmitPropertyRouteImport.update({
@@ -36,73 +48,90 @@ const SubmitPropertyRoute = SubmitPropertyRouteImport.update({
   path: '/submit-property',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PropertiesSlugRoute = PropertiesSlugRouteImport.update({
-  id: '/properties/$slug',
-  path: '/properties/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MarketsMarketRoute = MarketsMarketRouteImport.update({
   id: '/markets/$market',
   path: '/markets/$market',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PropertiesSlugRoute = PropertiesSlugRouteImport.update({
+  id: '/properties/$slug',
+  path: '/properties/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/admin-buyer-requests': typeof AdminBuyerRequestsRoute
   '/admin-submissions': typeof AdminSubmissionsRoute
+  '/find-a-home': typeof FindAHomeRoute
   '/submit-property': typeof SubmitPropertyRoute
-  '/properties/$slug': typeof PropertiesSlugRoute
   '/markets/$market': typeof MarketsMarketRoute
+  '/properties/$slug': typeof PropertiesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/admin-buyer-requests': typeof AdminBuyerRequestsRoute
   '/admin-submissions': typeof AdminSubmissionsRoute
+  '/find-a-home': typeof FindAHomeRoute
   '/submit-property': typeof SubmitPropertyRoute
-  '/properties/$slug': typeof PropertiesSlugRoute
   '/markets/$market': typeof MarketsMarketRoute
+  '/properties/$slug': typeof PropertiesSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/admin-buyer-requests': typeof AdminBuyerRequestsRoute
   '/admin-submissions': typeof AdminSubmissionsRoute
+  '/find-a-home': typeof FindAHomeRoute
   '/submit-property': typeof SubmitPropertyRoute
-  '/properties/$slug': typeof PropertiesSlugRoute
   '/markets/$market': typeof MarketsMarketRoute
+  '/properties/$slug': typeof PropertiesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/admin'
+    | '/admin-buyer-requests'
     | '/admin-submissions'
+    | '/find-a-home'
     | '/submit-property'
+    | '/markets/$market'
     | '/properties/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
+    | '/admin-buyer-requests'
     | '/admin-submissions'
+    | '/find-a-home'
     | '/submit-property'
+    | '/markets/$market'
     | '/properties/$slug'
   id:
     | '__root__'
     | '/'
     | '/admin'
+    | '/admin-buyer-requests'
     | '/admin-submissions'
+    | '/find-a-home'
     | '/submit-property'
+    | '/markets/$market'
     | '/properties/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  AdminBuyerRequestsRoute: typeof AdminBuyerRequestsRoute
   AdminSubmissionsRoute: typeof AdminSubmissionsRoute
+  FindAHomeRoute: typeof FindAHomeRoute
   SubmitPropertyRoute: typeof SubmitPropertyRoute
-  PropertiesSlugRoute: typeof PropertiesSlugRoute
   MarketsMarketRoute: typeof MarketsMarketRoute
+  PropertiesSlugRoute: typeof PropertiesSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -121,11 +150,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin-buyer-requests': {
+      id: '/admin-buyer-requests'
+      path: '/admin-buyer-requests'
+      fullPath: '/admin-buyer-requests'
+      preLoaderRoute: typeof AdminBuyerRequestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin-submissions': {
       id: '/admin-submissions'
       path: '/admin-submissions'
       fullPath: '/admin-submissions'
       preLoaderRoute: typeof AdminSubmissionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/find-a-home': {
+      id: '/find-a-home'
+      path: '/find-a-home'
+      fullPath: '/find-a-home'
+      preLoaderRoute: typeof FindAHomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/submit-property': {
@@ -135,18 +178,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubmitPropertyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/properties/$slug': {
-      id: '/properties/$slug'
-      path: '/properties/$slug'
-      fullPath: '/properties/$slug'
-      preLoaderRoute: typeof PropertiesSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/markets/$market': {
       id: '/markets/$market'
       path: '/markets/$market'
       fullPath: '/markets/$market'
       preLoaderRoute: typeof MarketsMarketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/properties/$slug': {
+      id: '/properties/$slug'
+      path: '/properties/$slug'
+      fullPath: '/properties/$slug'
+      preLoaderRoute: typeof PropertiesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -155,10 +198,12 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  AdminBuyerRequestsRoute: AdminBuyerRequestsRoute,
   AdminSubmissionsRoute: AdminSubmissionsRoute,
+  FindAHomeRoute: FindAHomeRoute,
   SubmitPropertyRoute: SubmitPropertyRoute,
-  PropertiesSlugRoute: PropertiesSlugRoute,
   MarketsMarketRoute: MarketsMarketRoute,
+  PropertiesSlugRoute: PropertiesSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
