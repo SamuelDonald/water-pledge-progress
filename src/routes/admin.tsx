@@ -4,7 +4,7 @@ import { ArrowLeft, Mail, Phone, RefreshCw, Star, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   adminAddMedia, adminCheck, adminCreateUpload, adminDeleteProperty, adminListInquiries,
-  adminListProperties, adminLogin, adminMediaAction, adminSaveProperty, adminUpdateInquiry,
+  adminListProperties, adminListPropertySubmissions, adminLogin, adminMediaAction, adminSaveProperty, adminUpdateInquiry,
 } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin")({
@@ -60,7 +60,7 @@ function Lock({ onToken }: { onToken: (t: string) => void }) {
 
 function Dashboard({ token, logout }: { token: string; logout: () => void }) {
   const [tab, setTab] = useState<"properties" | "inquiries">("properties");
-  const [props, setProps] = useState<any[]>([]), [inq, setInq] = useState<any[]>([]);
+  const [props, setProps] = useState<any[]>([]), [inq, setInq] = useState<any[]>([]), [pendingSubs, setPendingSubs] = useState(0);
   const [form, setForm] = useState<any>(empty), [editId, setEditId] = useState<string | null>(null);
   const [err, setErr] = useState(""), [msg, setMsg] = useState(""), [busy, setBusy] = useState(false);
 
@@ -75,6 +75,7 @@ function Dashboard({ token, logout }: { token: string; logout: () => void }) {
   const load = useCallback(() => guard(async () => {
     const [p, i] = await Promise.all([adminListProperties({ data: { token } }), adminListInquiries({ data: { token } })]);
     setProps(p); setInq(i);
+    adminListPropertySubmissions({ data: { token } }).then((s) => setPendingSubs(s.filter((x: any) => x.review_status === "pending").length)).catch(() => {});
   }), [guard, token]);
   useEffect(() => { void load(); }, [load]);
 
@@ -121,7 +122,7 @@ function Dashboard({ token, logout }: { token: string; logout: () => void }) {
         <nav aria-label="Admin sections" className="mx-auto flex max-w-7xl flex-wrap gap-2">
           <Link to="/admin" className="border border-black/15 bg-black px-4 py-3 text-xs uppercase tracking-wider text-white">Admin dashboard</Link>
           <Link to="/admin-buyer-requests" className="border border-black/15 px-4 py-3 text-xs uppercase tracking-wider hover:bg-black hover:text-white">Buyer requests</Link>
-          <Link to="/admin-submissions" className="border border-black/15 px-4 py-3 text-xs uppercase tracking-wider hover:bg-black hover:text-white">Seller submissions</Link>
+          <Link to="/admin-submissions" className="border border-black/15 px-4 py-3 text-xs uppercase tracking-wider hover:bg-black hover:text-white">Seller submissions{pendingSubs ? ` (${pendingSubs} pending)` : ""}</Link>
         </nav>
       </div>
       <div className="mx-auto max-w-7xl px-6 py-10">
