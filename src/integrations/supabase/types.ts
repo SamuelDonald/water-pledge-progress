@@ -14,6 +14,93 @@ export type Database = {
   }
   public: {
     Tables: {
+      buyer_requests: {
+        Row: {
+          additional_notes: string | null
+          admin_notes: string
+          annual_income_range: string | null
+          assigned_to: string | null
+          buying_journey: string
+          contact_consent: boolean
+          contact_email: string
+          contact_name: string
+          contact_phone: string
+          created_at: string
+          credit_score_range: string | null
+          down_payment_range: string
+          employment_situation: string | null
+          home_type: string
+          id: string
+          intended_use: string
+          military_branch: string | null
+          military_status: string
+          opportunity_path: string
+          preferred_area: string | null
+          preferred_city: string | null
+          preferred_markets: string[]
+          price_range: string
+          status: string
+          timeline: string
+          updated_at: string
+        }
+        Insert: {
+          additional_notes?: string | null
+          admin_notes?: string
+          annual_income_range?: string | null
+          assigned_to?: string | null
+          buying_journey: string
+          contact_consent?: boolean
+          contact_email: string
+          contact_name: string
+          contact_phone: string
+          created_at?: string
+          credit_score_range?: string | null
+          down_payment_range: string
+          employment_situation?: string | null
+          home_type: string
+          id?: string
+          intended_use: string
+          military_branch?: string | null
+          military_status: string
+          opportunity_path: string
+          preferred_area?: string | null
+          preferred_city?: string | null
+          preferred_markets?: string[]
+          price_range: string
+          status?: string
+          timeline: string
+          updated_at?: string
+        }
+        Update: {
+          additional_notes?: string | null
+          admin_notes?: string
+          annual_income_range?: string | null
+          assigned_to?: string | null
+          buying_journey?: string
+          contact_consent?: boolean
+          contact_email?: string
+          contact_name?: string
+          contact_phone?: string
+          created_at?: string
+          credit_score_range?: string | null
+          down_payment_range?: string
+          employment_situation?: string | null
+          home_type?: string
+          id?: string
+          intended_use?: string
+          military_branch?: string | null
+          military_status?: string
+          opportunity_path?: string
+          preferred_area?: string | null
+          preferred_city?: string | null
+          preferred_markets?: string[]
+          price_range?: string
+          status?: string
+          timeline?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       campaign_media: {
         Row: {
           campaign_id: string
@@ -605,6 +692,128 @@ export type Database = {
           {
             foreignKeyName: "property_media_property_id_fkey"
             columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_submissions: {
+        Row: {
+          address: string | null
+          admin_notes: string | null
+          asking_price: number
+          authorization_confirmed: boolean
+          bathrooms: number
+          bedrooms: number
+          city: string
+          contract_document_path: string | null
+          contract_notes: string | null
+          contract_price: number | null
+          contract_status: string | null
+          contract_type: string | null
+          created_at: string
+          created_property_id: string | null
+          description: string
+          has_contract_rights: boolean
+          id: string
+          listing_status: string
+          location: string
+          lot_size: number | null
+          media_paths: Json
+          neighborhood: string | null
+          preferred_contact_method: string
+          property_type: string
+          review_status: string
+          reviewed_at: string | null
+          seller_email: string
+          seller_name: string
+          seller_phone: string
+          seller_role: string
+          slug: string
+          sqft: number
+          title: string
+          updated_at: string
+          whatsapp_available: boolean
+        }
+        Insert: {
+          address?: string | null
+          admin_notes?: string | null
+          asking_price?: number
+          authorization_confirmed?: boolean
+          bathrooms?: number
+          bedrooms?: number
+          city: string
+          contract_document_path?: string | null
+          contract_notes?: string | null
+          contract_price?: number | null
+          contract_status?: string | null
+          contract_type?: string | null
+          created_at?: string
+          created_property_id?: string | null
+          description?: string
+          has_contract_rights?: boolean
+          id?: string
+          listing_status?: string
+          location: string
+          lot_size?: number | null
+          media_paths?: Json
+          neighborhood?: string | null
+          preferred_contact_method?: string
+          property_type: string
+          review_status?: string
+          reviewed_at?: string | null
+          seller_email: string
+          seller_name: string
+          seller_phone: string
+          seller_role: string
+          slug: string
+          sqft?: number
+          title: string
+          updated_at?: string
+          whatsapp_available?: boolean
+        }
+        Update: {
+          address?: string | null
+          admin_notes?: string | null
+          asking_price?: number
+          authorization_confirmed?: boolean
+          bathrooms?: number
+          bedrooms?: number
+          city?: string
+          contract_document_path?: string | null
+          contract_notes?: string | null
+          contract_price?: number | null
+          contract_status?: string | null
+          contract_type?: string | null
+          created_at?: string
+          created_property_id?: string | null
+          description?: string
+          has_contract_rights?: boolean
+          id?: string
+          listing_status?: string
+          location?: string
+          lot_size?: number | null
+          media_paths?: Json
+          neighborhood?: string | null
+          preferred_contact_method?: string
+          property_type?: string
+          review_status?: string
+          reviewed_at?: string | null
+          seller_email?: string
+          seller_name?: string
+          seller_phone?: string
+          seller_role?: string
+          slug?: string
+          sqft?: number
+          title?: string
+          updated_at?: string
+          whatsapp_available?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_submissions_created_property_id_fkey"
+            columns: ["created_property_id"]
             isOneToOne: false
             referencedRelation: "properties"
             referencedColumns: ["id"]
