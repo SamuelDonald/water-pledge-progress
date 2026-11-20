@@ -1,56 +1,143 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight, Menu, X, Home as HomeIcon, MapPin, ShieldCheck, LockKeyhole } from "lucide-react";
+import {
+  ArrowRight, ArrowUpRight, BadgeCheck, Building2,
+  CircleHelp, ClipboardCheck, FileCheck2, FileText, KeyRound, Landmark,
+  LockKeyhole, Menu, ShieldCheck, WalletCards, X,
+} from "lucide-react";
 
-export const Route = createFileRoute("/")({ component: Home });
+export const Route = createFileRoute("/")({ component: EscrowHome });
 
-const markets = [
-  { name: "Dallas", slug: "dallas", subtitle: "Dallas–Fort Worth", image: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1800&q=85", copy: "A metropolitan mix of established neighborhoods, modern homes, and room to make your next chapter your own." },
-  { name: "Houston", slug: "houston", subtitle: "Greater Houston", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=85", copy: "A city of distinct communities, leafy residential streets, and many ways to define home." },
-  { name: "Rio Grande Valley", slug: "rio-grande-valley", subtitle: "South Texas", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=85", copy: "A warm South Texas setting with close-knit communities, relaxed living, and homes for different stages of life." },
+const markets = ["Dallas–Fort Worth", "Greater Houston", "Greater San Antonio", "Greater Austin", "Rio Grande Valley", "El Paso", "Corpus Christi", "Central & West Texas"];
+const steps = [
+  { n: "01", title: "Open a transaction", body: "An authorized realtor creates the transaction, records the agreed terms, and invites the buyer through a private link." },
+  { n: "02", title: "Review together", body: "The buyer signs in securely, reviews the transaction details and documents, and confirms their understanding." },
+  { n: "03", title: "Track payment", body: "Payment instructions become available only after the relevant payment provider and escrow arrangements are configured." },
+  { n: "04", title: "Authorize release", body: "A realtor can request a release. An administrator must review and explicitly authorize it before an escrow officer records disbursement." },
+];
+const capabilities = [
+  { icon: FileText, title: "Transaction records", body: "Keep property details, agreed terms, deadlines, and required documents together." },
+  { icon: WalletCards, title: "Payment visibility", body: "Follow submitted, pending verification, and reconciled payment states without confusing them." },
+  { icon: ClipboardCheck, title: "Buyer confirmations", body: "Give buyers a clear place to review documents, confirm milestones, or raise a concern." },
+  { icon: ShieldCheck, title: "Controlled releases", body: "Separate release requests, administrator authorization, and disbursement recording." },
 ];
 
-function Home() {
+function EscrowHome() {
   const [menuOpen, setMenuOpen] = useState(false);
-  return (
-    <main className="min-h-screen bg-[#f5f3ee] text-[#171716]">
-      <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-6 py-6 text-white lg:px-10">
-        <Link to="/" className="font-serif text-2xl sm:text-3xl">Liberty Crest Realty</Link>
-        <nav className="hidden items-center gap-8 text-xs uppercase tracking-[.16em] md:flex">
-          <a href="#markets">Our markets</a><a href="#process">How it works</a><Link to="/submit-property">Submit a property</Link>
-          <Link to="/find-a-home" className="border border-white/70 px-5 py-3 transition hover:bg-white hover:text-black">Find my home <ArrowRight className="ml-2 inline size-4" /></Link>
-        </nav>
-        <button type="button" className="md:hidden" aria-label={menuOpen ? "Close navigation" : "Open navigation"} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
-      </header>
-      {menuOpen ? <nav className="absolute inset-x-0 top-[76px] z-40 space-y-5 bg-[#171716] px-6 py-6 text-sm text-white md:hidden"><a className="block" href="#markets" onClick={() => setMenuOpen(false)}>Our markets</a><a className="block" href="#process" onClick={() => setMenuOpen(false)}>How it works</a><Link className="block" to="/submit-property" onClick={() => setMenuOpen(false)}>Submit a property</Link><Link className="block border border-white/30 p-3" to="/find-a-home" onClick={() => setMenuOpen(false)}>Find my home <ArrowRight className="ml-2 inline size-4" /></Link></nav> : null}
+  const [portal, setPortal] = useState<"buyer" | "realtor" | "officer" | "admin" | null>(null);
+  const [reference, setReference] = useState("");
+  const [notice, setNotice] = useState("");
 
-      <section className="relative flex min-h-[88vh] items-end overflow-hidden bg-[#171716] text-white">
-        <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=85" alt="Residential architecture representing Liberty Crest Realty's Texas markets" className="absolute inset-0 h-full w-full object-cover" fetchPriority="high" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-black/15" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-        <div className="relative mx-auto w-full max-w-7xl px-6 pb-16 pt-36 lg:px-10 lg:pb-24">
-          <p className="eyebrow text-white/65">Dallas · Houston · Rio Grande Valley</p>
-          <div className="mt-6 grid gap-8 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
-            <h1 className="max-w-4xl font-serif text-[clamp(3.7rem,9vw,8.4rem)] leading-[.86] tracking-[-.045em]">Your next home<br /><i>starts here.</i></h1>
-            <div className="max-w-md pb-1"><p className="text-sm leading-7 text-white/75">Tell us what home means to you. We’ll learn your preferences, understand your timeline, and help you explore opportunities across the Texas markets we serve.</p><Link to="/find-a-home" className="mt-7 inline-flex items-center bg-white px-7 py-4 text-xs uppercase tracking-[.16em] text-black transition hover:bg-[#e9e6de]">Start your home request <ArrowRight className="ml-3 size-4" /></Link><p className="mt-4 text-xs text-white/50">A few guided steps. No account required.</p></div>
+  const openPortal = (role: "buyer" | "realtor" | "officer" | "admin") => {
+    setPortal(role);
+    setNotice("");
+    document.getElementById("portal-access")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <main className="min-h-screen bg-[#f4f1e9] text-[#20231f]">
+      <header className="relative z-30 border-b border-[#20231f]/10 bg-[#f4f1e9]">
+        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-5 md:px-10">
+          <a href="#" className="flex items-center gap-3" aria-label="Liberty Crest Escrow Services home">
+            <span className="flex size-10 items-center justify-center border border-[#a88a58]/60 text-[#927346]"><Landmark size={19} strokeWidth={1.5}/></span>
+            <span className="leading-tight"><span className="block font-serif text-[19px] tracking-[.02em]">LIBERTY CREST</span><span className="mt-1 block text-[8px] tracking-[.28em] text-[#8b744f]">ESCROW SERVICES</span></span>
+          </a>
+          <nav className="hidden items-center gap-8 text-[10px] uppercase tracking-[.18em] lg:flex">
+            <a className="hover:text-[#927346]" href="#how-it-works">How it works</a>
+            <a className="hover:text-[#927346]" href="#services">Our approach</a>
+            <a className="hover:text-[#927346]" href="#texas">Texas coverage</a>
+            <button onClick={() => openPortal("realtor")} className="border border-[#20231f]/30 px-5 py-3 hover:border-[#927346] hover:text-[#927346]">Realtor access <ArrowUpRight className="ml-2 inline" size={13}/></button>
+            <button onClick={() => openPortal("buyer")} className="bg-[#202b26] px-5 py-3 text-[#f4f1e9] hover:bg-[#34453c]">Buyer transaction <ArrowRight className="ml-2 inline" size={13}/></button>
+          </nav>
+          <button className="lg:hidden" aria-label="Toggle navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X/> : <Menu/>}</button>
+        </div>
+        {menuOpen && <nav className="grid gap-4 border-t border-black/10 bg-[#f4f1e9] px-6 py-6 text-xs uppercase tracking-widest lg:hidden"><a href="#how-it-works" onClick={() => setMenuOpen(false)}>How it works</a><a href="#services" onClick={() => setMenuOpen(false)}>Our approach</a><a href="#texas" onClick={() => setMenuOpen(false)}>Texas coverage</a><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("realtor");}}>Realtor access</button><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("buyer");}}>Buyer transaction</button></nav>}
+      </header>
+
+      <section className="relative overflow-hidden bg-[#202b26] text-[#f4f1e9]">
+        <div className="absolute inset-0 opacity-[.13]" style={{backgroundImage:"linear-gradient(90deg, transparent 49.9%, #d9c7a5 50%, transparent 50.1%),linear-gradient(#d9c7a5 1px,transparent 1px)",backgroundSize:"120px 120px"}}/>
+        <div className="relative mx-auto grid min-h-[660px] max-w-[1440px] items-end gap-14 px-6 pb-16 pt-24 md:px-10 lg:grid-cols-[1.1fr_.9fr] lg:pb-24">
+          <div className="max-w-3xl">
+            <p className="mb-8 flex items-center gap-3 text-[9px] uppercase tracking-[.3em] text-[#c6ae83]"><span className="h-px w-10 bg-[#c6ae83]"/> TEXAS RESIDENTIAL TRANSACTION COORDINATION</p>
+            <h1 className="font-serif text-[clamp(3.6rem,8.2vw,8.1rem)] leading-[.91] tracking-[-.045em]">Confidence in<br/><i className="font-normal text-[#d5c3a2]">every exchange.</i></h1>
+            <p className="mt-8 max-w-xl text-sm leading-7 text-white/65 md:text-base">A more considered way to coordinate residential real-estate transactions. Bring the people, paperwork, payment milestones, and release approvals into one clear record.</p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <button onClick={() => openPortal("realtor")} className="bg-[#d5c3a2] px-7 py-4 text-[10px] uppercase tracking-[.18em] text-[#202b26] hover:bg-[#e4d7bf]">Realtor registration <ArrowRight className="ml-3 inline" size={14}/></button>
+              <a href="#how-it-works" className="border border-white/35 px-7 py-4 text-[10px] uppercase tracking-[.18em] hover:border-white">Explore the process <ArrowUpRight className="ml-3 inline" size={14}/></a>
+            </div>
+            <div className="mt-16 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/15 pt-6 text-[9px] uppercase tracking-[.16em] text-white/45"><span className="flex items-center gap-2"><ShieldCheck size={14}/> Role-based access</span><span className="flex items-center gap-2"><FileCheck2 size={14}/> Document-led workflow</span><span className="flex items-center gap-2"><LockKeyhole size={14}/> Admin-authorized releases</span></div>
+          </div>
+          <div className="relative hidden min-h-[440px] items-end justify-end lg:flex">
+            <div className="absolute right-10 top-6 h-[390px] w-[78%] border border-[#d5c3a2]/30"/>
+            <div className="relative z-10 w-[82%] border border-white/15 bg-[#293831]/90 p-7 shadow-2xl backdrop-blur-sm">
+              <div className="flex items-center justify-between border-b border-white/15 pb-5"><span className="text-[9px] uppercase tracking-[.22em] text-[#d5c3a2]">Transaction overview</span><span className="size-2 rounded-full bg-[#c3a878]"/></div>
+              <p className="mt-7 font-serif text-3xl">One shared record.</p><p className="mt-2 text-xs leading-6 text-white/50">A coordinated view of the transaction, from invitation through final review.</p>
+              <div className="mt-8 space-y-5">
+                {[["Transaction details","Recorded"],["Buyer document review","In progress"],["Payment reconciliation","Provider setup pending"],["Release authorization","Administrator review"]].map(([label,status],i)=><div key={label} className="flex items-center justify-between gap-4 border-b border-white/10 pb-4"><span className="flex items-center gap-3 text-xs text-white/75"><span className="font-serif text-sm text-[#c6ae83]">0{i+1}</span>{label}</span><span className="text-[9px] uppercase tracking-wider text-[#d5c3a2]/70">{status}</span></div>)}
+              </div>
+              <p className="mt-6 text-[9px] leading-5 text-white/35">Illustrative workflow preview · not a live transaction or payment status</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-black/10 bg-[#e9e6de] px-6 py-7 lg:px-10"><div className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-3"><div className="flex gap-3"><HomeIcon className="mt-1 size-5 shrink-0" /><div><p className="font-serif text-xl">Tell us what you need</p><p className="mt-2 text-sm leading-6 text-black/55">Property type, budget, timing, and preferences.</p></div></div><div className="flex gap-3"><MapPin className="mt-1 size-5 shrink-0" /><div><p className="font-serif text-xl">Choose your market</p><p className="mt-2 text-sm leading-6 text-black/55">Narrow your search to the communities that fit.</p></div></div><div className="flex gap-3"><ShieldCheck className="mt-1 size-5 shrink-0" /><div><p className="font-serif text-xl">Get a personal follow-up</p><p className="mt-2 text-sm leading-6 text-black/55">Our team reviews your request and contacts you about next steps.</p></div></div></div></section>
-
-      <section id="markets" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p className="eyebrow">Where we work</p><h2 className="section-title mt-3">Three markets.<br /><i>One clear next step.</i></h2></div><p className="max-w-md text-sm leading-7 text-black/55">Start with the area that feels right. You can share a city, neighborhood, or ZIP code in your request — and you can tell us if you’re open to more than one market.</p></div>
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
-          {markets.map((market) => <Link key={market.name} to="/markets/$market" params={{ market: market.slug }} aria-label={"Explore " + market.name} className="group relative block min-h-[440px] overflow-hidden bg-black outline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-black"><img src={market.image} alt={"Residential architecture and neighborhoods in " + market.name} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" loading="lazy" /><div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-black/5 transition group-hover:from-black/90" /><div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-7"><p className="text-xs uppercase tracking-[.16em] text-white/65">{market.subtitle}</p><h3 className="mt-2 font-serif text-4xl">{market.name}</h3><p className="mt-3 max-w-sm text-sm leading-6 text-white/75">{market.copy}</p><span className="mt-5 inline-flex items-center border-b border-white/60 pb-2 text-xs uppercase tracking-[.14em]">Discover the area <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" /></span></div></Link>)}
+      <section className="border-b border-black/10 bg-[#e9e4d9]">
+        <div className="mx-auto grid max-w-[1440px] gap-8 px-6 py-8 md:grid-cols-3 md:px-10">
+          <div><p className="text-[9px] uppercase tracking-[.22em] text-[#8b744f]">01 / People</p><p className="mt-2 font-serif text-2xl">One coordinated workspace</p><p className="mt-2 text-xs leading-6 text-black/55">Realtors, buyers, administrators, and escrow officers have distinct responsibilities.</p></div>
+          <div><p className="text-[9px] uppercase tracking-[.22em] text-[#8b744f]">02 / Process</p><p className="mt-2 font-serif text-2xl">A clear transaction journey</p><p className="mt-2 text-xs leading-6 text-black/55">Keep terms, documents, confirmations, and exceptions visible in context.</p></div>
+          <div><p className="text-[9px] uppercase tracking-[.22em] text-[#8b744f]">03 / Oversight</p><p className="mt-2 font-serif text-2xl">Deliberate release controls</p><p className="mt-2 text-xs leading-6 text-black/55">Every release requires explicit administrator authorization before disbursement is recorded.</p></div>
         </div>
       </section>
 
-      <section id="process" className="bg-[#171716] px-6 py-20 text-white lg:px-10 lg:py-24"><div className="mx-auto max-w-7xl"><p className="eyebrow text-white/45">A guided process</p><h2 className="section-title mt-3 text-white">Clear from the<br /><i>very beginning.</i></h2><div className="mt-12 grid gap-8 md:grid-cols-3"><div className="border-t border-white/20 pt-5"><p className="eyebrow text-white/45">01 / Share</p><h3 className="mt-3 font-serif text-2xl">Describe your goals</h3><p className="mt-3 text-sm leading-6 text-white/60">Answer a few guided questions about the home, budget, timeline, and area you have in mind.</p></div><div className="border-t border-white/20 pt-5"><p className="eyebrow text-white/45">02 / Review</p><h3 className="mt-3 font-serif text-2xl">We review your request</h3><p className="mt-3 text-sm leading-6 text-white/60">Our team uses your preferences to understand what opportunities may fit and what questions need a follow-up.</p></div><div className="border-t border-white/20 pt-5"><p className="eyebrow text-white/45">03 / Connect</p><h3 className="mt-3 font-serif text-2xl">An agent follows up</h3><p className="mt-3 text-sm leading-6 text-white/60">We contact you about possible next steps. Submitting a request does not guarantee a property, financing, or a purchase.</p></div></div><Link to="/find-a-home" className="mt-10 inline-flex items-center bg-white px-7 py-4 text-xs uppercase tracking-[.16em] text-black">Tell us what you're looking for <ArrowRight className="ml-3 size-4" /></Link></div></section>
+      <section id="services" className="mx-auto max-w-[1440px] px-6 py-24 md:px-10 lg:py-32">
+        <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
+          <div><p className="text-[9px] uppercase tracking-[.24em] text-[#8b744f]">The Liberty Crest approach</p><h2 className="mt-5 max-w-lg font-serif text-6xl leading-[.98] tracking-tight md:text-7xl">Structure for<br/><i>important</i><br/>decisions.</h2><p className="mt-7 max-w-sm text-sm leading-7 text-black/55">Real-estate transactions involve more than a payment. They require shared context, careful documentation, and accountable decisions at every milestone.</p></div>
+          <div className="grid gap-0 sm:grid-cols-2">
+            {capabilities.map(({icon:Icon,title,body},i)=><article key={title} className="border-t border-black/15 py-7 sm:px-7 sm:nth-[2n]:border-l sm:nth-[2n]:border-black/15"><span className="flex size-10 items-center justify-center border border-[#a88a58]/50 text-[#927346]"><Icon size={18}/></span><p className="mt-6 text-[9px] uppercase tracking-[.2em] text-[#8b744f]">0{i+1}</p><h3 className="mt-2 font-serif text-2xl">{title}</h3><p className="mt-3 max-w-sm text-xs leading-6 text-black/55">{body}</p></article>)}
+          </div>
+        </div>
+      </section>
 
-      <section className="bg-[#e9e6de] px-6 py-20 lg:px-10"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="eyebrow">For owners and contract holders</p><h2 className="section-title mt-3">Have an opportunity<br /><i>to share?</i></h2><p className="mt-4 max-w-xl text-sm leading-7 text-black/60">Property owners and authorized contract holders can still submit opportunities privately for review. Seller submissions remain a separate process.</p></div><Link to="/submit-property" className="inline-flex w-fit items-center border border-black/20 px-7 py-4 text-xs uppercase tracking-[.16em]">Submit a property <ArrowRight className="ml-3 size-4" /></Link></div></section>
+      <section id="how-it-works" className="bg-[#202b26] px-6 py-24 text-[#f4f1e9] md:px-10 lg:py-28">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><p className="text-[9px] uppercase tracking-[.24em] text-[#c6ae83]">The transaction lifecycle</p><h2 className="mt-4 font-serif text-5xl leading-none md:text-7xl">A considered process.<br/><i className="font-normal text-[#d5c3a2]">At every step.</i></h2></div><p className="max-w-sm text-sm leading-7 text-white/55">The transaction record follows a defined sequence, with clear handoffs and review points.</p></div>
+          <div className="mt-16 grid gap-8 md:grid-cols-2 xl:grid-cols-4">{steps.map(s=><article key={s.n} className="border-t border-white/20 pt-6"><span className="font-serif text-4xl text-[#c6ae83]">{s.n}</span><h3 className="mt-8 font-serif text-2xl">{s.title}</h3><p className="mt-4 text-xs leading-7 text-white/55">{s.body}</p></article>)}</div>
+        </div>
+      </section>
 
-      <footer className="flex flex-col gap-4 bg-[#171716] px-6 py-8 text-[10px] uppercase tracking-[.15em] text-white/45 sm:flex-row sm:items-center sm:justify-between lg:px-10"><span>© 2026 Liberty Crest Realty · Dallas · Houston · Rio Grande Valley</span><Link to="/admin" aria-label="Admin sign in" title="Admin sign in" className="inline-flex size-10 items-center justify-center self-end border border-white/20 text-white/60 transition hover:border-white/60 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white sm:self-auto"><LockKeyhole className="size-4" aria-hidden="true" /></Link></footer>
+      <section id="texas" className="mx-auto grid max-w-[1440px] gap-12 px-6 py-24 md:px-10 lg:grid-cols-[.9fr_1.1fr] lg:py-28">
+        <div><p className="text-[9px] uppercase tracking-[.24em] text-[#8b744f]">Rooted in Texas</p><h2 className="mt-5 font-serif text-6xl leading-[.98] tracking-tight md:text-7xl">Local knowledge.<br/><i>Statewide reach.</i></h2><p className="mt-7 max-w-md text-sm leading-7 text-black/55">Our planned coverage includes major metropolitan areas and communities across Texas. Featured locations are starting points, not limits on where a transaction can be considered.</p><a href="#portal-access" className="mt-8 inline-flex items-center border-b border-[#927346] pb-2 text-[10px] uppercase tracking-[.18em]">Speak with our team <ArrowRight className="ml-3" size={14}/></a></div>
+        <div className="grid grid-cols-2 gap-x-8 gap-y-0 border-t border-black/15 pt-2 sm:grid-cols-2">{markets.map((m,i)=><div key={m} className="flex items-center gap-4 border-b border-black/10 py-5"><span className="font-serif text-sm text-[#a88a58]">0{i+1}</span><span className="text-xs tracking-wide">{m}</span></div>)}</div>
+      </section>
+
+      <section className="border-y border-black/10 bg-[#e9e4d9] px-6 py-20 md:px-10">
+        <div className="mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[.8fr_1.2fr]">
+          <div><p className="text-[9px] uppercase tracking-[.24em] text-[#8b744f]">Payment method availability</p><h2 className="mt-4 font-serif text-5xl leading-none md:text-6xl">Designed for<br/><i>clear accounting.</i></h2><p className="mt-6 max-w-sm text-xs leading-6 text-black/55">Wire transfer and cryptocurrency are planned payment methods. Their provider, custody, and settlement configurations are not yet active.</p></div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="border border-black/15 bg-[#f4f1e9] p-7"><Landmark className="text-[#927346]" size={22}/><h3 className="mt-6 font-serif text-2xl">Bank wire transfer</h3><p className="mt-3 text-xs leading-6 text-black/55">Dedicated escrow banking and payment instructions will be connected after the approved banking and reconciliation setup is complete.</p><span className="mt-6 inline-flex items-center gap-2 border-t border-black/10 pt-4 text-[9px] uppercase tracking-[.16em] text-[#8b744f]"><span className="size-1.5 rounded-full bg-[#b28e57]"/> Setup pending</span></div>
+            <div className="border border-black/15 bg-[#f4f1e9] p-7"><WalletCards className="text-[#927346]" size={22}/><h3 className="mt-6 font-serif text-2xl">Cryptocurrency</h3><p className="mt-3 text-xs leading-6 text-black/55">Supported assets, networks, custody, conversion, and confirmation rules will be defined with the selected provider before activation.</p><span className="mt-6 inline-flex items-center gap-2 border-t border-black/10 pt-4 text-[9px] uppercase tracking-[.16em] text-[#8b744f]"><span className="size-1.5 rounded-full bg-[#b28e57]"/> Setup pending</span></div>
+          </div>
+        </div>
+        <p className="mx-auto mt-8 max-w-[1440px] text-[10px] leading-5 text-black/45">Payment options shown for product planning only. No payment instructions, wallet addresses, deposits, custody, or disbursements are currently enabled through this interface.</p>
+      </section>
+
+      <section id="portal-access" className="mx-auto max-w-[1440px] px-6 py-24 md:px-10 lg:py-28">
+        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p className="text-[9px] uppercase tracking-[.24em] text-[#8b744f]">Secure workspace access</p><h2 className="mt-4 font-serif text-5xl leading-none md:text-6xl">The right access.<br/><i>The right role.</i></h2></div><p className="max-w-sm text-xs leading-6 text-black/55">Choose your role to see the correct entry point. Account authentication and live transaction services are being connected separately.</p></div>
+        <div className="mt-12 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {([{key:"buyer",name:"Buyer",desc:"Open an invitation, review transaction documents, and follow your milestones.",icon:KeyRound},{key:"realtor",name:"Realtor",desc:"Register for verification or manage transactions after authorization.",icon:Building2},{key:"officer",name:"Escrow officer",desc:"Review assigned records and record authorized disbursement activity.",icon:FileCheck2},{key:"admin",name:"Administrator",desc:"Oversee access, transactions, payment review, and release authorization.",icon:BadgeCheck}] as const).map(({key,name,desc,icon:Icon})=><button key={key} onClick={()=>{setPortal(key);setNotice("");}} className={`group border p-6 text-left transition ${portal===key?"border-[#927346] bg-[#e9e4d9]":"border-black/15 hover:border-[#927346]"}`}><span className="flex items-center justify-between"><Icon size={20} className="text-[#927346]"/><ArrowUpRight size={15} className="text-black/35 transition group-hover:-translate-y-1 group-hover:translate-x-1"/></span><h3 className="mt-8 font-serif text-2xl">{name}</h3><p className="mt-3 min-h-[60px] text-xs leading-6 text-black/55">{desc}</p><span className="mt-6 block border-t border-black/10 pt-4 text-[9px] uppercase tracking-[.18em] text-[#8b744f]">Select role <ArrowRight className="ml-2 inline" size={12}/></span></button>)}
+        </div>
+        {portal && <div className="mt-6 border border-[#927346]/50 bg-[#f8f6f0] p-6 md:p-9">
+          <div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-[9px] uppercase tracking-[.2em] text-[#8b744f]">Selected workspace</p><h3 className="mt-2 font-serif text-3xl capitalize">{portal==="officer"?"Escrow officer":portal} access</h3></div><button onClick={()=>setPortal(null)} aria-label="Close selected workspace" className="border border-black/15 p-2"><X size={16}/></button></div>
+          {portal==="buyer" ? <div className="mt-6 max-w-xl"><label htmlFor="transaction-reference" className="text-[9px] uppercase tracking-[.16em] text-black/55">Invitation reference</label><div className="mt-2 flex flex-col gap-2 sm:flex-row"><input id="transaction-reference" value={reference} onChange={e=>setReference(e.target.value)} placeholder="Enter the reference from your invitation" className="min-w-0 flex-1 border border-black/20 bg-white px-4 py-3 text-sm outline-none focus:border-[#927346]"/><button onClick={()=>setNotice(reference.trim()?"Invitation lookup will be enabled when buyer authentication and transaction services are connected. No transaction has been accessed.":"Enter the invitation reference to continue.")} className="bg-[#202b26] px-6 py-3 text-[9px] uppercase tracking-[.16em] text-white">Continue <ArrowRight className="ml-2 inline" size={13}/></button></div><p className="mt-3 text-[10px] text-black/45">Buyers enter using a private invitation sent by their authorized realtor.</p></div> : <div className="mt-6 max-w-xl"><p className="text-sm leading-7 text-black/60">{portal==="realtor"?"Realtor registration and verification will be available here. New applicants require administrator approval before they can create or manage transactions.":portal==="officer"?"Escrow officer sign-in will provide access to assigned transactions, reconciliation records, and administrator-authorized disbursement tasks.":"Administrator sign-in will provide controls for realtor verification, transaction oversight, payment review, release decisions, and the audit log."}</p><button onClick={()=>setNotice("Secure sign-in and role verification are not connected yet. This interface does not create an account or grant access.")} className="mt-5 border border-[#202b26] px-6 py-3 text-[9px] uppercase tracking-[.16em] hover:bg-[#202b26] hover:text-white">{portal==="realtor"?"Begin realtor registration":"Continue to secure sign in"} <ArrowRight className="ml-2 inline" size={13}/></button></div>}
+          {notice && <p role="status" className="mt-4 border-l-2 border-[#a88a58] pl-3 text-xs leading-6 text-[#69583d]">{notice}</p>}
+        </div>}
+      </section>
+
+      <section className="bg-[#202b26] px-6 py-20 text-[#f4f1e9] md:px-10">
+        <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="text-[9px] uppercase tracking-[.24em] text-[#c6ae83]">Liberty Crest Escrow Services</p><h2 className="mt-4 max-w-3xl font-serif text-5xl leading-[.98] md:text-7xl">Bring clarity to<br/><i className="font-normal text-[#d5c3a2]">the next transaction.</i></h2></div><button onClick={()=>openPortal("realtor")} className="flex w-fit items-center gap-5 border border-[#d5c3a2]/60 px-7 py-5 text-[9px] uppercase tracking-[.18em] hover:bg-white/10">Access realtor workspace <ArrowUpRight size={16}/></button></div>
+      </section>
+
+      <footer className="bg-[#202b26] px-6 pb-8 text-white/45 md:px-10"><div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-4 border-t border-white/15 pt-6 text-[9px] uppercase tracking-[.16em] sm:flex-row"><span>© 2026 Liberty Crest Escrow Services · Texas</span><span className="flex items-center gap-2"><CircleHelp size={13}/> Payment and custody integrations not yet active</span></div></footer>
     </main>
   );
 }
