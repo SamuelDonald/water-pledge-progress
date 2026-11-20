@@ -15,6 +15,13 @@
       "when": 1793725857305,
       "tag": "0001_property_submissions_intake",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795174802357,
+      "tag": "0002_escrow_core",
+      "breakpoints": true
     }
   ]
 }

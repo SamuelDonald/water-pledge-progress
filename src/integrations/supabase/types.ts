@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_events: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          detail: Json
+          id: string
+          transaction_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          detail?: Json
+          id?: string
+          transaction_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          detail?: Json
+          id?: string
+          transaction_id?: string | null
+        }
+        Relationships: []
+      }
       buyer_requests: {
         Row: {
           additional_notes: string | null
@@ -439,6 +466,72 @@ export type Database = {
           },
         ]
       }
+      escrow_transactions: {
+        Row: {
+          buyer_confirmed_at: string | null
+          buyer_email: string
+          buyer_id: string | null
+          city: string
+          created_at: string
+          currency: string
+          deposit_amount_cents: number
+          id: string
+          payment_deadline: string | null
+          property_address: string
+          realtor_id: string
+          reference: string
+          refund_conditions: string | null
+          release_conditions: string | null
+          state: string
+          status: string
+          transaction_type: string
+          updated_at: string
+          zip: string | null
+        }
+        Insert: {
+          buyer_confirmed_at?: string | null
+          buyer_email: string
+          buyer_id?: string | null
+          city: string
+          created_at?: string
+          currency?: string
+          deposit_amount_cents: number
+          id?: string
+          payment_deadline?: string | null
+          property_address: string
+          realtor_id: string
+          reference?: string
+          refund_conditions?: string | null
+          release_conditions?: string | null
+          state?: string
+          status?: string
+          transaction_type?: string
+          updated_at?: string
+          zip?: string | null
+        }
+        Update: {
+          buyer_confirmed_at?: string | null
+          buyer_email?: string
+          buyer_id?: string | null
+          city?: string
+          created_at?: string
+          currency?: string
+          deposit_amount_cents?: number
+          id?: string
+          payment_deadline?: string | null
+          property_address?: string
+          realtor_id?: string
+          reference?: string
+          refund_conditions?: string | null
+          release_conditions?: string | null
+          state?: string
+          status?: string
+          transaction_type?: string
+          updated_at?: string
+          zip?: string | null
+        }
+        Relationships: []
+      }
       financial_reports: {
         Row: {
           admin_cents: number
@@ -567,6 +660,80 @@ export type Database = {
           role_es?: string
           sort_order?: number
           website?: string | null
+        }
+        Relationships: []
+      }
+      payment_records: {
+        Row: {
+          amount_cents: number
+          buyer_reference: string | null
+          created_at: string
+          id: string
+          method: string
+          status: string
+          submitted_by: string | null
+          transaction_id: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          amount_cents: number
+          buyer_reference?: string | null
+          created_at?: string
+          id?: string
+          method: string
+          status?: string
+          submitted_by?: string | null
+          transaction_id: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          buyer_reference?: string | null
+          created_at?: string
+          id?: string
+          method?: string
+          status?: string
+          submitted_by?: string | null
+          transaction_id?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_records_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "escrow_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -820,6 +987,95 @@ export type Database = {
           },
         ]
       }
+      realtor_applications: {
+        Row: {
+          brokerage: string
+          created_at: string
+          full_name: string
+          id: string
+          license_number: string
+          markets: string | null
+          phone: string | null
+          review_note: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          brokerage: string
+          created_at?: string
+          full_name: string
+          id?: string
+          license_number: string
+          markets?: string | null
+          phone?: string | null
+          review_note?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          brokerage?: string
+          created_at?: string
+          full_name?: string
+          id?: string
+          license_number?: string
+          markets?: string | null
+          phone?: string | null
+          review_note?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      release_requests: {
+        Row: {
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_note: string | null
+          id: string
+          reason: string
+          requested_by: string
+          status: string
+          transaction_id: string
+        }
+        Insert: {
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          id?: string
+          reason: string
+          requested_by: string
+          status?: string
+          transaction_id: string
+        }
+        Update: {
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          id?: string
+          reason?: string
+          requested_by?: string
+          status?: string
+          transaction_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "release_requests_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "escrow_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stories: {
         Row: {
           author_name: string
@@ -895,6 +1151,68 @@ export type Database = {
           },
         ]
       }
+      transaction_invitations: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          revoked_at: string | null
+          token_hash: string
+          transaction_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          revoked_at?: string | null
+          token_hash: string
+          transaction_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          revoked_at?: string | null
+          token_hash?: string
+          transaction_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transaction_invitations_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "escrow_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -909,9 +1227,16 @@ export type Database = {
         }[]
       }
       get_crisis_stats: { Args: never; Returns: Json }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "realtor" | "buyer" | "escrow_officer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1038,6 +1363,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "realtor", "buyer", "escrow_officer"],
+    },
   },
 } as const
