@@ -404,6 +404,57 @@ export type Database = {
           },
         ]
       }
+      disbursement_records: {
+        Row: {
+          amount_cents: number
+          id: string
+          notes: string | null
+          recipient_name: string
+          recorded_at: string
+          recorded_by: string
+          reference: string
+          release_request_id: string
+          transaction_id: string
+        }
+        Insert: {
+          amount_cents: number
+          id?: string
+          notes?: string | null
+          recipient_name: string
+          recorded_at?: string
+          recorded_by: string
+          reference: string
+          release_request_id: string
+          transaction_id: string
+        }
+        Update: {
+          amount_cents?: number
+          id?: string
+          notes?: string | null
+          recipient_name?: string
+          recorded_at?: string
+          recorded_by?: string
+          reference?: string
+          release_request_id?: string
+          transaction_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disbursement_records_release_request_id_fkey"
+            columns: ["release_request_id"]
+            isOneToOne: true
+            referencedRelation: "release_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disbursement_records_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "escrow_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       donations: {
         Row: {
           amount_cents: number
@@ -1147,6 +1198,47 @@ export type Database = {
             columns: ["community_id"]
             isOneToOne: false
             referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transaction_documents: {
+        Row: {
+          created_at: string
+          file_name: string
+          file_size_bytes: number
+          id: string
+          mime_type: string
+          storage_path: string
+          transaction_id: string
+          uploaded_by: string
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          file_size_bytes: number
+          id?: string
+          mime_type: string
+          storage_path: string
+          transaction_id: string
+          uploaded_by: string
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          file_size_bytes?: number
+          id?: string
+          mime_type?: string
+          storage_path?: string
+          transaction_id?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transaction_documents_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "escrow_transactions"
             referencedColumns: ["id"]
           },
         ]

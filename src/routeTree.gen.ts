@@ -13,10 +13,15 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminBuyerRequestsRouteImport } from './routes/admin-buyer-requests'
 import { Route as AdminSubmissionsRouteImport } from './routes/admin-submissions'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as EscrowOfficerRouteImport } from './routes/escrow-officer'
 import { Route as FindAHomeRouteImport } from './routes/find-a-home'
+import { Route as RealtorRouteImport } from './routes/realtor'
 import { Route as SubmitPropertyRouteImport } from './routes/submit-property'
+import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as MarketsMarketRouteImport } from './routes/markets.$market'
 import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
+import { Route as TransactionsIdRouteImport } from './routes/transactions.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -38,14 +43,34 @@ const AdminSubmissionsRoute = AdminSubmissionsRouteImport.update({
   path: '/admin-submissions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EscrowOfficerRoute = EscrowOfficerRouteImport.update({
+  id: '/escrow-officer',
+  path: '/escrow-officer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FindAHomeRoute = FindAHomeRouteImport.update({
   id: '/find-a-home',
   path: '/find-a-home',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RealtorRoute = RealtorRouteImport.update({
+  id: '/realtor',
+  path: '/realtor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubmitPropertyRoute = SubmitPropertyRouteImport.update({
   id: '/submit-property',
   path: '/submit-property',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InviteTokenRoute = InviteTokenRouteImport.update({
+  id: '/invite/$token',
+  path: '/invite/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketsMarketRoute = MarketsMarketRouteImport.update({
@@ -58,26 +83,41 @@ const PropertiesSlugRoute = PropertiesSlugRouteImport.update({
   path: '/properties/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TransactionsIdRoute = TransactionsIdRouteImport.update({
+  id: '/transactions/$id',
+  path: '/transactions/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/admin-buyer-requests': typeof AdminBuyerRequestsRoute
   '/admin-submissions': typeof AdminSubmissionsRoute
+  '/auth': typeof AuthRoute
+  '/escrow-officer': typeof EscrowOfficerRoute
   '/find-a-home': typeof FindAHomeRoute
+  '/realtor': typeof RealtorRoute
   '/submit-property': typeof SubmitPropertyRoute
+  '/invite/$token': typeof InviteTokenRoute
   '/markets/$market': typeof MarketsMarketRoute
   '/properties/$slug': typeof PropertiesSlugRoute
+  '/transactions/$id': typeof TransactionsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/admin-buyer-requests': typeof AdminBuyerRequestsRoute
   '/admin-submissions': typeof AdminSubmissionsRoute
+  '/auth': typeof AuthRoute
+  '/escrow-officer': typeof EscrowOfficerRoute
   '/find-a-home': typeof FindAHomeRoute
+  '/realtor': typeof RealtorRoute
   '/submit-property': typeof SubmitPropertyRoute
+  '/invite/$token': typeof InviteTokenRoute
   '/markets/$market': typeof MarketsMarketRoute
   '/properties/$slug': typeof PropertiesSlugRoute
+  '/transactions/$id': typeof TransactionsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -85,10 +125,15 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/admin-buyer-requests': typeof AdminBuyerRequestsRoute
   '/admin-submissions': typeof AdminSubmissionsRoute
+  '/auth': typeof AuthRoute
+  '/escrow-officer': typeof EscrowOfficerRoute
   '/find-a-home': typeof FindAHomeRoute
+  '/realtor': typeof RealtorRoute
   '/submit-property': typeof SubmitPropertyRoute
+  '/invite/$token': typeof InviteTokenRoute
   '/markets/$market': typeof MarketsMarketRoute
   '/properties/$slug': typeof PropertiesSlugRoute
+  '/transactions/$id': typeof TransactionsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,30 +142,45 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin-buyer-requests'
     | '/admin-submissions'
+    | '/auth'
+    | '/escrow-officer'
     | '/find-a-home'
+    | '/realtor'
     | '/submit-property'
+    | '/invite/$token'
     | '/markets/$market'
     | '/properties/$slug'
+    | '/transactions/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
     | '/admin-buyer-requests'
     | '/admin-submissions'
+    | '/auth'
+    | '/escrow-officer'
     | '/find-a-home'
+    | '/realtor'
     | '/submit-property'
+    | '/invite/$token'
     | '/markets/$market'
     | '/properties/$slug'
+    | '/transactions/$id'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/admin-buyer-requests'
     | '/admin-submissions'
+    | '/auth'
+    | '/escrow-officer'
     | '/find-a-home'
+    | '/realtor'
     | '/submit-property'
+    | '/invite/$token'
     | '/markets/$market'
     | '/properties/$slug'
+    | '/transactions/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -128,10 +188,15 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AdminBuyerRequestsRoute: typeof AdminBuyerRequestsRoute
   AdminSubmissionsRoute: typeof AdminSubmissionsRoute
+  AuthRoute: typeof AuthRoute
+  EscrowOfficerRoute: typeof EscrowOfficerRoute
   FindAHomeRoute: typeof FindAHomeRoute
+  RealtorRoute: typeof RealtorRoute
   SubmitPropertyRoute: typeof SubmitPropertyRoute
+  InviteTokenRoute: typeof InviteTokenRoute
   MarketsMarketRoute: typeof MarketsMarketRoute
   PropertiesSlugRoute: typeof PropertiesSlugRoute
+  TransactionsIdRoute: typeof TransactionsIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -164,6 +229,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSubmissionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/escrow-officer': {
+      id: '/escrow-officer'
+      path: '/escrow-officer'
+      fullPath: '/escrow-officer'
+      preLoaderRoute: typeof EscrowOfficerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/find-a-home': {
       id: '/find-a-home'
       path: '/find-a-home'
@@ -171,11 +250,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FindAHomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/realtor': {
+      id: '/realtor'
+      path: '/realtor'
+      fullPath: '/realtor'
+      preLoaderRoute: typeof RealtorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/submit-property': {
       id: '/submit-property'
       path: '/submit-property'
       fullPath: '/submit-property'
       preLoaderRoute: typeof SubmitPropertyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invite/$token': {
+      id: '/invite/$token'
+      path: '/invite/$token'
+      fullPath: '/invite/$token'
+      preLoaderRoute: typeof InviteTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/markets/$market': {
@@ -192,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PropertiesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/transactions/$id': {
+      id: '/transactions/$id'
+      path: '/transactions/$id'
+      fullPath: '/transactions/$id'
+      preLoaderRoute: typeof TransactionsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -200,10 +300,15 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AdminBuyerRequestsRoute: AdminBuyerRequestsRoute,
   AdminSubmissionsRoute: AdminSubmissionsRoute,
+  AuthRoute: AuthRoute,
+  EscrowOfficerRoute: EscrowOfficerRoute,
   FindAHomeRoute: FindAHomeRoute,
+  RealtorRoute: RealtorRoute,
   SubmitPropertyRoute: SubmitPropertyRoute,
+  InviteTokenRoute: InviteTokenRoute,
   MarketsMarketRoute: MarketsMarketRoute,
   PropertiesSlugRoute: PropertiesSlugRoute,
+  TransactionsIdRoute: TransactionsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

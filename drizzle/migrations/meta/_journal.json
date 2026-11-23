@@ -22,6 +22,20 @@
       "when": 1795174802357,
       "tag": "0002_escrow_core",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795477348765,
+      "tag": "0003_escrow_transaction_documents_and_disbursements",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795477382253,
+      "tag": "0004_lock_escrow_document_storage",
+      "breakpoints": true
     }
   ]
 }
