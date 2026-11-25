@@ -16,8 +16,11 @@ import { Route as AdminSubmissionsRouteImport } from './routes/admin-submissions
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as EscrowOfficerRouteImport } from './routes/escrow-officer'
 import { Route as FindAHomeRouteImport } from './routes/find-a-home'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as RealtorRouteImport } from './routes/realtor'
+import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SubmitPropertyRouteImport } from './routes/submit-property'
+import { Route as TexasCoverageRouteImport } from './routes/texas-coverage'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as MarketsMarketRouteImport } from './routes/markets.$market'
 import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
@@ -58,14 +61,29 @@ const FindAHomeRoute = FindAHomeRouteImport.update({
   path: '/find-a-home',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RealtorRoute = RealtorRouteImport.update({
   id: '/realtor',
   path: '/realtor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubmitPropertyRoute = SubmitPropertyRouteImport.update({
   id: '/submit-property',
   path: '/submit-property',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TexasCoverageRoute = TexasCoverageRouteImport.update({
+  id: '/texas-coverage',
+  path: '/texas-coverage',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InviteTokenRoute = InviteTokenRouteImport.update({
@@ -97,8 +115,11 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/escrow-officer': typeof EscrowOfficerRoute
   '/find-a-home': typeof FindAHomeRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/realtor': typeof RealtorRoute
+  '/security': typeof SecurityRoute
   '/submit-property': typeof SubmitPropertyRoute
+  '/texas-coverage': typeof TexasCoverageRoute
   '/invite/$token': typeof InviteTokenRoute
   '/markets/$market': typeof MarketsMarketRoute
   '/properties/$slug': typeof PropertiesSlugRoute
@@ -112,8 +133,11 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/escrow-officer': typeof EscrowOfficerRoute
   '/find-a-home': typeof FindAHomeRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/realtor': typeof RealtorRoute
+  '/security': typeof SecurityRoute
   '/submit-property': typeof SubmitPropertyRoute
+  '/texas-coverage': typeof TexasCoverageRoute
   '/invite/$token': typeof InviteTokenRoute
   '/markets/$market': typeof MarketsMarketRoute
   '/properties/$slug': typeof PropertiesSlugRoute
@@ -128,8 +152,11 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/escrow-officer': typeof EscrowOfficerRoute
   '/find-a-home': typeof FindAHomeRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/realtor': typeof RealtorRoute
+  '/security': typeof SecurityRoute
   '/submit-property': typeof SubmitPropertyRoute
+  '/texas-coverage': typeof TexasCoverageRoute
   '/invite/$token': typeof InviteTokenRoute
   '/markets/$market': typeof MarketsMarketRoute
   '/properties/$slug': typeof PropertiesSlugRoute
@@ -145,8 +172,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/escrow-officer'
     | '/find-a-home'
+    | '/how-it-works'
     | '/realtor'
+    | '/security'
     | '/submit-property'
+    | '/texas-coverage'
     | '/invite/$token'
     | '/markets/$market'
     | '/properties/$slug'
@@ -160,8 +190,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/escrow-officer'
     | '/find-a-home'
+    | '/how-it-works'
     | '/realtor'
+    | '/security'
     | '/submit-property'
+    | '/texas-coverage'
     | '/invite/$token'
     | '/markets/$market'
     | '/properties/$slug'
@@ -175,8 +208,11 @@ export interface FileRouteTypes {
     | '/auth'
     | '/escrow-officer'
     | '/find-a-home'
+    | '/how-it-works'
     | '/realtor'
+    | '/security'
     | '/submit-property'
+    | '/texas-coverage'
     | '/invite/$token'
     | '/markets/$market'
     | '/properties/$slug'
@@ -191,8 +227,11 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   EscrowOfficerRoute: typeof EscrowOfficerRoute
   FindAHomeRoute: typeof FindAHomeRoute
+  HowItWorksRoute: typeof HowItWorksRoute
   RealtorRoute: typeof RealtorRoute
+  SecurityRoute: typeof SecurityRoute
   SubmitPropertyRoute: typeof SubmitPropertyRoute
+  TexasCoverageRoute: typeof TexasCoverageRoute
   InviteTokenRoute: typeof InviteTokenRoute
   MarketsMarketRoute: typeof MarketsMarketRoute
   PropertiesSlugRoute: typeof PropertiesSlugRoute
@@ -250,6 +289,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FindAHomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/realtor': {
       id: '/realtor'
       path: '/realtor'
@@ -257,11 +303,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RealtorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/submit-property': {
       id: '/submit-property'
       path: '/submit-property'
       fullPath: '/submit-property'
       preLoaderRoute: typeof SubmitPropertyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/texas-coverage': {
+      id: '/texas-coverage'
+      path: '/texas-coverage'
+      fullPath: '/texas-coverage'
+      preLoaderRoute: typeof TexasCoverageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/invite/$token': {
@@ -303,8 +363,11 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   EscrowOfficerRoute: EscrowOfficerRoute,
   FindAHomeRoute: FindAHomeRoute,
+  HowItWorksRoute: HowItWorksRoute,
   RealtorRoute: RealtorRoute,
+  SecurityRoute: SecurityRoute,
   SubmitPropertyRoute: SubmitPropertyRoute,
+  TexasCoverageRoute: TexasCoverageRoute,
   InviteTokenRoute: InviteTokenRoute,
   MarketsMarketRoute: MarketsMarketRoute,
   PropertiesSlugRoute: PropertiesSlugRoute,
