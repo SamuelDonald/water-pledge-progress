@@ -1,27 +1,34 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowUpRight } from "lucide-react";
 import { PublicSiteFrame } from "@/components/escrow/PublicSiteFrame";
+import { TexasCoverageScene } from "@/components/visual/TexasCoverageScene";
 
 export const Route = createFileRoute("/texas-coverage")({
-  head: () => ({
-    meta: [
-      { title: "Texas coverage | Liberty Crest Escrow" },
-      { name: "description", content: "Residential escrow coordination across Dallas, Houston, Austin, San Antonio and the Rio Grande Valley." },
-      { property: "og:title", content: "Texas coverage | Liberty Crest Escrow" },
-      { property: "og:description", content: "Residential escrow coordination across Dallas, Houston, Austin, San Antonio and the Rio Grande Valley." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
+  head: () => ({ meta: [
+    { title: "Texas coverage | Liberty Crest Escrow" },
+    { name: "description", content: "Explore the Texas regions included in the Liberty Crest coverage plan." },
+  ] }),
   component: Page,
 });
 
 function Page() {
   return (
     <PublicSiteFrame>
-      <main className="mx-auto max-w-4xl px-5 py-16 md:px-8">
-        <p className="eyebrow">Liberty Crest Escrow</p>
-        <h1 className="mt-3 font-serif text-4xl md:text-5xl">Texas coverage</h1>
-        <p className="mt-6 text-sm leading-7 text-muted-foreground">Residential escrow coordination across Dallas, Houston, Austin, San Antonio and the Rio Grande Valley.</p>
+      <main className="public-page">
+        <section className="public-page-hero texas-page-hero">
+          <div className="public-page-hero-inner">
+            <p className="eyebrow">ROOTED IN TEXAS / BUILT FOR THE JOURNEY</p>
+            <h1>Local knowledge.<br /><i>Statewide perspective.</i></h1>
+            <p>Residential transactions are local by nature. Our coverage plan is designed around the communities and regions that shape the Texas market.</p>
+            <span className="coverage-note">A regional overview — not a live service-availability checker.</span>
+          </div>
+          <div className="public-hero-index"><span>02</span><span>REGIONS / TEXAS</span></div>
+        </section>
+        <section className="public-section">
+          <div className="public-section-heading"><p className="eyebrow">The service footprint</p><h2>Eight regions.<br /><i>One Texas focus.</i></h2><p>Select a marker or a region to explore the planned coverage areas.</p></div>
+          <TexasCoverageScene />
+        </section>
+        <section className="coverage-note-band"><p>Coverage references are illustrative and do not confirm that Liberty Crest can accept, hold, insure, or settle funds for a particular transaction. Availability and service arrangements must be confirmed directly.</p><Link to="/auth">Contact the team <ArrowUpRight size={14} /></Link></section>
       </main>
     </PublicSiteFrame>
   );
