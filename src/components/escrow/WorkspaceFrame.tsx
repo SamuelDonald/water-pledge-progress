@@ -88,11 +88,11 @@ export function WorkspaceLoading({ message = "Loading workspace…" }: { message
   return <div className="border-y border-border py-8 text-sm text-muted-foreground" role="status">{message}</div>;
 }
 
-export function WorkspaceSignInPrompt({ message = "Sign in to continue." }: { message?: string }) {
+export function WorkspaceSignInPrompt({ message = "Sign in to continue.", returnTo }: { message?: string; returnTo?: string }) {
   return (
     <div className="border-y border-border py-10">
       <p className="max-w-xl text-sm leading-7 text-muted-foreground">{message}</p>
-      <Button className="mt-5" asChild><Link to="/auth">Sign in <ArrowLeft className="rotate-180" /></Link></Button>
+      <Button className="mt-5" asChild><Link to="/auth" search={returnTo ? { returnTo } : {}}>Sign in <ArrowLeft className="rotate-180" /></Link></Button>
     </div>
   );
 }

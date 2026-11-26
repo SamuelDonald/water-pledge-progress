@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { paymentReferenceAllowed } from "./escrow-rules";
 
 type Role = "admin" | "realtor" | "buyer" | "escrow_officer";
 
@@ -200,12 +201,17 @@ export const choosePaymentMethod = createServerFn({ method: "POST" })
     if (data.method !== "wire" && data.method !== "crypto") throw new Error("Unknown payment method.");
     const { data: tx } = await context.supabase.from("escrow_transactions").select("*").eq("id", data.transactionId).maybeSingle();
     if (!tx || tx.buyer_id !== context.userId) throw new Error("Only the invited buyer can submit payment.");
-    const db = await admin();
     const ref = clean(data.reference, 200);
-    await db.from("payment_records").insert({
+    if (ref && !paymentReferenceAllowed(data.method)) throw new Error("This payment method is not active. No deposit or payment reference can be accepted yet.");
+    if (!["awaiting_payment", "invitation_sent", "buyer_onboarding"].includes(tx.status)) throw new Error("Payment selection is not available at this transaction stage.");
+    const db = await admin();
+    const { data: existing } = await db.from("payment_records").select("id").eq("transaction_id", tx.id).eq("method", data.method).eq("status", "instructions_pending").maybeSingle();
+    if (existing && !ref) return { ok: true };
+    const { error } = await db.from("payment_records").insert({
       transaction_id: tx.id, method: data.method, amount_cents: tx.deposit_amount_cents,
       status: ref ? "submitted" : "instructions_pending", buyer_reference: ref || null, submitted_by: context.userId,
     });
+    if (error) throw new Error("Could not save your payment preference.");
     if (ref) await db.from("escrow_transactions").update({ status: "payment_submitted" }).eq("id", tx.id);
     await audit(tx.id, context.userId, ref ? "payment_reference_submitted" : "payment_method_selected", { method: data.method });
     return { ok: true };

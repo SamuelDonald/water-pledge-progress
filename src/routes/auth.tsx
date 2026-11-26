@@ -4,8 +4,15 @@ import { Landmark } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { useServerFn } from "@tanstack/react-start";
+import { getMe } from "@/lib/escrow.functions";
+import { safeReturnPath } from "@/lib/escrow-rules";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>): { returnTo?: string } => {
+    const returnTo = safeReturnPath(search["returnTo"]);
+    return returnTo ? { returnTo } : {};
+  },
   head: () => ({
     meta: [
       { title: "Secure sign-in | Liberty Crest Escrow" },
@@ -21,6 +28,14 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { returnTo } = Route.useSearch();
+  const me = useServerFn(getMe);
+  const finishSignIn = async () => {
+    if (returnTo) { await navigate({ to: returnTo, replace: true }); return; }
+    const identity = await me();
+    const destination = identity.roles.includes("admin") ? "/admin" : identity.roles.includes("escrow_officer") ? "/escrow-officer" : "/realtor";
+    await navigate({ to: destination, replace: true });
+  };
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,9 +44,9 @@ function AuthPage() {
 
   useEffect(() => {
     void supabase.auth.getUser().then(({ data }) => {
-      if (data.user) void navigate({ to: "/realtor", replace: true });
+      if (data.user) void finishSignIn();
     });
-  }, [navigate]);
+  }, [navigate, returnTo]);
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -41,11 +56,13 @@ function AuthPage() {
       if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        await navigate({ to: "/realtor", replace: true });
+        await finishSignIn();
       } else {
-        const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/realtor" } });
+        const callback = new URL("/auth", window.location.origin);
+        if (returnTo) callback.searchParams.set("returnTo", returnTo);
+        const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: callback.toString() } });
         if (error) throw error;
-        if (data.session) await navigate({ to: "/realtor", replace: true });
+        if (data.session) await finishSignIn();
         else setSent(true);
       }
     } catch (err) {
@@ -85,9 +102,9 @@ function AuthPage() {
                 <input className="field mt-2" type="password" autoComplete={mode === "signin" ? "current-password" : "new-password"} value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} />
               </label>
               <Button type="submit" className="w-full" disabled={busy}>{busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}</Button>
-              <button type="button" className="w-full text-center text-xs text-muted-foreground underline-offset-4 hover:underline" onClick={() => setMode(mode === "signin" ? "signup" : "signin")}>
+              <Button variant="link" type="button" className="w-full text-center text-xs text-muted-foreground" onClick={() => setMode(mode === "signin" ? "signup" : "signin")}>
                 {mode === "signin" ? "New to Liberty Crest? Create an account" : "Already registered? Sign in"}
-              </button>
+              </Button>
             </form>
           )}
         </div>
