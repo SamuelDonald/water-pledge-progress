@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowRight, ArrowUpRight, FileCheck2, LockKeyhole, ShieldCheck } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
 
 const scenes = [
   { eyebrow: "THE ARRIVAL · TEXAS", title: "A meaningful move\ndeserves a better journey.", copy: "A home is more than an address. The transaction behind it deserves the same care, clarity, and attention.", image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2400&q=88", position: "center 52%" },
@@ -53,11 +53,9 @@ export function CinematicJourney({ onRealtorAccess, onBuyerAccess }: { onRealtor
           {active === 0 ? <div className="cinematic-actions"><button onClick={onRealtorAccess}>Realtor registration <ArrowUpRight size={15} /></button><a href="#how-it-works">Explore the process <ArrowRight size={15} /></a></div> : <a className="cinematic-inline-link" href="#how-it-works">Discover this stage <ArrowRight size={14} /></a>}
         </div>
         <div className="cinematic-bottom">
-          <div className="cinematic-assurances"><span><ShieldCheck size={14}/> Role-based access</span><span><FileCheck2 size={14}/> Document-led workflow</span><span><LockKeyhole size={14}/> Authorized releases</span></div>
           <div className="cinematic-progress"><span>0{active + 1}</span><div>{scenes.map((scene, index) => <i key={scene.eyebrow} className={index <= active ? "is-active" : ""} />)}</div><span>04</span></div>
         </div>
         <div className="cinematic-scroll-cue"><ArrowDown size={13}/><span>SCROLL TO MOVE THROUGH THE JOURNEY</span></div>
-        <button className="cinematic-buyer-link" onClick={onBuyerAccess}>Buyer transaction <ArrowUpRight size={13}/></button>
       </div>
     </section>
   );
