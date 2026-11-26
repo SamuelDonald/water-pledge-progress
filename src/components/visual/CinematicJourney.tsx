@@ -8,7 +8,7 @@ const scenes = [
   { eyebrow: "THE HANDOFF · ACCOUNTABLE OVERSIGHT", title: "A clear path\nto the final decision.", copy: "Release requests, administrator authorization, and disbursement recording remain distinct, accountable steps.", image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=2400&q=88", position: "center 50%" },
 ];
 
-export function CinematicJourney({ onRealtorAccess, onBuyerAccess }: { onRealtorAccess: () => void; onBuyerAccess: () => void }) {
+export function CinematicJourney({ onRealtorAccess }: { onRealtorAccess: () => void; onBuyerAccess: () => void }) {
   const journeyRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
   const active = Math.min(3, Math.floor(progress * 4));
