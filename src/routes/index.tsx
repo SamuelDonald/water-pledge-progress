@@ -44,15 +44,16 @@ function EscrowHome() {
             <span className="leading-tight"><span className="block font-serif text-[19px] tracking-[.02em]">LIBERTY CREST</span><span className="mt-1 block text-[8px] tracking-[.28em] text-[#8b744f]">ESCROW SERVICES</span></span>
           </a>
           <nav className="hidden items-center gap-8 text-[10px] uppercase tracking-[.18em] lg:flex">
-            <a className="hover:text-[#927346]" href="#how-it-works">How it works</a>
+            <a className="hover:text-[#927346]" href="/how-it-works">How it works</a>
             <a className="hover:text-[#927346]" href="#services">Our approach</a>
-            <a className="hover:text-[#927346]" href="#texas">Texas coverage</a>
+            <a className="hover:text-[#927346]" href="/security">Security</a>
+            <a className="hover:text-[#927346]" href="/texas-coverage">Texas coverage</a>
             <button onClick={() => openPortal("realtor")} className="border border-[#20231f]/30 px-5 py-3 hover:border-[#927346] hover:text-[#927346]">Realtor access <ArrowUpRight className="ml-2 inline" size={13}/></button>
             <button onClick={() => openPortal("buyer")} className="bg-[#202b26] px-5 py-3 text-[#f4f1e9] hover:bg-[#34453c]">Buyer transaction <ArrowRight className="ml-2 inline" size={13}/></button>
           </nav>
           <button className="lg:hidden" aria-label="Toggle navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X/> : <Menu/>}</button>
         </div>
-        {menuOpen && <nav className="grid gap-4 border-t border-black/10 bg-[#f4f1e9] px-6 py-6 text-xs uppercase tracking-widest lg:hidden"><a href="#how-it-works" onClick={() => setMenuOpen(false)}>How it works</a><a href="#services" onClick={() => setMenuOpen(false)}>Our approach</a><a href="#texas" onClick={() => setMenuOpen(false)}>Texas coverage</a><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("realtor");}}>Realtor access</button><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("buyer");}}>Buyer transaction</button></nav>}
+        {menuOpen && <nav className="grid gap-4 border-t border-black/10 bg-[#f4f1e9] px-6 py-6 text-xs uppercase tracking-widest lg:hidden"><a href="/how-it-works" onClick={() => setMenuOpen(false)}>How it works</a><a href="#services" onClick={() => setMenuOpen(false)}>Our approach</a><a href="/security" onClick={() => setMenuOpen(false)}>Security</a><a href="/texas-coverage" onClick={() => setMenuOpen(false)}>Texas coverage</a><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("realtor");}}>Realtor access</button><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("buyer");}}>Buyer transaction</button></nav>}
       </header>
 
       <section className="relative overflow-hidden bg-[#202b26] text-[#f4f1e9]">
