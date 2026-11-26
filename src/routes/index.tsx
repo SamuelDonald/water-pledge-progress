@@ -67,17 +67,7 @@ function EscrowHome() {
             </div>
             <div className="mt-16 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/15 pt-6 text-[9px] uppercase tracking-[.16em] text-white/45"><span className="flex items-center gap-2"><ShieldCheck size={14}/> Role-based access</span><span className="flex items-center gap-2"><FileCheck2 size={14}/> Document-led workflow</span><span className="flex items-center gap-2"><LockKeyhole size={14}/> Admin-authorized releases</span></div>
           </div>
-          <div className="relative hidden min-h-[440px] items-end justify-end lg:flex">
-            <div className="absolute right-10 top-6 h-[390px] w-[78%] border border-[#d5c3a2]/30"/>
-            <div className="relative z-10 w-[82%] border border-white/15 bg-[#293831]/90 p-7 shadow-2xl backdrop-blur-sm">
-              <div className="flex items-center justify-between border-b border-white/15 pb-5"><span className="text-[9px] uppercase tracking-[.22em] text-[#d5c3a2]">Transaction overview</span><span className="size-2 rounded-full bg-[#c3a878]"/></div>
-              <p className="mt-7 font-serif text-3xl">One shared record.</p><p className="mt-2 text-xs leading-6 text-white/50">A coordinated view of the transaction, from invitation through final review.</p>
-              <div className="mt-8 space-y-5">
-                {[["Transaction details","Recorded"],["Buyer document review","In progress"],["Payment reconciliation","Provider setup pending"],["Release authorization","Administrator review"]].map(([label,status],i)=><div key={label} className="flex items-center justify-between gap-4 border-b border-white/10 pb-4"><span className="flex items-center gap-3 text-xs text-white/75"><span className="font-serif text-sm text-[#c6ae83]">0{i+1}</span>{label}</span><span className="text-[9px] uppercase tracking-wider text-[#d5c3a2]/70">{status}</span></div>)}
-              </div>
-              <p className="mt-6 text-[9px] leading-5 text-white/35">Illustrative workflow preview · not a live transaction or payment status</p>
-            </div>
-          </div>
+          <CinematicEstate />
         </div>
       </section>
 
