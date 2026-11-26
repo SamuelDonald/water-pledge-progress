@@ -42,7 +42,7 @@ export function CinematicJourney({ onRealtorAccess, onBuyerAccess }: { onRealtor
       <div className="cinematic-sticky">
         <div className="cinematic-camera" style={{ transform: `scale(${1.04 + progress * 0.2}) translate3d(0, ${progress * -2.5}%, 0)` }}>
           {scenes.map((scene, index) => (
-            <div key={scene.eyebrow} className="cinematic-scene" style={{ backgroundImage: `url("${scene.image}")`, backgroundPosition: scene.position, opacity: Math.max(0, 1 - Math.abs(progress * 4 - index - 0.5) * 1.55) }} />
+            <div key={scene.eyebrow} className="cinematic-scene" style={{ backgroundImage: `url("${scene.image}")`, backgroundPosition: scene.position, opacity: Math.max(0, 1 - Math.abs(progress * 4 - index) * 1.5) }} />
           ))}
           <div className="cinematic-vignette" />
           <div className="cinematic-grain" />
