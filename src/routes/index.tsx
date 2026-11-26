@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { CinematicEstate } from "@/components/visual/CinematicEstate";
 import {
   ArrowRight, ArrowUpRight, BadgeCheck, Building2,
   CircleHelp, ClipboardCheck, FileCheck2, FileText, KeyRound, Landmark,
