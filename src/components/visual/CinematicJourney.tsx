@@ -15,8 +15,6 @@ export function CinematicJourney({ onRealtorAccess, onBuyerAccess }: { onRealtor
   useEffect(() => {
     const element = journeyRef.current;
     if (!element) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
     let frame = 0;
     const update = () => {
       cancelAnimationFrame(frame);
@@ -40,9 +38,9 @@ export function CinematicJourney({ onRealtorAccess, onBuyerAccess }: { onRealtor
   return (
     <section ref={journeyRef} className="cinematic-journey" aria-label="A guided cinematic journey through the Liberty Crest transaction process">
       <div className="cinematic-sticky">
-        <div className="cinematic-camera" style={{ transform: `scale(${1.04 + progress * 0.2}) translate3d(0, ${progress * -2.5}%, 0)` }}>
+        <div className="cinematic-camera" style={{ transform: `scale(${1.06 + progress * 0.38}) translate3d(${progress * -1.8}%, ${progress * -7}%, 0)` }}>
           {scenes.map((scene, index) => (
-            <div key={scene.eyebrow} className="cinematic-scene" style={{ backgroundImage: `url("${scene.image}")`, backgroundPosition: scene.position, opacity: Math.max(0, 1 - Math.abs(progress * 4 - index) * 1.5) }} />
+            <div key={scene.eyebrow} className="cinematic-scene" style={{ backgroundImage: `url("${scene.image}")`, backgroundPosition: scene.position, opacity: Math.max(0, 1 - Math.abs(progress * 4 - index)) }} />
           ))}
           <div className="cinematic-vignette" />
           <div className="cinematic-grain" />
