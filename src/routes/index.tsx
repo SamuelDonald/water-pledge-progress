@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { CinematicEstate } from "@/components/visual/CinematicEstate";
 import {
   ArrowRight, ArrowUpRight, BadgeCheck, Building2,
   CircleHelp, ClipboardCheck, FileCheck2, FileText, KeyRound, Landmark,
@@ -43,15 +44,16 @@ function EscrowHome() {
             <span className="leading-tight"><span className="block font-serif text-[19px] tracking-[.02em]">LIBERTY CREST</span><span className="mt-1 block text-[8px] tracking-[.28em] text-[#8b744f]">ESCROW SERVICES</span></span>
           </a>
           <nav className="hidden items-center gap-8 text-[10px] uppercase tracking-[.18em] lg:flex">
-            <a className="hover:text-[#927346]" href="#how-it-works">How it works</a>
+            <a className="hover:text-[#927346]" href="/how-it-works">How it works</a>
             <a className="hover:text-[#927346]" href="#services">Our approach</a>
-            <a className="hover:text-[#927346]" href="#texas">Texas coverage</a>
+            <a className="hover:text-[#927346]" href="/security">Security</a>
+            <a className="hover:text-[#927346]" href="/texas-coverage">Texas coverage</a>
             <button onClick={() => openPortal("realtor")} className="border border-[#20231f]/30 px-5 py-3 hover:border-[#927346] hover:text-[#927346]">Realtor access <ArrowUpRight className="ml-2 inline" size={13}/></button>
             <button onClick={() => openPortal("buyer")} className="bg-[#202b26] px-5 py-3 text-[#f4f1e9] hover:bg-[#34453c]">Buyer transaction <ArrowRight className="ml-2 inline" size={13}/></button>
           </nav>
           <button className="lg:hidden" aria-label="Toggle navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X/> : <Menu/>}</button>
         </div>
-        {menuOpen && <nav className="grid gap-4 border-t border-black/10 bg-[#f4f1e9] px-6 py-6 text-xs uppercase tracking-widest lg:hidden"><a href="#how-it-works" onClick={() => setMenuOpen(false)}>How it works</a><a href="#services" onClick={() => setMenuOpen(false)}>Our approach</a><a href="#texas" onClick={() => setMenuOpen(false)}>Texas coverage</a><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("realtor");}}>Realtor access</button><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("buyer");}}>Buyer transaction</button></nav>}
+        {menuOpen && <nav className="grid gap-4 border-t border-black/10 bg-[#f4f1e9] px-6 py-6 text-xs uppercase tracking-widest lg:hidden"><a href="/how-it-works" onClick={() => setMenuOpen(false)}>How it works</a><a href="#services" onClick={() => setMenuOpen(false)}>Our approach</a><a href="/security" onClick={() => setMenuOpen(false)}>Security</a><a href="/texas-coverage" onClick={() => setMenuOpen(false)}>Texas coverage</a><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("realtor");}}>Realtor access</button><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("buyer");}}>Buyer transaction</button></nav>}
       </header>
 
       <section className="relative overflow-hidden bg-[#202b26] text-[#f4f1e9]">
@@ -67,17 +69,7 @@ function EscrowHome() {
             </div>
             <div className="mt-16 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/15 pt-6 text-[9px] uppercase tracking-[.16em] text-white/45"><span className="flex items-center gap-2"><ShieldCheck size={14}/> Role-based access</span><span className="flex items-center gap-2"><FileCheck2 size={14}/> Document-led workflow</span><span className="flex items-center gap-2"><LockKeyhole size={14}/> Admin-authorized releases</span></div>
           </div>
-          <div className="relative hidden min-h-[440px] items-end justify-end lg:flex">
-            <div className="absolute right-10 top-6 h-[390px] w-[78%] border border-[#d5c3a2]/30"/>
-            <div className="relative z-10 w-[82%] border border-white/15 bg-[#293831]/90 p-7 shadow-2xl backdrop-blur-sm">
-              <div className="flex items-center justify-between border-b border-white/15 pb-5"><span className="text-[9px] uppercase tracking-[.22em] text-[#d5c3a2]">Transaction overview</span><span className="size-2 rounded-full bg-[#c3a878]"/></div>
-              <p className="mt-7 font-serif text-3xl">One shared record.</p><p className="mt-2 text-xs leading-6 text-white/50">A coordinated view of the transaction, from invitation through final review.</p>
-              <div className="mt-8 space-y-5">
-                {[["Transaction details","Recorded"],["Buyer document review","In progress"],["Payment reconciliation","Provider setup pending"],["Release authorization","Administrator review"]].map(([label,status],i)=><div key={label} className="flex items-center justify-between gap-4 border-b border-white/10 pb-4"><span className="flex items-center gap-3 text-xs text-white/75"><span className="font-serif text-sm text-[#c6ae83]">0{i+1}</span>{label}</span><span className="text-[9px] uppercase tracking-wider text-[#d5c3a2]/70">{status}</span></div>)}
-              </div>
-              <p className="mt-6 text-[9px] leading-5 text-white/35">Illustrative workflow preview · not a live transaction or payment status</p>
-            </div>
-          </div>
+          <CinematicEstate />
         </div>
       </section>
 
