@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowRight, FileText, Users, ClipboardCheck, ShieldCheck } from "lucide-react";
+import { FileText, Users, ClipboardCheck, ShieldCheck } from "lucide-react";
 
 const phases = [
   { number: "01", title: "Open the record", label: "INITIATION", description: "An approved realtor creates the transaction record, enters the agreed terms, and sends a private invitation to the buyer.", detail: "A single source of context", icon: FileText },
