@@ -1,20 +1,21 @@
-import { describe, expect, test } from "bun:test";
+import { describe, it as test } from "node:test";
+import assert from "node:assert/strict";
 import { paymentReferenceAllowed, safeReturnPath } from "./escrow-rules";
 
 describe("inactive payment placeholders", () => {
   test("bank wire cannot accept payment references before configuration", () => {
-    expect(paymentReferenceAllowed("wire")).toBe(false);
+    assert.equal(paymentReferenceAllowed("wire"), false);
   });
   test("crypto cannot accept payment references before configuration", () => {
-    expect(paymentReferenceAllowed("crypto")).toBe(false);
+    assert.equal(paymentReferenceAllowed("crypto"), false);
   });
 });
 describe("sign-in return destination", () => {
   test("retains the buyer's invitation", () => {
-    expect(safeReturnPath("/invite/abc123")).toBe("/invite/abc123");
+    assert.equal(safeReturnPath("/invite/abc123"), "/invite/abc123");
   });
   test("rejects off-site destinations", () => {
-    expect(safeReturnPath("//example.com")).toBeUndefined();
-    expect(safeReturnPath("https://example.com")).toBeUndefined();
+    assert.equal(safeReturnPath("//example.com"), undefined);
+    assert.equal(safeReturnPath("https://example.com"), undefined);
   });
 });
