@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { CinematicEstate } from "@/components/visual/CinematicEstate";
+import { CinematicJourney } from "@/components/visual/CinematicJourney";
 import {
   ArrowRight, ArrowUpRight, BadgeCheck, Building2,
   CircleHelp, ClipboardCheck, FileCheck2, FileText, KeyRound, Landmark,
@@ -56,22 +56,7 @@ function EscrowHome() {
         {menuOpen && <nav className="grid gap-4 border-t border-black/10 bg-[#f4f1e9] px-6 py-6 text-xs uppercase tracking-widest lg:hidden"><a href="/how-it-works" onClick={() => setMenuOpen(false)}>How it works</a><a href="#services" onClick={() => setMenuOpen(false)}>Our approach</a><a href="/security" onClick={() => setMenuOpen(false)}>Security</a><a href="/texas-coverage" onClick={() => setMenuOpen(false)}>Texas coverage</a><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("realtor");}}>Realtor access</button><button className="text-left" onClick={() => {setMenuOpen(false);openPortal("buyer");}}>Buyer transaction</button></nav>}
       </header>
 
-      <section className="relative overflow-hidden bg-[#202b26] text-[#f4f1e9]">
-        <div className="absolute inset-0 opacity-[.13]" style={{backgroundImage:"linear-gradient(90deg, transparent 49.9%, #d9c7a5 50%, transparent 50.1%),linear-gradient(#d9c7a5 1px,transparent 1px)",backgroundSize:"120px 120px"}}/>
-        <div className="relative mx-auto grid min-h-[660px] max-w-[1440px] items-end gap-14 px-6 pb-16 pt-24 md:px-10 lg:grid-cols-[1.1fr_.9fr] lg:pb-24">
-          <div className="max-w-3xl">
-            <p className="mb-8 flex items-center gap-3 text-[9px] uppercase tracking-[.3em] text-[#c6ae83]"><span className="h-px w-10 bg-[#c6ae83]"/> TEXAS RESIDENTIAL TRANSACTION COORDINATION</p>
-            <h1 className="font-serif text-[clamp(3.6rem,8.2vw,8.1rem)] leading-[.91] tracking-[-.045em]">Confidence in<br/><i className="font-normal text-[#d5c3a2]">every exchange.</i></h1>
-            <p className="mt-8 max-w-xl text-sm leading-7 text-white/65 md:text-base">A more considered way to coordinate residential real-estate transactions. Bring the people, paperwork, payment milestones, and release approvals into one clear record.</p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <button onClick={() => openPortal("realtor")} className="bg-[#d5c3a2] px-7 py-4 text-[10px] uppercase tracking-[.18em] text-[#202b26] hover:bg-[#e4d7bf]">Realtor registration <ArrowRight className="ml-3 inline" size={14}/></button>
-              <a href="#how-it-works" className="border border-white/35 px-7 py-4 text-[10px] uppercase tracking-[.18em] hover:border-white">Explore the process <ArrowUpRight className="ml-3 inline" size={14}/></a>
-            </div>
-            <div className="mt-16 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/15 pt-6 text-[9px] uppercase tracking-[.16em] text-white/45"><span className="flex items-center gap-2"><ShieldCheck size={14}/> Role-based access</span><span className="flex items-center gap-2"><FileCheck2 size={14}/> Document-led workflow</span><span className="flex items-center gap-2"><LockKeyhole size={14}/> Admin-authorized releases</span></div>
-          </div>
-          <CinematicEstate />
-        </div>
-      </section>
+      <CinematicJourney onRealtorAccess={() => openPortal("realtor")} onBuyerAccess={() => openPortal("buyer")} />
 
       <section className="border-b border-black/10 bg-[#e9e4d9]">
         <div className="mx-auto grid max-w-[1440px] gap-8 px-6 py-8 md:grid-cols-3 md:px-10">
